@@ -1,6 +1,6 @@
+from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from django.shortcuts import redirect
 from .models import Post
 from .forms import PostForm
 
@@ -38,3 +38,7 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+# def admin(request):
+
+# def post_delete(request):
