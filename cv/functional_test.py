@@ -1,4 +1,4 @@
-from django.urls import reverse
+from django.urls import reverse, resolve
 from selenium import webdriver
 import time
 
@@ -19,11 +19,8 @@ class NewVisitorTest(unittest.TestCase):
 
         # He goes to the web address of the homepage of the website
         self.browser.get('http://localhost:8000')
-        time.sleep(15)
         # He notices the page title is referring to Bridging coursework
         self.assertIn('Bridging Coursework', self.browser.title)
-
-
 
         # He notices that on the right portion of the screen there are 2 headers 'blog' and 'cv'
         navbar_blog = self.browser.find_element_by_id('nav-blog').text
@@ -32,8 +29,11 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('CV', navbar_cv)
 
         # He clicks on the 'cv' header to take him to the cv portion of the web app
-        navbar_blog_location = self.browser.get(reverse("/"))
-        self.assertIn(navbar_blog_location, '<a href="%s">CV</a>' % reverse("/cv"))
+        self.browser.get('http://localhost:8000/cv/')
+        # He notices the page title is referring to Bridging coursework
+
+        # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
+        self.fail("Tests have been completed up to this point")
 
         # He is presented with a page containing a number of different headers and buttons referring to different
         # sections of a standard CV
@@ -159,9 +159,9 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn(save_project_information_button_location,
                       '<a href="%s"Save</a>' % reverse("/cv"))
 
-
-
         # TODO Determine a good format for the following sections and if they are needed
+
+
 '''
         # He sees a header "Interests" with an option to 'add a new interest'
         # He clicks the option
