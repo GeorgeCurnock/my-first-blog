@@ -1,5 +1,6 @@
 from django.urls import reverse
 from selenium import webdriver
+import time
 
 import unittest
 
@@ -18,9 +19,11 @@ class NewVisitorTest(unittest.TestCase):
 
         # He goes to the web address of the homepage of the website
         self.browser.get('http://localhost:8000')
-
+        time.sleep(15)
         # He notices the page title is referring to Bridging coursework
         self.assertIn('Bridging Coursework', self.browser.title)
+
+
 
         # He notices that on the right portion of the screen there are 2 headers 'blog' and 'cv'
         navbar_blog = self.browser.find_element_by_id('nav-blog').text
