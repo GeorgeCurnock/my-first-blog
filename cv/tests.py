@@ -1,10 +1,11 @@
 from django.test import TestCase
 
 
-class CVPageTest(TestCase):
+class CVHomeTest(TestCase):
 
-    def test_uses_cv_template(self):
-        pass
+    def test_cv_home_uses_cv_template(self):
+        response = self.client.get('/cv/')
+        self.assertTemplateUsed(response, 'cv/cv_home.html')
 
 
 class CVEditBasicInformationPageTest(TestCase):
