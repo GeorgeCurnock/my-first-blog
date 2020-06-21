@@ -5,15 +5,19 @@ from django.urls import reverse, resolve
 class CVHomeTest(TestCase):
 
     def test_cv_home_uses_cv_template(self):
-        response = self.client.get('/cv/')
+        response = self.client.get(reverse('cv_home'))
         self.assertTemplateUsed(response, 'cv/cv_home.html')
 
-    def test_can_access_edit_basic_information_page(self):
-        # url = reverse('post_list')
-        # self.assertEqual(url, '/')
-        #
-        # resolver = resolve('/')
-        # self.assertEqual(resolver.view_name, 'post_list')
+    def test_edit_basic_information_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response, '<a href="%s">Edit Basic Information</a>' % reverse("edit_basic_information"),
+                            html=True)
+
+    def test_edit_basic_information_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/basic-information/')
+        self.assertEqual(resolver.view_name, 'edit_basic_information')
+
+
 
     def test_can_access_edit_education_information_page(self):
         pass
