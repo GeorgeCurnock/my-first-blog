@@ -8,34 +8,62 @@ class CVHomeTest(TestCase):
         response = self.client.get(reverse('cv_home'))
         self.assertTemplateUsed(response, 'cv/cv_home.html')
 
-    def test_edit_basic_information_link_leads_to_correct_URL(self):
+    def test_edit_basic_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Edit Basic Information</a>' % reverse("edit_basic_information"),
+        self.assertContains(response,
+                            '<a href="%s">Edit Basic Information</a>' % reverse("cv_edit_basic"),
                             html=True)
 
-    def test_edit_basic_information_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/basic-information/')
-        self.assertEqual(resolver.view_name, 'edit_basic_information')
+    def test_edit_basic_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/basic')
+        self.assertEqual(resolver.view_name, 'cv_edit_basic')
 
+    def test_edit_education_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response,
+                            '<a href="%s">Edit Education</a>' % reverse("cv_edit_education"),
+                            html=True)
 
+    def test_edit_education_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/education')
+        self.assertEqual(resolver.view_name, 'cv_edit_education')
 
-    def test_can_access_edit_education_information_page(self):
-        pass
+    def test_edit_experience_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response,
+                            '<a href="%s">Edit Experience</a>' % reverse("cv_edit_experience"),
+                            html=True)
 
-    def test_can_access_edit_experience_information_page(self):
-        pass
+    def test_edit_experience_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/experience')
+        self.assertEqual(resolver.view_name, 'cv_edit_experience')
 
-    def test_can_save_experience_information_post_request(self):
-        pass
+    def test_edit_projects_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response, '<a href="%s">Edit Projects</a>' % reverse("cv_edit_projects"),
+                            html=True)
 
-    def test_can_access_edit_projects_information_page(self):
-        pass
+    def test_edit_projects_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/projects')
+        self.assertEqual(resolver.view_name, 'cv_edit_projects')
 
-    def test_can_access_edit_technologies_page(self):
-        pass
+    def test_edit_technologies_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response, '<a href="%s">Edit Technologies</a>' % reverse("cv_edit_technologies"),
+                            html=True)
 
-    def test_can_access_edit_other_page(self):
-        pass
+    def test_edit_technologies_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/technologies')
+        self.assertEqual(resolver.view_name, 'cv_edit_technologies')
+
+    def test_edit_other_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response, '<a href="%s">Edit Other Interests</a>' % reverse("cv_edit_other"),
+                            html=True)
+
+    def test_edit_other_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/other')
+        self.assertEqual(resolver.view_name, 'cv_edit_other')
 
 
 class CVEditBasicInformationPageTest(TestCase):
