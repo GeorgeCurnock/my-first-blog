@@ -21,7 +21,7 @@ class CVHomeTest(TestCase):
     def test_edit_education_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a href="%s">Edit Education</a>' % reverse("cv_edit_education"),
+                            '<a href="%s">Add new Education entry</a>' % reverse("cv_edit_education"),
                             html=True)
 
     def test_edit_education_URL_uses_correct_view_function(self):
@@ -31,7 +31,7 @@ class CVHomeTest(TestCase):
     def test_edit_experience_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a href="%s">Edit Experience</a>' % reverse("cv_edit_experience"),
+                            '<a href="%s">Add new Experience entry</a>' % reverse("cv_edit_experience"),
                             html=True)
 
     def test_edit_experience_URL_uses_correct_view_function(self):
@@ -40,7 +40,7 @@ class CVHomeTest(TestCase):
 
     def test_edit_projects_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Edit Projects</a>' % reverse("cv_edit_projects"),
+        self.assertContains(response, '<a href="%s">Add new Project</a>' % reverse("cv_edit_projects"),
                             html=True)
 
     def test_edit_projects_URL_uses_correct_view_function(self):
@@ -49,7 +49,7 @@ class CVHomeTest(TestCase):
 
     def test_edit_technologies_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Edit Technologies</a>' % reverse("cv_edit_technologies"),
+        self.assertContains(response, '<a href="%s">Add new Technology</a>' % reverse("cv_edit_technologies"),
                             html=True)
 
     def test_edit_technologies_URL_uses_correct_view_function(self):
