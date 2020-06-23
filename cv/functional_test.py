@@ -32,9 +32,6 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000/cv/')
         # He notices the page title is referring to Bridging coursework
 
-        # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
-        self.fail("Tests have been completed up to this point")
-
         # He is presented with a page containing a number of different headers and buttons referring to different
         # sections of a standard CV
 
@@ -43,23 +40,64 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Basic Information', basic_information_heading)
 
         # He clicks on the edit button next to the 'basic information' header
-        edit_basic_information_button_location = self.browser.get(reverse("/cv"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(edit_basic_information_button_location,
-                      '<a href="%s">Edit</a>' % reverse("/cv/edit/basic-information"))
+        self.browser.get('http://localhost:8000/cv/edit/basic')
 
-        # James is presented with a number of text fields each with their own headers
+        # James is presented with a large header at the top of the page saying 'Basic Information' as well as
+        # a number of subheaders each above a text field.
         '''
-         Different Sections for the basic information portion of the CV
-         Full name
-         Email address
-         Phone number
-         Github Link
-         LinkedIn Link
+                 Different Sections for the basic information portion of the CV
+                 Full name
+                 Email address
+                 Phone number
+                 Github Link
+                 LinkedIn Link
         '''
-        # He fills out the text fields with the required information and presses the save button
-        # TODO write checks that each header listed above exists
-        # TODO write checks that you can enter information into each text field
+
+        edit_basic_header = self.browser.find_element_by_id('edit_basic_header').text
+        self.assertIn('Basic Information', edit_basic_header)
+
+        # He reads a sub header titled Full name
+        edit_basic_name = self.browser.find_element_by_id('edit_basic_name').text
+        self.assertIn('Full Name',edit_basic_name)
+
+        # James enters his name into the text field
+        edit_basic_name_field = self.browser.find_element_by_id('edit_basic_name_field')
+        edit_basic_name_field.send_keys('James Semaj')
+
+        # He reads a sub header titled Email
+        edit_basic_email = self.browser.find_element_by_id('edit_basic_email').text
+        self.assertIn('Email', edit_basic_email)
+
+        # James enters his email into the text field
+        edit_basic_email_field = self.browser.find_element_by_id('edit_basic_email_field')
+        edit_basic_email_field.send_keys('james.semaj@gmail.com')
+
+        # He reads a sub header titled Phone number
+        edit_basic_phone = self.browser.find_element_by_id('edit_basic_phone').text
+        self.assertIn('Phone Number', edit_basic_phone)
+
+        # James enters his phone number into the text field
+        edit_basic_phone_field = self.browser.find_element_by_id('edit_basic_phone_field')
+        edit_basic_phone_field.send_keys('07759123456')
+
+        # He reads a sub header titled Github Username
+        edit_basic_github = self.browser.find_element_by_id('edit_basic_github').text
+        self.assertIn('Github Username', edit_basic_github)
+
+        # James enters his username into the text field
+        edit_basic_github_field = self.browser.find_element_by_id('edit_basic_github_field')
+        edit_basic_github_field.send_keys('CoderJames')
+
+        # He reads a sub header titled LinkedIn Username
+        edit_basic_linkedin = self.browser.find_element_by_id('edit_basic_linkedin').text
+        self.assertIn('LinkedIn Username', edit_basic_linkedin)
+
+        # James enters his username into the text field
+        edit_basic_linkedin_field = self.browser.find_element_by_id('edit_basic_linkedin_field')
+        edit_basic_linkedin_field.send_keys('James_Samaj')
+        
+        # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
+        self.fail("Tests have been completed up to this point")
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
         save_basic_information_button_location = self.browser.get(reverse("/cv/edit/basic-information"))

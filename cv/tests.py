@@ -66,10 +66,14 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_other')
 
 
-class CVEditBasicInformationPageTest(TestCase):
+class CVEditBasicPageTest(TestCase):
 
-    def test_can_save_basic_information_post_request(self):
-        pass
+    def test_cv_home_uses_cv_template(self):
+        response = self.client.get(reverse('cv_edit_basic'))
+        self.assertTemplateUsed(response, 'cv/cv_basic.html')
+
+    def test_can_save_basic_information_request(self):
+        self.client.post(reverse('cv_basic'), data={})
 
     def test_post_request_basic_information_redirects_to_cv_page(self):
         pass
