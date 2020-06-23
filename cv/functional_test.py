@@ -4,6 +4,8 @@ import time
 
 import unittest
 
+from selenium.webdriver.common.keys import Keys
+
 
 class NewVisitorTest(unittest.TestCase):
 
@@ -36,10 +38,13 @@ class NewVisitorTest(unittest.TestCase):
         # sections of a standard CV
 
         # He sees the heading of the first section is 'Basic Information'
-        basic_information_heading = self.browser.find_element_by_id('header-basic-information').text
-        self.assertIn('Basic Information', basic_information_heading)
+        header_basic = self.browser.find_element_by_id('header_basic_information').text
+        self.assertIn('Basic Information', header_basic)
 
-        # He clicks on the edit button next to the 'basic information' header
+        # James presses the 'Edit Basic Information' button
+        edit_basic_button = self.browser.find_element_by_id('edit_basic_information').text
+        self.assertIn('Add new Education entry', edit_basic_button)
+
         self.browser.get('http://localhost:8000/cv/edit/basic')
 
         # James is presented with a large header at the top of the page saying 'Basic Information' as well as
@@ -105,16 +110,21 @@ class NewVisitorTest(unittest.TestCase):
         # TODO write test to check that the information previously entered is being displayed
 
         # He sees a header "Education" with an option to 'add a new education entry'
+
+        # He sees the heading of a section is 'Education'
+        header_education = self.browser.find_element_by_id('header_education').text
+        self.assertIn('Education', header_education)
+
+        # James presses the 'Add a new education entry' button
+        edit_education_button = self.browser.find_element_by_id('edit_education_button').text
+        self.assertIn('Add new Education entry', edit_education_button)
+
         # He clicks the option
         self.browser.get('http://localhost:8000/cv/edit/education')
 
         # He is presented with a header titled 'Education Information'
         edit_education_header = self.browser.find_element_by_id('edit_basic_header').text
         self.assertIn('Education Information', edit_education_header)
-
-        # James presses the 'Add new education entry' button
-        edit_education_add_entry = self.browser.find_element_by_id('edit_education_add_entry').text
-        self.assertIn('Add new Education entry', edit_education_add_entry)
 
         # He is presented with a number of sub headers and textfields
         '''
@@ -186,19 +196,17 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000/cv/')
         # TODO write test to check that the information previously entered is being displayed
 
-        # He sees a header "Experience" with an option to 'add a new experience entry'
-        # He clicks the option
-        self.browser.get('http://localhost:8000/cv/edit/experience')
-
-        # He is presented with a header titled 'Education Information'
-        edit_experience_header = self.browser.find_element_by_id('edit_experience_header').text
-        self.assertIn('Experience Information', edit_experience_header)
+        # He is presented with a header titled 'Experience Information'
+        header_experience = self.browser.find_element_by_id('header_experience').text
+        self.assertIn('Experience Information', header_experience)
 
         # James presses the 'Add new experience entry' button
-        edit_experience_add_entry = self.browser.find_element_by_id('edit_experience_add_entry').text
-        self.assertIn('Add new Experience entry', edit_experience_add_entry)
+        edit_experience_button = self.browser.find_element_by_id('edit_experience_button').text
+        self.assertIn('Add new Experience entry', edit_experience_button)
 
-        # He is presented with a number of sub headers and textfields
+        self.browser.get('http://localhost:8000/cv/edit/experience')
+
+        # He is presented with a number of sub headers and text fields
         '''
         Lists the different experiences currently saved
         Option to add a new experience entry
@@ -253,42 +261,101 @@ class NewVisitorTest(unittest.TestCase):
                                                     "Lorem Ipsum.")
 
         # He presses a button at the bottom of the page that says 'Save'
-        edit_education_save = self.browser.find_element_by_id('edit_education_save').text
-        self.assertIn('Save', edit_education_save)
+        edit_experience_save = self.browser.find_element_by_id('edit_experience_save').text
+        self.assertIn('Save', edit_experience_save)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
         self.browser.get('http://localhost:8000/cv/')
         # TODO write test to check that the information previously entered is being displayed
 
+        # He sees a header "Projects" with an option to 'add a new project'
+
+        # He is presented with a header titled 'Projects'
+        header_project = self.browser.find_element_by_id('header_project').text
+        self.assertIn('Project', header_project)
+
+        # James presses the 'Add new experience entry' button
+        edit_project_button = self.browser.find_element_by_id('edit_project_button').text
+        self.assertIn('Add new Project', edit_project_button)
+
+        # He clicks the option
+        self.browser.get('http://localhost:8000/cv/edit/project')
+
+        # He is presented with a header titled 'Projects' with a number of subheaders and textfields
+        edit_project_header = self.browser.find_element_by_id('edit_project_header').text
+        self.assertIn('Projects', edit_project_header)
+
+        # He reads a sub header titled Project name
+        edit_project_name = self.browser.find_element_by_id('edit_project_name').text
+        self.assertIn('Project Name', edit_project_name)
+
+        # James enters a project name into the text field
+        edit_project_name_field = self.browser.find_element_by_id('edit_project_name_field')
+        edit_project_name_field.send_keys('Orderly')
+
+        # He reads a sub header titled Project technologies
+        edit_project_technologies = self.browser.find_element_by_id('edit_project_technologies').text
+        self.assertIn('Technologies', edit_project_technologies)
+
+        # James types in a technology used for the project
+        edit_project_technologies_field = self.browser.find_element_by_id('edit_project_technologies_field')
+        edit_project_technologies_field.send_keys('HTML')
+
+        # James presses enter to confirm the technology
+        edit_project_technologies_field.send_keys(Keys.ENTER)
+
+        # James can now see that the technology has been added to a list on the screen
+        # TODO write check that list contains elements HTML and CSS
+
+        # James types in another technology used for the project
+        edit_project_technologies_field.send_keys('CSS')
+
+        # James presses enter again to confirm the technology
+        edit_project_technologies_field.send_keys(Keys.ENTER)
+
+        # James can see that again the technology has been added to the list
+        # TODO write check that list contains elements HTML and CSS
+
+        # He reads a sub header titled Project description
+        edit_project_description = self.browser.find_element_by_id('edit_project_description').text
+        self.assertIn('Description', edit_project_description)
+
+        # James types in a technology used for the project
+        edit_project_description_field = self.browser.find_element_by_id('edit_project_description_field')
+        edit_project_description_field.send_keys('HTML')
+
+        # He presses a button at the bottom of the page that says 'Save'
+        edit_project_save = self.browser.find_element_by_id('edit_project_save').text
+        self.assertIn('Save', edit_project_save)
+
+        # He is returned to the cv page which has been updated to show the information he previously typed in
+        self.browser.get('http://localhost:8000/cv/')
+        # TODO write test to check that the information previously entered is being displayed
+
+        # He is presented with a header titled 'Skills and Technologies' with an option to add a new skill/technology
+        header_skill = self.browser.find_element_by_id('header_skills').text
+        self.assertIn('Skills and Technologies', header_skill)
+
+        edit_skill_button = self.browser.find_element_by_id('edit_skills_button').text
+        self.assertIn('Add new Skill/Technology', edit_skill_button)
+
+        # He clicks the option
+        self.browser.get('http://localhost:8000/cv/edit/skills')
+
+        # He reads a sub header titled Skill name
+        edit_skill = self.browser.find_element_by_id('edit_skill').text
+        self.assertIn('Skill', edit_skill)
+
+        # James enters a project name into the text field
+        edit_skill_field = self.browser.find_element_by_id('edit_skill_field')
+        edit_skill_field.send_keys('HTML')
+
+        # He presses a button at the bottom of the page that says 'Save'
+        edit_skill_save = self.browser.find_element_by_id('edit_skill_save').text
+        self.assertIn('Save', edit_skill_save)
+
         # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
         self.fail("Tests have been completed up to this point")
-
-        # He sees a header "Projects" with an option to 'add a new project'
-        # He clicks the option
-        edit_project_information_button_location = self.browser.get(reverse("/cv"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(edit_project_information_button_location,
-                      '<a href="%s">Edit</a>' % reverse("/cv/edit/project-information"))
-
-        # He is presented with a number of different text fields regarding projects
-        '''
-        # A project will have a number of generic fields to give those who read it enough information to be interested about it
-            Project title
-            project technologies
-            brief project description
-            
-        '''
-        # He fills out the text fields with the required information and presses the save button
-        # TODO Make this more specific
-
-        # He clicks the save button and is returned to the cv page where, once again,
-        # the page has been updated with the newly entered information
-        save_project_information_button_location = self.browser.get(reverse("/cv/edit/project-information"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(save_project_information_button_location,
-                      '<a href="%s"Save</a>' % reverse("/cv"))
-
-        # TODO Determine a good format for the following sections and if they are needed
 
 
 '''
