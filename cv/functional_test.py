@@ -104,7 +104,6 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000/cv/')
         # TODO write test to check that the information previously entered is being displayed
 
-
         # He sees a header "Education" with an option to 'add a new education entry'
         # He clicks the option
         self.browser.get('http://localhost:8000/cv/edit/education')
@@ -117,7 +116,7 @@ class NewVisitorTest(unittest.TestCase):
         edit_education_add_entry = self.browser.find_element_by_id('edit_education_add_entry').text
         self.assertIn('Add new Education entry', edit_education_add_entry)
 
-        # He is presented with a number of sub headers and
+        # He is presented with a number of sub headers and textfields
         '''
                 Lists the different forms of education currently saved
                 Option to add a new education entry
@@ -187,27 +186,19 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000/cv/')
         # TODO write test to check that the information previously entered is being displayed
 
-
-        # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
-        self.fail("Tests have been completed up to this point")
-
-
-        # He clicks the save button and is returned to the cv page where, once again,
-        # the page has been updated with the newly entered information
-        save_education_information_button_location = self.browser.get(reverse("/cv/edit/education-information"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(save_education_information_button_location,
-                      '<a href="%s"Save</a>' % reverse("/cv"))
-
-        # He sees a header "Experience" with an option to 'add new experience'
+        # He sees a header "Experience" with an option to 'add a new experience entry'
         # He clicks the option
-        edit_experience_information_button_location = self.browser.get(reverse("/cv"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(edit_experience_information_button_location,
-                      '<a href="%s">Edit</a>' % reverse("/cv/edit/experience-information"))
+        self.browser.get('http://localhost:8000/cv/edit/experience')
 
-        # He is presented with a number of different text fields regarding ones education
-        # He fills out the text fields with the required information and presses the save button
+        # He is presented with a header titled 'Education Information'
+        edit_experience_header = self.browser.find_element_by_id('edit_experience_header').text
+        self.assertIn('Experience Information', edit_experience_header)
+
+        # James presses the 'Add new experience entry' button
+        edit_experience_add_entry = self.browser.find_element_by_id('edit_experience_add_entry').text
+        self.assertIn('Add new Experience entry', edit_experience_add_entry)
+
+        # He is presented with a number of sub headers and textfields
         '''
         Lists the different experiences currently saved
         Option to add a new experience entry
@@ -220,18 +211,57 @@ class NewVisitorTest(unittest.TestCase):
             Potential referee
         '''
 
-        # TODO write a check that there's a button to add a new experience entry
-        # TODO write a check that you can save a new entry
+        # He reads a sub header titled Job Title
+        edit_experience_title = self.browser.find_element_by_id('edit_experience_title').text
+        self.assertIn('Job Title', edit_experience_title)
 
-        # James decides to add a new experience entry to his CV
-        # TODO complete this test
+        # James enters his job title into the text field
+        edit_experience_title_field = self.browser.find_element_by_id('edit_experience_title_field')
+        edit_experience_title_field.send_keys('CEO')
 
-        # He clicks the save button and is returned to the cv page where, once again,
-        # the page has been updated with the newly entered information
-        save_experience_information_button_location = self.browser.get(reverse("/cv/edit/experience-information"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(save_experience_information_button_location,
-                      '<a href="%s"Save</a>' % reverse("/cv"))
+        # He reads a sub header titled Period of Employment
+        edit_experience_period = self.browser.find_element_by_id('edit_experience_period').text
+        self.assertIn('Period of employment', edit_experience_period)
+
+        # James enters his period of employment into the text field
+        edit_experience_period_field = self.browser.find_element_by_id('edit_experience_period_field')
+        edit_experience_period_field.send_keys('2015 - Present')
+
+        # He reads a sub header titled Institution/Company
+        edit_experience_company = self.browser.find_element_by_id('edit_experience_company').text
+        self.assertIn('Institution/Company', edit_experience_company)
+
+        # James enters his Institution/Company into the text field
+        edit_experience_company_field = self.browser.find_element_by_id('edit_experience_company_field')
+        edit_experience_company_field.send_keys('Google')
+
+        # He reads a sub header titled Description of Work
+        edit_experience_description = self.browser.find_element_by_id('edit_experience_description').text
+        self.assertIn('Description of Work', edit_experience_description)
+
+        # James enters his Institution/Company into the text field
+        edit_experience_description_field = self.browser.find_element_by_id('edit_experience_description_field')
+        edit_experience_description_field.send_keys("Lorem Ipsum is simply dummy text of the printing and typesetting "
+                                                    "industry. Lorem Ipsum has been the industry's standard dummy text "
+                                                    "ever since the 1500s, when an unknown printer took a galley of "
+                                                    "type and scrambled it to make a type specimen book. It has "
+                                                    "survived not only five centuries, but also the leap into "
+                                                    "electronic typesetting, remaining essentially unchanged. It was "
+                                                    "popularised in the 1960s with the release of Letraset sheets "
+                                                    "containing Lorem Ipsum passages, and more recently with desktop "
+                                                    "publishing software like Aldus PageMaker including versions of "
+                                                    "Lorem Ipsum.")
+
+        # He presses a button at the bottom of the page that says 'Save'
+        edit_education_save = self.browser.find_element_by_id('edit_education_save').text
+        self.assertIn('Save', edit_education_save)
+
+        # He is returned to the cv page which has been updated to show the information he previously typed in
+        self.browser.get('http://localhost:8000/cv/')
+        # TODO write test to check that the information previously entered is being displayed
+
+        # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
+        self.fail("Tests have been completed up to this point")
 
         # He sees a header "Projects" with an option to 'add a new project'
         # He clicks the option
