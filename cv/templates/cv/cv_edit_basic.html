@@ -1,4 +1,28 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <h1 id="edit_basic_header">Edit Basic Information</h1>
+    <form method="post">{% csrf_token %}
+        <label>
+            Full Name
+            <input name="edit_basic_name_input" placeholder="Full name"/>
+        </label>
+        <label>
+            Email
+            <input name="edit_basic_email_input" placeholder="Email"/>
+        </label>
+        <label>
+            Phone Number
+            <input name="edit_basic_phone_input" placeholder="Phone Number"/>
+        </label>
+        <label>
+            Github Username
+            <input name="edit_basic_github_input" placeholder="Github Username"/>
+        </label>
+        <label>
+            LinkedIn Username
+            <input name="edit_basic_linkedin_input" placeholder="Full name"/>
+        </label>
+    </form>
+
 {% endblock %}

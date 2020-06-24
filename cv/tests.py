@@ -47,28 +47,19 @@ class CVHomeTest(TestCase):
         resolver = resolve('/cv/edit/projects')
         self.assertEqual(resolver.view_name, 'cv_edit_projects')
 
-    def test_edit_technologies_link_leads_to_correct_URL(self):
+    def test_edit_skills_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Add new Technology</a>' % reverse("cv_edit_technologies"),
+        self.assertContains(response, '<a href="%s">Add new Skill</a>' % reverse("cv_edit_technologies"),
                             html=True)
 
-    def test_edit_technologies_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/technologies')
-        self.assertEqual(resolver.view_name, 'cv_edit_technologies')
-
-    def test_edit_other_link_leads_to_correct_URL(self):
-        response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Edit Other Interests</a>' % reverse("cv_edit_other"),
-                            html=True)
-
-    def test_edit_other_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/other')
-        self.assertEqual(resolver.view_name, 'cv_edit_other')
+    def test_edit_skills_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/skills')
+        self.assertEqual(resolver.view_name, 'cv_edit_skills')
 
 
 class CVEditBasicPageTest(TestCase):
 
-    def test_cv_home_uses_cv_template(self):
+    def test_cv_basic_uses_cv_template(self):
         response = self.client.get(reverse('cv_edit_basic'))
         self.assertTemplateUsed(response, 'cv/cv_basic.html')
 
@@ -127,31 +118,16 @@ class CVEditProjectsInformationPageTest(TestCase):
         pass
 
 
-class CVEditTechnologiesPageTest(TestCase):
+class CVEditSkillsPageTest(TestCase):
 
-    def test_can_save_technologies_post_request(self):
+    def test_can_save_skills_post_request(self):
         pass
 
-    def test_post_request_technologies_redirects_to_cv_page(self):
+    def test_post_request_skills_redirects_to_cv_page(self):
         pass
 
-    def test_only_saves_technologies_items_when_necessary(self):
+    def test_only_saves_skills_items_when_necessary(self):
         pass
 
-    def test_displays_all_technolgies_items(self):
-        pass
-
-
-class CVEditOtherPageTest(TestCase):
-
-    def test_can_save_other_post_request(self):
-        pass
-
-    def test_post_request_other_redirects_to_cv_page(self):
-        pass
-
-    def test_only_saves_other_items_when_necessary(self):
-        pass
-
-    def test_displays_all_other_items(self):
+    def test_displays_all_skills_items(self):
         pass

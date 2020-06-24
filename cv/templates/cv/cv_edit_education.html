@@ -1,4 +1,27 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <h1 id="edit_education_header">Add Education Entry</h1>
+    <form method="post">{% csrf_token %}
+        <label>
+            Qualification
+            <input name="edit_education_qualification_input" placeholder="Qualification"/>
+        </label>
+        <label>
+            Period of Study
+            <input name="edit_education_period_input" placeholder="Period of Study"/>
+        </label>
+        <label>
+            Institution
+            <input name="edit_education_institution_input" placeholder="Institution"/>
+        </label>
+        <label>
+            Classification/Grade
+            <input name="edit_education_grade_input" placeholder="Classification/Grade"/>
+        </label>
+        <label>
+            Description of work
+            <input name="edit_education_description_input" placeholder="Description of Work"/>
+        </label>
+    </form>
 {% endblock %}

@@ -59,7 +59,7 @@ class NewVisitorTest(unittest.TestCase):
         '''
 
         edit_basic_header = self.browser.find_element_by_id('edit_basic_header').text
-        self.assertIn('Basic Information', edit_basic_header)
+        self.assertIn('Edit Basic Information', edit_basic_header)
 
         # He reads a sub header titled Full name
         edit_basic_name = self.browser.find_element_by_id('edit_basic_name').text
@@ -112,8 +112,8 @@ class NewVisitorTest(unittest.TestCase):
         # He sees a header "Education" with an option to 'add a new education entry'
 
         # He sees the heading of a section is 'Education'
-        header_education = self.browser.find_element_by_id('header_education').text
-        self.assertIn('Education', header_education)
+        education_header = self.browser.find_element_by_id('education_header').text
+        self.assertIn('Education', education_header)
 
         # James presses the 'Add a new education entry' button
         edit_education_button = self.browser.find_element_by_id('edit_education_button').text
@@ -123,8 +123,8 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000/cv/edit/education')
 
         # He is presented with a header titled 'Education Information'
-        edit_education_header = self.browser.find_element_by_id('edit_basic_header').text
-        self.assertIn('Education Information', edit_education_header)
+        edit_education_header = self.browser.find_element_by_id('edit_education_header').text
+        self.assertIn('Add Education Entry', edit_education_header)
 
         # He is presented with a number of sub headers and textfields
         '''
@@ -344,7 +344,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled Skill name
         edit_skill = self.browser.find_element_by_id('edit_skill').text
-        self.assertIn('Skill', edit_skill)
+        self.assertIn('Skill/Technology', edit_skill)
 
         # James enters a project name into the text field
         edit_skill_field = self.browser.find_element_by_id('edit_skill_field')
@@ -357,36 +357,6 @@ class NewVisitorTest(unittest.TestCase):
         # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
         self.fail("Tests have been completed up to this point")
 
-
-'''
-        # He sees a header "Interests" with an option to 'add a new interest'
-        # He clicks the option
-        edit_interests_button_location = self.browser.get(reverse("/cv"))
-        # TODO Ensure the icon and text contained in the link is correct
-        self.assertIn(edit_interests_button_location,
-                      '<a href="%s">Edit</a>' % reverse("/cv/edit/interests"))
-
-        # He is presented with a number of different text fields regarding ones interests
-        # He fills out the text fields with the required information and presses the save button
-        # TODO Make this more specific
-
-        # He sees a header "Technologies" with an option to add a new technology"
-        # He clicks the option
-        edit_basic_button_location = self.browser.find_element_by_id('edit-basic-information-button').location
-        self.assertIn('#', edit_basic_button_location)
-
-        # He is presented with a text field to enter a technology and a slider with different names to represent his
-        # efficiency in that technology
-        # He fills out the text fields with the required information and presses the save button
-        # TODO Make this more specific
-
-        # He sees a button at the bottom of the page to print
-        # He clicks this button and is presented with a print page of his entered CV
-
-        # He sees a button at the bottom of the page to download
-        # He clicks this button and a file starts to download containing his entered CV information
-
-'''
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

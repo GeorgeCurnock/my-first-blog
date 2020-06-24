@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1 id="edit_skills_header">Add A Skill</h1>
+    <form method="post">{% csrf_token %}
+        <label>
+            Skill/Technology
+            <input name="edit_skill_input" placeholder="Skill/Technology"/>
+        </label>
+    </form>
+{% endblock %}

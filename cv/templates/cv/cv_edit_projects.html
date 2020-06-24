@@ -1,4 +1,19 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <h1 id="edit_project_header">Add A Project</h1>
+    <form method="post">{% csrf_token %}
+        <label>
+            Project Name
+            <input name="edit_project_name_input" placeholder="Project Name"/>
+        </label>
+        <label>
+            Description of Project
+            <input name="edit_project_description_input" placeholder="Project Description"/>
+        </label>
+        <label>
+            Technologies Used
+            <input name="edit_project_technologies_input" placeholder="Technologies Used"/>
+        </label>
+    </form>
 {% endblock %}

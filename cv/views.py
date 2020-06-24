@@ -22,7 +22,7 @@ def cv_edit_projects(request):
 
 
 def cv_edit_technologies(request):
-    return render(request, 'cv/cv_edit_technologies.html')
+    return render(request, 'cv/cv_edit_skills.html')
 
 
 def cv_edit_other(request):
