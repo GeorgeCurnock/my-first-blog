@@ -5,24 +5,25 @@
     <form method="post">{% csrf_token %}
         <label>
             Full Name
-            <input name="edit_basic_name_input" placeholder="Full name"/>
+            <input id="edit_basic_name_field" placeholder="Full name"/>
         </label>
         <label>
             Email
-            <input name="edit_basic_email_input" placeholder="Email"/>
+            <input id="edit_basic_email_field" placeholder="Email"/>
         </label>
         <label>
             Phone Number
-            <input name="edit_basic_phone_input" placeholder="Phone Number"/>
+            <input id="edit_basic_phone_field" placeholder="Phone Number"/>
         </label>
         <label>
             Github Username
-            <input name="edit_basic_github_input" placeholder="Github Username"/>
+            <input id="edit_basic_github_field" placeholder="Github Username"/>
         </label>
         <label>
             LinkedIn Username
-            <input name="edit_basic_linkedin_input" placeholder="Full name"/>
+            <input id="edit_basic_linkedin_field" placeholder="Full name"/>
         </label>
+        <button id="edit_basic_save" type="submit">Save</button>
     </form>
 
 {% endblock %}

@@ -3,9 +3,14 @@
 {% block content %}
 
     <a href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
+    <p id="basic_text"></p>
     <a href="{% url 'cv_edit_education' %}">Add new Education entry</a>
+    <p id="education_text"></p>
     <a href="{% url 'cv_edit_experience' %}">Add new Experience entry</a>
+    <p id="experience_text"></p>
     <a href="{% url 'cv_edit_projects' %}">Add new Project</a>
+    <p id="projects_text"></p>
     <a href="{% url 'cv_edit_technologies' %}">Add new Skill</a>
+    <p id="technology_text"></p>
 
 {% endblock %}

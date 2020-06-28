@@ -64,7 +64,7 @@ class CVEditBasicPageTest(TestCase):
         self.assertTemplateUsed(response, 'cv/cv_basic.html')
 
     def test_can_save_basic_information_request(self):
-        self.client.post(reverse('cv_basic'), data={})
+        self.client.post(reverse('cv_basic'), data={''})
 
     def test_post_request_basic_information_redirects_to_cv_page(self):
         pass
