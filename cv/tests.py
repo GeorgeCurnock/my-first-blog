@@ -72,10 +72,19 @@ class CVEditBasicPageTest(TestCase):
 
         self.assertEqual(Basic.objects.count(), 1)
         basic_info = Basic.objects.first()
-        self.assertEqual(basic_info.text, {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
-         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
+        self.assertEqual(basic_info.name, 'George Curnock')
+        self.assertEqual(basic_info.email, 'george.curnock@gmail.com')
+        self.assertEqual(basic_info.phone, '07759123456')
+        self.assertEqual(basic_info.github, 'GCurnock')
+        self.assertEqual(basic_info.linkedin, 'GeorgeCurnock')
 
     def test_post_request_basic_information_redirects_to_cv_page(self):
+        response = self.client.post(reverse('cv_edit_basic'), data=
+        {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
+         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
         pass
 
     def test_only_saves_basic_information_content_when_necessary(self):
