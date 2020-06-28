@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.urls import reverse, resolve
 
@@ -87,7 +88,17 @@ class CVEditBasicPageTest(TestCase):
         pass
 
     def test_displays_all_basic_information_content(self):
-        pass
+        self.client.post(reverse('cv_edit_basic'), data=
+        {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
+         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('George Curnock', response.content.decode())
+        self.assertIn('george.curnock@gmail.com', response.content.decode())
+        self.assertIn('07759123456', response.content.decode())
+        self.assertIn('GCurnock', response.content.decode())
+        self.assertIn('GeorgeCurnock', response.content.decode())
 
 
 class CVEditEducationInformationPageTest(TestCase):
