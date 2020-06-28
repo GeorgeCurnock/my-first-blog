@@ -82,12 +82,8 @@ class CVEditBasicPageTest(TestCase):
         response = self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
          'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
-
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/cv')
-        pass
-
-    def test_only_saves_basic_information_content_when_necessary(self):
         pass
 
     def test_displays_all_basic_information_content(self):

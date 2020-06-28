@@ -3,7 +3,19 @@
 {% block content %}
 
     <a href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
-    <p id="basic_text"></p>
+    <div id="basic_text">
+        <h4>Full Name:</h4>
+        <p>{{ basic.name }}</p>
+        <h4>Email:</h4>
+        <p>{{ basic.email }}</p>
+        <h4>Phone Number:</h4>
+        <p>{{ basic.phone }}</p>
+        <h4>Github Username:</h4>
+        <p>{{ basic.github }}</p>
+        <h4>LinkedIn Username:</h4>
+        <p>{{ basic.linkedin }}</p>
+    <p>Last Updated: {{ basic.last_updated}}</p>
+    </div>
     <a href="{% url 'cv_edit_education' %}">Add new Education entry</a>
     <p id="education_text"></p>
     <a href="{% url 'cv_edit_experience' %}">Add new Experience entry</a>
