@@ -5,19 +5,20 @@
     <form method="post">{% csrf_token %}
         <label>
             Job Title
-            <input name="edit_experience_title_input" placeholder="Job Title"/>
+            <input id="edit_experience_title_field" placeholder="Job Title"/>
         </label>
         <label>
             Period of Employment
-            <input name="edit_experience_period_input" placeholder="Period of Employment"/>
+            <input id="edit_experience_period_field" placeholder="Period of Employment"/>
         </label>
         <label>
             Institution/Company
-            <input name="edit_experience_company_input" placeholder="Institution/Company"/>
+            <input id="edit_experience_company_field" placeholder="Institution/Company"/>
         </label>
         <label>
             Description of work
-            <input name="edit_experience_description_input" placeholder="Description of Work"/>
+            <input id="edit_experience_description_field" placeholder="Description of Work"/>
         </label>
+        <button id="edit_experience_save" type="submit">Save</button>
     </form>
 {% endblock %}

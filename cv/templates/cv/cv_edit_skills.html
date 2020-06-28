@@ -5,7 +5,8 @@
     <form method="post">{% csrf_token %}
         <label>
             Skill/Technology
-            <input name="edit_skill_input" placeholder="Skill/Technology"/>
+            <input id="edit_skill_field" placeholder="Skill/Technology"/>
         </label>
+        <button id="edit_skill_save" type="submit">Save</button>
     </form>
 {% endblock %}

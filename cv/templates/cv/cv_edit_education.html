@@ -5,23 +5,24 @@
     <form method="post">{% csrf_token %}
         <label>
             Qualification
-            <input name="edit_education_qualification_input" placeholder="Qualification"/>
+            <input name="edit_education_qualification_field" placeholder="Qualification"/>
         </label>
         <label>
             Period of Study
-            <input name="edit_education_period_input" placeholder="Period of Study"/>
+            <input name="edit_education_period_field" placeholder="Period of Study"/>
         </label>
         <label>
             Institution
-            <input name="edit_education_institution_input" placeholder="Institution"/>
+            <input name="edit_education_institution_field" placeholder="Institution"/>
         </label>
         <label>
             Classification/Grade
-            <input name="edit_education_grade_input" placeholder="Classification/Grade"/>
+            <input name="edit_education_grade_field" placeholder="Classification/Grade"/>
         </label>
         <label>
             Description of work
-            <input name="edit_education_description_input" placeholder="Description of Work"/>
+            <input name="edit_education_description_field" placeholder="Description of Work"/>
         </label>
+        <button id="edit_education_save" type="submit">Save</button>
     </form>
 {% endblock %}

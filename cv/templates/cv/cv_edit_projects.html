@@ -5,15 +5,17 @@
     <form method="post">{% csrf_token %}
         <label>
             Project Name
-            <input name="edit_project_name_input" placeholder="Project Name"/>
+            <input id="edit_project_name_field" placeholder="Project Name"/>
         </label>
         <label>
             Description of Project
-            <input name="edit_project_description_input" placeholder="Project Description"/>
+            <input id="edit_project_description_field" placeholder="Project Description"/>
         </label>
         <label>
             Technologies Used
-            <input name="edit_project_technologies_input" placeholder="Technologies Used"/>
+            <input id="edit_project_technologies_field" placeholder="Technologies Used"/>
         </label>
+        <button id="edit_project_save" type="submit">Save</button>
+
     </form>
 {% endblock %}
