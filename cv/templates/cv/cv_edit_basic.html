@@ -3,26 +3,7 @@
 {% block content %}
     <h1 id="edit_basic_header">Edit Basic Information</h1>
     <form method="post">{% csrf_token %}
-        <label>
-            Full Name
-            <input id="edit_basic_name_field" placeholder="Full name"/>
-        </label>
-        <label>
-            Email
-            <input id="edit_basic_email_field" placeholder="Email"/>
-        </label>
-        <label>
-            Phone Number
-            <input id="edit_basic_phone_field" placeholder="Phone Number"/>
-        </label>
-        <label>
-            Github Username
-            <input id="edit_basic_github_field" placeholder="Github Username"/>
-        </label>
-        <label>
-            LinkedIn Username
-            <input id="edit_basic_linkedin_field" placeholder="Full name"/>
-        </label>
+       {{form.as_p}}
         <button id="edit_basic_save" type="submit">Save</button>
     </form>
 

@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 
+from cv.models import Basic
+
 
 class CVHomeTest(TestCase):
 
@@ -49,7 +51,7 @@ class CVHomeTest(TestCase):
 
     def test_edit_skills_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Add new Skill</a>' % reverse("cv_edit_technologies"),
+        self.assertContains(response, '<a href="%s">Add new Skill</a>' % reverse("cv_edit_skills"),
                             html=True)
 
     def test_edit_skills_URL_uses_correct_view_function(self):
@@ -61,10 +63,17 @@ class CVEditBasicPageTest(TestCase):
 
     def test_cv_basic_uses_cv_template(self):
         response = self.client.get(reverse('cv_edit_basic'))
-        self.assertTemplateUsed(response, 'cv/cv_basic.html')
+        self.assertTemplateUsed(response, 'cv/cv_edit_basic.html')
 
     def test_can_save_basic_information_request(self):
-        self.client.post(reverse('cv_basic'), data={''})
+        self.client.post(reverse('cv_edit_basic'), data=
+        {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
+         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
+
+        self.assertEqual(Basic.objects.count(), 1)
+        basic_info = Basic.objects.first()
+        self.assertEqual(basic_info.text, {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
+         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
 
     def test_post_request_basic_information_redirects_to_cv_page(self):
         pass
