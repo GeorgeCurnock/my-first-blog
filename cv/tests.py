@@ -103,7 +103,11 @@ class CVBasicPageTest(TestCase):
 
 class CVEducationPageTest(TestCase):
 
-    def test_cv_education_uses_cv_template(self):
+    def test_cv_new_education_uses_cv_template(self):
+        response = self.client.get(reverse('cv_new_education'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
+
+    def test_cv_edit_education_uses_cv_template(self):
         response = self.client.get(reverse('cv_edit_education'))
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
