@@ -1,6 +1,14 @@
 from django.db import models
 from django.utils import timezone
 
+'''
+Full name
+Email
+Phone number
+Github Username
+LinkedIn Username
+'''
+
 
 class Basic(models.Model):
     name = models.CharField(max_length=60)
@@ -11,10 +19,18 @@ class Basic(models.Model):
     last_updated = models.DateTimeField(default=timezone.now)
 
 
-
 '''
-Full name
-Email
-Phone number
-Github Username
-LinkedIn Username'''
+Qualification
+Period of Study
+Institution
+Classification/Grade
+Description
+'''
+
+
+class Education(models.Model):
+    qualification = models.CharField(max_length=42)
+    periodStudy = models.CharField(max_length=20)
+    institution = models.CharField(max_length=80)
+    grade = models.CharField(max_length=12)
+    description = models.TextField()

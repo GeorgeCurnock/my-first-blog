@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from cv.models import Basic
+from cv.models import Basic, Education
 
 
 class CVHomeTest(TestCase):
@@ -60,13 +60,13 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_skills')
 
 
-class CVEditBasicPageTest(TestCase):
+class CVBasicPageTest(TestCase):
 
     def test_cv_basic_uses_cv_template(self):
         response = self.client.get(reverse('cv_edit_basic'))
         self.assertTemplateUsed(response, 'cv/cv_edit_basic.html')
 
-    def test_can_save_basic_information_request(self):
+    def test_can_save_basic_request(self):
         self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
          'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
@@ -79,7 +79,7 @@ class CVEditBasicPageTest(TestCase):
         self.assertEqual(basic_info.github, 'GCurnock')
         self.assertEqual(basic_info.linkedin, 'GeorgeCurnock')
 
-    def test_post_request_basic_information_redirects_to_cv_page(self):
+    def test_post_request_basic_redirects_to_cv_page(self):
         response = self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
          'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
@@ -101,22 +101,74 @@ class CVEditBasicPageTest(TestCase):
         self.assertIn('GeorgeCurnock', response.content.decode())
 
 
-class CVEditEducationInformationPageTest(TestCase):
+class CVEducationPageTest(TestCase):
 
-    def test_can_save_education_information_post_request(self):
+    def test_cv_education_uses_cv_template(self):
+        response = self.client.get(reverse('cv_edit_education'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
+
+    def test_can_save_education_request(self):
+        self.client.post(reverse('cv_edit_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        self.assertEqual(Education.objects.count(), 1)
+        education_info = Education.objects.first()
+        self.assertEqual(education_info.qualification, 'MSci Computer Science')
+        self.assertEqual(education_info.period, '2017 - Present')
+        self.assertEqual(education_info.institution, 'University of Birmingham')
+        self.assertEqual(education_info.grade, 'First Class')
+        self.assertEqual(education_info.description,
+                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                         )
+
+    def test_post_request_education_redirects_to_cv_page(self):
+        response = self.client.post(reverse('cv_edit_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
         pass
 
-    def test_post_request_education_information_redirects_to_cv_page(self):
-        pass
+    def test_displays_all_basic_information_content(self):
+        self.client.post(reverse('cv_edit_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
 
-    def test_only_saves_education_information_items_when_necessary(self):
-        pass
+        response = self.client.get(reverse('cv_home'))
 
-    def test_displays_all_education_information_items(self):
-        pass
+        self.assertIn('MSci Computer Science', response.content.decode())
+        self.assertIn('2017 - Present', response.content.decode())
+        self.assertIn('University of Birmingham', response.content.decode())
+        self.assertIn('First Class', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
 
 
-class CVEditExperienceInformationPageTest(TestCase):
+class CVEditExperiencePageTest(TestCase):
 
     def test_post_request_experience_information_redirects_to_cv_page(self):
         pass
@@ -128,7 +180,7 @@ class CVEditExperienceInformationPageTest(TestCase):
         pass
 
 
-class CVEditProjectsInformationPageTest(TestCase):
+class CVEditProjectsPageTest(TestCase):
 
     def test_can_save_projects_information_post_request(self):
         pass

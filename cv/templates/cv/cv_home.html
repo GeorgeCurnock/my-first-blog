@@ -14,15 +14,27 @@
         <p>{{ basic.github }}</p>
         <h4>LinkedIn Username:</h4>
         <p>{{ basic.linkedin }}</p>
-    <p>Last Updated: {{ basic.last_updated}}</p>
+        <p>Last Updated: {{ basic.last_updated }}</p>
     </div>
-    <a href="{% url 'cv_edit_education' %}">Add new Education entry</a>
-    <p id="education_text"></p>
+    <a href="{% url 'cv_new_education' %}">Add new Education entry</a>
+    {% for education in educationEntries %}}
+        <h4>Qualification:</h4>
+        <p>{{ education.qualification }}</p>
+        <h4>Period of Study:</h4>
+        <p>{{ education.period }}</p>
+        <h4>Institution:</h4>
+        <p>{{ education.institution }}</p>
+        <h4>Classification/Grade:</h4>
+        <p>{{ education.grade }}</p>
+        <h4>Description:</h4>
+        <p>{{ education.description }}</p>
+    {% endfor %}
+    <br>
     <a href="{% url 'cv_edit_experience' %}">Add new Experience entry</a>
-    <p id="experience_text"></p>
+    <br>
     <a href="{% url 'cv_edit_projects' %}">Add new Project</a>
-    <p id="projects_text"></p>
+    <br>
     <a href="{% url 'cv_edit_skills' %}">Add new Skill</a>
-    <p id="skills_text"></p>
+    <br>
 
 {% endblock %}
