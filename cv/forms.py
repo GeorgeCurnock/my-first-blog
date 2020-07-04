@@ -12,4 +12,4 @@ class BasicForm(forms.ModelForm):
 class EducationForm(forms.ModelForm):
     class Meta:
         model = Education
-        fields = ('qualification', 'periodStudy', 'institution', 'grade', 'description')
+        fields = ('qualification', 'period', 'institution', 'grade', 'description')

@@ -30,7 +30,7 @@ Description
 
 class Education(models.Model):
     qualification = models.CharField(max_length=42)
-    periodStudy = models.CharField(max_length=20)
+    period = models.CharField(max_length=20)
     institution = models.CharField(max_length=80)
     grade = models.CharField(max_length=12)
     description = models.TextField()

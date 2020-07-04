@@ -107,12 +107,12 @@ class CVEducationPageTest(TestCase):
         response = self.client.get(reverse('cv_new_education'))
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
-    def test_cv_edit_education_uses_cv_template(self):
-        response = self.client.get(reverse('cv_edit_education'))
-        self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
+    # def test_cv_edit_education_uses_cv_template(self):
+    #     response = self.client.get(reverse('cv_edit_education'))
+    #     self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
     def test_can_save_education_request(self):
-        self.client.post(reverse('cv_edit_education'), data=
+        self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -136,7 +136,7 @@ class CVEducationPageTest(TestCase):
                          )
 
     def test_post_request_education_redirects_to_cv_page(self):
-        response = self.client.post(reverse('cv_edit_education'), data=
+        response = self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -148,8 +148,8 @@ class CVEducationPageTest(TestCase):
         self.assertEqual(response['location'], '/cv')
         pass
 
-    def test_displays_all_basic_information_content(self):
-        self.client.post(reverse('cv_edit_education'), data=
+    def test_displays_all_education_information_content(self):
+        self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '

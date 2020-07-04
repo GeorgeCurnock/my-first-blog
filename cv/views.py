@@ -13,19 +13,16 @@ def cv_home(request):
     else:
         basic = Basic()
 
-    if Education.objects.count() > 0:
-        education_entries = Education.objects
-    else:
-        education_entries = []
+    education_entries = Education.objects.all()
 
-    return render(request, 'cv/cv_home.html', {'basic': basic, 'education': education_entries})
+    return render(request, 'cv/cv_home.html', {'basic': basic, 'educationEntries': education_entries})
 
 
 def cv_edit_basic(request):
     # If the user has already entered an entry then get that entry
     if Basic.objects.count() == 1:
         basic_object = get_object_or_404(Basic, pk=Basic.objects.first().pk)
-    # Else we create a blank entry to be
+    # Else we create a blank entry
     else:
         basic_object = Basic()
     if request.method == "POST":
