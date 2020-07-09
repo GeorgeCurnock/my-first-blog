@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from .forms import BasicForm, EducationForm
-from .models import Basic, Education
+from .forms import BasicForm, EducationForm, ExperienceForm
+from .models import Basic, Education, Experience
 
 
 def cv_home(request):
@@ -14,8 +14,9 @@ def cv_home(request):
         basic = Basic()
 
     education_entries = Education.objects.all()
+    experience_entries = Experience.objects.all()
 
-    return render(request, 'cv/cv_home.html', {'basic': basic, 'educationEntries': education_entries})
+    return render(request, 'cv/cv_home.html', {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries})
 
 
 def cv_edit_basic(request):
@@ -62,8 +63,29 @@ def cv_edit_education(request, pk):
     return render(request, 'cv/cv_edit_education.html', {'form': form})
 
 
-def cv_edit_experience(request):
-    return render(request, 'cv/cv_edit_experience.html')
+def cv_new_experience(request):
+    if request.method == "POST":
+        form = ExperienceForm(request.POST)
+        if form.is_valid():
+            experience = form.save(commit=False)
+            experience.save()
+            return redirect('/cv')
+    else:
+        form = ExperienceForm()
+    return render(request, 'cv/cv_edit_experience.html', {'form': form})
+
+
+def cv_edit_experience(request, pk):
+    experience_object = get_object_or_404(Experience, pk)
+    if request.method == "POST":
+        form = ExperienceForm(request.POST, instance=experience_object)
+        if form.is_valid():
+            experience = form.save(commit=False)
+            experience.save()
+            return redirect('/cv')
+    else:
+        form = ExperienceForm(instance=experience_object)
+    return render(request, 'cv/cv_edit_experience.html', {'form': form})
 
 
 def cv_edit_projects(request):

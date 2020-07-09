@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from cv.models import Basic, Education
+from cv.models import Basic, Education, Experience
 
 
 class CVHomeTest(TestCase):
@@ -101,17 +101,13 @@ class CVBasicPageTest(TestCase):
         self.assertIn('GeorgeCurnock', response.content.decode())
 
 
-class CVEducationPageTest(TestCase):
+class CVNewEducationEntryTest(TestCase):
 
     def test_cv_new_education_uses_cv_template(self):
         response = self.client.get(reverse('cv_new_education'))
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
-    # def test_cv_edit_education_uses_cv_template(self):
-    #     response = self.client.get(reverse('cv_edit_education'))
-    #     self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
-
-    def test_can_save_education_request(self):
+    def test_can_save_experience_request(self):
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -172,16 +168,78 @@ class CVEducationPageTest(TestCase):
                       , response.content.decode())
 
 
-class CVEditExperiencePageTest(TestCase):
+class CVEditEducationEntryTest(TestCase):
+    pass
 
-    def test_post_request_experience_information_redirects_to_cv_page(self):
+
+class CVNewExperiencePageTest(TestCase):
+
+    def test_cv_new_experience_uses_cv_template(self):
+        response = self.client.get(reverse('cv_new_experience'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_experience.html')
+
+    def test_can_save_experience_request(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        self.assertEqual(Experience.objects.count(), 1)
+        experience_info = Experience.objects.first()
+        self.assertEqual(experience_info.title, 'CEO')
+        self.assertEqual(experience_info.period, '2019 - Present')
+        self.assertEqual(experience_info.institution, 'Google')
+        self.assertEqual(experience_info.referee, 'Sundar Pichai, 07759123457')
+        self.assertEqual(experience_info.description,
+                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                         )
+
+    def test_post_request_experience_redirects_to_cv_page(self):
+        response = self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
         pass
 
-    def test_only_saves_experience_information_items_when_necessary(self):
-        pass
+    def test_displays_all_experience_information_content(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
 
-    def test_displays_all_experience_information_items(self):
-        pass
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('CEO', response.content.decode())
+        self.assertIn('2019 - Present', response.content.decode())
+        self.assertIn('Google', response.content.decode())
+        self.assertIn('Sundar Pichai, 07759123457', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
 
 
 class CVEditProjectsPageTest(TestCase):

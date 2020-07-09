@@ -34,3 +34,20 @@ class Education(models.Model):
     institution = models.CharField(max_length=80)
     grade = models.CharField(max_length=12)
     description = models.TextField()
+
+
+'''
+Job title
+Period of employment
+Institution/Company
+Description of work undertaken
+Potential referee
+'''
+
+
+class Experience(models.Model):
+    title = models.CharField(max_length=64)
+    period = models.CharField(max_length=20)
+    institution = models.CharField(max_length=80)
+    description = models.TextField()
+    referee = models.CharField(max_length=42)

@@ -17,7 +17,7 @@
         <p>Last Updated: {{ basic.last_updated }}</p>
     </div>
     <a href="{% url 'cv_new_education' %}">Add new Education entry</a>
-    {% for education in educationEntries %}}
+    {% for education in educationEntries %}
         <h4>Qualification:</h4>
         <p>{{ education.qualification }}</p>
         <h4>Period of Study:</h4>
@@ -30,7 +30,19 @@
         <p>{{ education.description }}</p>
     {% endfor %}
     <br>
-    <a href="{% url 'cv_edit_experience' %}">Add new Experience entry</a>
+    <a href="{% url 'cv_new_experience' %}">Add new Experience entry</a>
+    {% for experience in experienceEntries %}
+        <h4>Job Title:</h4>
+        <p>{{ experience.title }}</p>
+        <h4>Period of Employment:</h4>
+        <p>{{ experience.period }}</p>
+        <h4>Institution/Company:</h4>
+        <p>{{ experience.institution }}</p>
+        <h4>Description:</h4>
+        <p>{{ experience.description }}</p>
+        <h4>Referee:</h4>
+        <p>{{ experience.referee }}</p>
+    {% endfor %}
     <br>
     <a href="{% url 'cv_edit_projects' %}">Add new Project</a>
     <br>
