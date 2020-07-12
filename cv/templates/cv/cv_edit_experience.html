@@ -3,7 +3,7 @@
 {% block content %}
     <h1 id="edit_experience_header">Add Experience Entry</h1>
     <form method="post">{% csrf_token %}
-    {{form.as_p}}
-    <button id="edit_experience_save" type="submit">Save</button>
+        {{ form.as_p }}
+        <button id="edit_experience_save" type="submit">Save</button>
     </form>
 {% endblock %}

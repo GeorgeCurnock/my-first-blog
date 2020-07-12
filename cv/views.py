@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from .forms import BasicForm, EducationForm, ExperienceForm
+from .forms import BasicForm, EducationForm, ExperienceForm, ProjectForm
 from .models import Basic, Education, Experience
 
 
@@ -16,7 +16,8 @@ def cv_home(request):
     education_entries = Education.objects.all()
     experience_entries = Experience.objects.all()
 
-    return render(request, 'cv/cv_home.html', {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries})
+    return render(request, 'cv/cv_home.html',
+                  {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries})
 
 
 def cv_edit_basic(request):
@@ -86,6 +87,18 @@ def cv_edit_experience(request, pk):
     else:
         form = ExperienceForm(instance=experience_object)
     return render(request, 'cv/cv_edit_experience.html', {'form': form})
+
+
+def cv_new_project(request):
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.save()
+            return redirect('/cv')
+    else:
+        form = ProjectForm()
+    return render(request, 'cv/cv_edit_projects.html', {'form': form})
 
 
 def cv_edit_projects(request):

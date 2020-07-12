@@ -169,10 +169,190 @@ class CVNewEducationEntryTest(TestCase):
 
 
 class CVEditEducationEntryTest(TestCase):
-    pass
+
+    def test_cv_edit_education_uses_cv_template(self):
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        response = self.client.get(reverse('cv_new_education'), "1")
+        self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
+
+    def test_can_save_edited_experience_request(self):
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        self.client.post(reverse('cv_edit_education'), "1",  data=
+        {'qualification': 'BSc Computer Science', 'period': '2017 - Present',
+         'institution': 'Aston University', 'grade': '2:1',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        self.assertEqual(Education.objects.count(), 1)
+        education_info = Education.objects.first()
+        self.assertEqual(education_info.qualification, 'Bsc Computer Science')
+        self.assertEqual(education_info.period, '2017 - Present')
+        self.assertEqual(education_info.institution, 'Aston University')
+        self.assertEqual(education_info.grade, '2:1')
+        self.assertEqual(education_info.description,
+                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                         )
+
+    def test_post_request_edit_education_redirects_to_cv_page(self):
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        response = self.client.post(reverse('cv_edit_education'), "1", data=
+        {'qualification': 'BSc Computer Science', 'period': '2017 - Present',
+         'institution': 'Aston University', 'grade': '2:1',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+        pass
+
+    def test_displays_changed_education_information_content(self):
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        self.client.post(reverse('cv_edit_education'), "1", data=
+        {'qualification': 'BSc Computer Science', 'period': '2017 - Present',
+         'institution': 'Aston University', 'grade': '2:1',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('MSci Computer Science', response.content.decode())
+        self.assertIn('2017 - Present', response.content.decode())
+        self.assertIn('University of Birmingham', response.content.decode())
+        self.assertIn('First Class', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
+
+        self.assertIn('Bsc Computer Science', response.content.decode())
+        self.assertIn('2017 - Present', response.content.decode())
+        self.assertIn('Aston University', response.content.decode())
+        self.assertIn('2:1', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
 
 
 class CVNewExperiencePageTest(TestCase):
+
+    def test_cv_new_project_uses_cv_template(self):
+        response = self.client.get(reverse('cv_new_project'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_project.html')
+
+    def test_can_save_project_request(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'Orderly',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': ''})
+
+        self.assertEqual(Experience.objects.count(), 1)
+        experience_info = Experience.objects.first()
+        self.assertEqual(experience_info.title, 'CEO')
+        self.assertEqual(experience_info.period, '2019 - Present')
+        self.assertEqual(experience_info.institution, 'Google')
+        self.assertEqual(experience_info.referee, 'Sundar Pichai, 07759123457')
+        self.assertEqual(experience_info.description,
+                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                         )
+
+    def test_post_request_experience_redirects_to_cv_page(self):
+        response = self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+        pass
+
+    def test_displays_all_experience_information_content(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('CEO', response.content.decode())
+        self.assertIn('2019 - Present', response.content.decode())
+        self.assertIn('Google', response.content.decode())
+        self.assertIn('Sundar Pichai, 07759123457', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
+
+
+class CVNewProjectsPageTest(TestCase):
 
     def test_cv_new_experience_uses_cv_template(self):
         response = self.client.get(reverse('cv_new_experience'))
@@ -240,21 +420,6 @@ class CVNewExperiencePageTest(TestCase):
                       'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                       'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
                       , response.content.decode())
-
-
-class CVEditProjectsPageTest(TestCase):
-
-    def test_can_save_projects_information_post_request(self):
-        pass
-
-    def test_post_request_projects_information_redirects_to_cv_page(self):
-        pass
-
-    def test_only_saves_projects_information_items_when_necessary(self):
-        pass
-
-    def test_displays_all_projects_information_items(self):
-        pass
 
 
 class CVEditSkillsPageTest(TestCase):
