@@ -66,17 +66,7 @@ description
 '''
 
 
-class Technology(models.Model):
-    name = models.CharField(max_length=32)
-
-    def __str__(self):
-        return self.name
-
-
 class Project(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField()
-    technologies = models.ForeignKey(Technology, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
+    technologies = models.CharField(max_length=128)
