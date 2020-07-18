@@ -52,7 +52,7 @@ def cv_new_education(request):
 
 
 def cv_edit_education(request, pk):
-    education_object = get_object_or_404(Education, pk)
+    education_object = get_object_or_404(Education, pk=pk)
     if request.method == "POST":
         form = EducationForm(request.POST, instance=education_object)
         if form.is_valid():
@@ -60,6 +60,7 @@ def cv_edit_education(request, pk):
             education.save()
             return redirect('/cv')
     else:
+        print("GET method found so creating form with object", pk)
         form = EducationForm(instance=education_object)
     return render(request, 'cv/cv_edit_education.html', {'form': form})
 
@@ -77,7 +78,7 @@ def cv_new_experience(request):
 
 
 def cv_edit_experience(request, pk):
-    experience_object = get_object_or_404(Experience, pk)
+    experience_object = get_object_or_404(Experience, pk=pk)
     if request.method == "POST":
         form = ExperienceForm(request.POST, instance=experience_object)
         if form.is_valid():
@@ -101,8 +102,17 @@ def cv_new_project(request):
     return render(request, 'cv/cv_edit_projects.html', {'form': form})
 
 
-def cv_edit_projects(request):
-    return render(request, 'cv/cv_edit_projects.html')
+def cv_edit_projects(request, pk):
+    project_object = get_object_or_404(Experience, pk=pk)
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=project_object)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.save()
+            return redirect('/cv')
+    else:
+        form = ProjectForm(instance=project_object)
+    return render(request, 'cv/cv_edit_experience.html', {'form': form})
 
 
 def cv_edit_skills(request):

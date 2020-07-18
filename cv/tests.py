@@ -180,7 +180,9 @@ class CVEditEducationEntryTest(TestCase):
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
 
-        response = self.client.get(reverse('cv_new_education'), "1")
+
+        response = self.client.get(reverse('cv_edit_education', args=[1]))
+        # response = self.client.get(reverse('cv_edit_education', args=[1]))
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
     def test_can_save_edited_experience_request(self):
@@ -193,7 +195,7 @@ class CVEditEducationEntryTest(TestCase):
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
 
-        self.client.post(reverse('cv_edit_education'), "1",  data=
+        self.client.post(reverse('cv_edit_education', args=[1]), data=
         {'qualification': 'BSc Computer Science', 'period': '2017 - Present',
          'institution': 'Aston University', 'grade': '2:1',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -204,7 +206,7 @@ class CVEditEducationEntryTest(TestCase):
 
         self.assertEqual(Education.objects.count(), 1)
         education_info = Education.objects.first()
-        self.assertEqual(education_info.qualification, 'Bsc Computer Science')
+        self.assertEqual(education_info.qualification, 'BSc Computer Science')
         self.assertEqual(education_info.period, '2017 - Present')
         self.assertEqual(education_info.institution, 'Aston University')
         self.assertEqual(education_info.grade, '2:1')
@@ -226,7 +228,7 @@ class CVEditEducationEntryTest(TestCase):
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
 
-        response = self.client.post(reverse('cv_edit_education'), "1", data=
+        response = self.client.post(reverse('cv_edit_education', args=[1]), data=
         {'qualification': 'BSc Computer Science', 'period': '2017 - Present',
          'institution': 'Aston University', 'grade': '2:1',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -249,8 +251,8 @@ class CVEditEducationEntryTest(TestCase):
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
 
-        self.client.post(reverse('cv_edit_education'), "1", data=
-        {'qualification': 'BSc Computer Science', 'period': '2017 - Present',
+        self.client.post(reverse('cv_edit_education', args=[1]), data=
+        {'qualification': 'BSc Computer Science', 'period': '2018 - Present',
          'institution': 'Aston University', 'grade': '2:1',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
@@ -260,19 +262,13 @@ class CVEditEducationEntryTest(TestCase):
 
         response = self.client.get(reverse('cv_home'))
 
-        self.assertIn('MSci Computer Science', response.content.decode())
-        self.assertIn('2017 - Present', response.content.decode())
-        self.assertIn('University of Birmingham', response.content.decode())
-        self.assertIn('First Class', response.content.decode())
-        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
-                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
-                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
-                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
-                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-                      , response.content.decode())
+        self.assertNotIn('MSci Computer Science', response.content.decode())
+        self.assertNotIn('2017 - Present', response.content.decode())
+        self.assertNotIn('University of Birmingham', response.content.decode())
+        self.assertNotIn('First Class', response.content.decode())
 
-        self.assertIn('Bsc Computer Science', response.content.decode())
-        self.assertIn('2017 - Present', response.content.decode())
+        self.assertIn('BSc Computer Science', response.content.decode())
+        self.assertIn('2018 - Present', response.content.decode())
         self.assertIn('Aston University', response.content.decode())
         self.assertIn('2:1', response.content.decode())
         self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
