@@ -180,12 +180,10 @@ class CVEditEducationEntryTest(TestCase):
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
 
-
         response = self.client.get(reverse('cv_edit_education', args=[1]))
-        # response = self.client.get(reverse('cv_edit_education', args=[1]))
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
-    def test_can_save_edited_experience_request(self):
+    def test_can_save_edited_education_request(self):
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -239,7 +237,6 @@ class CVEditEducationEntryTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/cv')
-        pass
 
     def test_displays_changed_education_information_content(self):
         self.client.post(reverse('cv_new_education'), data=
@@ -279,7 +276,7 @@ class CVEditEducationEntryTest(TestCase):
                       , response.content.decode())
 
 
-class CVNewExperiencePageTest(TestCase):
+class CVNewExperienceEntryTest(TestCase):
 
     def test_cv_new_project_uses_cv_template(self):
         response = self.client.get(reverse('cv_new_project'))
@@ -346,6 +343,121 @@ class CVNewExperiencePageTest(TestCase):
                       'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                       'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
                       , response.content.decode())
+
+
+class CVEditExperienceEntryTest(TestCase):
+
+    def test_cv_edit_experience_uses_cv_template(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        response = self.client.get(reverse('cv_edit_experience', args=[1]))
+        self.assertTemplateUsed(response, 'cv/cv_edit_experience.html')
+
+    def test_can_save_edited_experience_request(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        self.client.post(reverse('cv_edit_experience', args=[1]), data=
+        {'title': 'Boss', 'period': '2020 - Present',
+         'institution': 'SpaceX',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Elon Musk, 07759123456'})
+
+        self.assertEqual(Experience.objects.count(), 1)
+        experience_info = Experience.objects.first()
+        self.assertEqual(experience_info.title, 'Boss')
+        self.assertEqual(experience_info.period, '2020 - Present')
+        self.assertEqual(experience_info.institution, 'SpaceX')
+        self.assertEqual(experience_info.referee, 'Elon Musk, 07759123456')
+        self.assertEqual(experience_info.description,
+                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                         )
+
+    def test_post_request_edit_experience_redirects_to_cv_page(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        response = self.client.post(reverse('cv_edit_experience', args=[1]), data=
+        {'title': 'Boss', 'period': '2020 - Present',
+         'institution': 'SpaceX',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Elon Musk, 07759123456'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def test_displays_changed_experience_information_content(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        self.client.post(reverse('cv_edit_experience', args=[1]), data=
+        {'title': 'Boss', 'period': '2020 - Present',
+         'institution': 'SpaceX',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Elon Musk, 07759123456'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('CEO', response.content.decode())
+        self.assertNotIn('2019 - Present', response.content.decode())
+        self.assertNotIn('Google', response.content.decode())
+        self.assertNotIn('Sundar Pichai, 07759123457', response.content.decode())
+
+        self.assertIn('Boss', response.content.decode())
+        self.assertIn('2020 - Present', response.content.decode())
+        self.assertIn('SpaceX', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
+        self.assertIn('Elon Musk, 07759123456', response.content.decode())
 
 
 class CVNewProjectsPageTest(TestCase):
