@@ -10,5 +10,7 @@ urlpatterns = [
     path('cv/edit/experience/<int:pk>/', views.cv_edit_experience, name='cv_edit_experience'),
     path('cv/new/projects/', views.cv_new_projects, name='cv_new_project'),
     path('cv/edit/projects/<int:pk>/', views.cv_edit_projects, name='cv_edit_project'),
-    path('cv/edit/skills/', views.cv_edit_skills, name='cv_edit_skills'),
+    path('cv/new/skills/', views.cv_new_skill, name='cv_new_skill'),
+    path('cv/edit/skill/<int:pk>/', views.cv_edit_skill, name='cv_edit_skill'),
+
 ]

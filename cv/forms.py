@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Basic, Education, Experience, Project
+from .models import Basic, Education, Experience, Project, Skill
 
 
 class BasicForm(forms.ModelForm):
@@ -25,3 +25,9 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ('title', 'description', 'technologies')
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = 'name'

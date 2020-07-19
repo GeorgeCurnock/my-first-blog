@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from .forms import BasicForm, EducationForm, ExperienceForm, ProjectForm
-from .models import Basic, Education, Experience, Project
+from .forms import BasicForm, EducationForm, ExperienceForm, ProjectForm, SkillForm
+from .models import Basic, Education, Experience, Project, Skill
 
 
 def cv_home(request):
@@ -116,5 +116,26 @@ def cv_edit_projects(request, pk):
     return render(request, 'cv/cv_edit_projects.html', {'form': form})
 
 
-def cv_edit_skills(request):
-    return render(request, 'cv/cv_edit_skills.html')
+def cv_new_skill(request):
+    if request.method == "POST":
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.save()
+            return redirect('/cv')
+    else:
+        form = SkillForm()
+    return render(request, 'cv/cv_edit_skills.html', {'form': form})
+
+
+def cv_edit_skill(request, pk):
+    skill_object = get_object_or_404(Skill, pk=pk)
+    if request.method == "POST":
+        form = SkillForm(request.POST, instance=skill_object)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.save()
+            return redirect('/cv')
+    else:
+        form = SkillForm(instance=skill_object)
+    return render(request, 'cv/cv_edit_skills.html', {'form': form})

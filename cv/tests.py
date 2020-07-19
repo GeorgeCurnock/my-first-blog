@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from cv.models import Basic, Education, Experience, Project
+from cv.models import Basic, Education, Experience, Project, Skill
 
 
 class CVHomeTest(TestCase):
@@ -499,7 +499,6 @@ class CVNewProjectsEntryTest(TestCase):
          'technologies': 'HTML, CSS, JS, Python, DJango'})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/cv')
-        pass
 
     def test_displays_all_project_information_content(self):
         self.client.post(reverse('cv_new_project'), data=
@@ -625,16 +624,73 @@ class CVEditProjectEntryTest(TestCase):
                       , response.content.decode())
 
 
-class CVEditSkillsPageTest(TestCase):
+class CVNewSkillPageTest(TestCase):
 
-    def test_can_save_skills_post_request(self):
-        pass
+    def test_cv_edit_skill_uses_cv_template(self):
+        response = self.client.get(reverse('cv_new_skill'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_skill.html')
 
-    def test_post_request_skills_redirects_to_cv_page(self):
-        pass
+    def test_can_save_project_request(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+        self.assertEqual(Skill.objects.count(), 1)
+        skill_info = Skill.objects.first()
+        self.assertEqual(skill_info.name, 'HTML')
 
-    def test_only_saves_skills_items_when_necessary(self):
-        pass
+    def test_post_request_project_redirects_to_cv_page(self):
+        response = self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
 
-    def test_displays_all_skills_items(self):
-        pass
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def test_displays_all_project_information_content(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('HTML', response.content.decode())
+
+
+class CVEditSkillPageTest(TestCase):
+
+    def test_cv_edit_project_uses_cv_template(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        response = self.client.get(reverse('cv_edit_skill', args=[1]))
+        self.assertTemplateUsed(response, 'cv/cv_edit_skills.html')
+
+    def test_can_save_edited_project_request(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        self.client.post(reverse('cv_edit_skill', args=[1]), data=
+        {'name': 'CSS'})
+
+        self.assertEqual(Skill.objects.count(), 1)
+        skill_info = Skill.objects.first()
+        self.assertEqual(skill_info.name, 'CSS')
+
+    def test_post_request_edit_project_redirects_to_cv_page(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        response = self.client.post(reverse('cv_edit_skill', args=[1]), data=
+        {'name': 'CSS'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def test_displays_changed_project_information_content(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        self.client.post(reverse('cv_edit_skill', args=[1]), data=
+        {'name': 'CSS'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('HTML', response.content.decode())
+        self.assertIn('CSS', response.content.decode())

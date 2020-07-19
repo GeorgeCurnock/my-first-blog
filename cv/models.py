@@ -70,3 +70,7 @@ class Project(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField()
     technologies = models.CharField(max_length=128)
+
+
+class Skill(models.Model):
+    name = models.CharField(max_length=128)
