@@ -16,9 +16,11 @@ def cv_home(request):
     education_entries = Education.objects.all()
     experience_entries = Experience.objects.all()
     project_entries = Project.objects.all()
+    skill_entries = Skill.objects.all()
 
     return render(request, 'cv/cv_home.html',
-                  {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries, 'projectEntries': project_entries})
+                  {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries,
+                   'projectEntries': project_entries, 'skillEntries': skill_entries})
 
 
 def cv_edit_basic(request):

@@ -54,7 +54,11 @@
         <p>{{ project.technologies }}</p>
     {% endfor %}
     <br>
-    <a href="{% url 'cv_edit_skills' %}">Add new Skill</a>
+    <a href="{% url 'cv_new_skill' %}">Add new Skill</a>
+    {% for skill in skillEntries %}
+        <h4>Name:</h4>
+        <p>{{ skill.name }}</p>
+     {% endfor %}
     <br>
 
 {% endblock %}

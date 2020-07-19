@@ -52,7 +52,7 @@ class CVHomeTest(TestCase):
 
     def test_edit_skills_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Add new Skill</a>' % reverse("cv_edit_skills"),
+        self.assertContains(response, '<a href="%s">Add new Skill</a>' % reverse("cv_edit_skill"),
                             html=True)
 
     def test_edit_skills_URL_uses_correct_view_function(self):
@@ -628,7 +628,7 @@ class CVNewSkillPageTest(TestCase):
 
     def test_cv_edit_skill_uses_cv_template(self):
         response = self.client.get(reverse('cv_new_skill'))
-        self.assertTemplateUsed(response, 'cv/cv_edit_skill.html')
+        self.assertTemplateUsed(response, 'cv/cv_edit_skills.html')
 
     def test_can_save_project_request(self):
         self.client.post(reverse('cv_new_skill'), data=
