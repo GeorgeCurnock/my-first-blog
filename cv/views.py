@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
 from .forms import BasicForm, EducationForm, ExperienceForm, ProjectForm
-from .models import Basic, Education, Experience
+from .models import Basic, Education, Experience, Project
 
 
 def cv_home(request):
@@ -15,9 +15,10 @@ def cv_home(request):
 
     education_entries = Education.objects.all()
     experience_entries = Experience.objects.all()
+    project_entries = Project.objects.all()
 
     return render(request, 'cv/cv_home.html',
-                  {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries})
+                  {'basic': basic, 'educationEntries': education_entries, 'experienceEntries': experience_entries, 'projectEntries': project_entries})
 
 
 def cv_edit_basic(request):
@@ -90,7 +91,7 @@ def cv_edit_experience(request, pk):
     return render(request, 'cv/cv_edit_experience.html', {'form': form})
 
 
-def cv_new_project(request):
+def cv_new_projects(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
@@ -103,7 +104,7 @@ def cv_new_project(request):
 
 
 def cv_edit_projects(request, pk):
-    project_object = get_object_or_404(Experience, pk=pk)
+    project_object = get_object_or_404(Project, pk=pk)
     if request.method == "POST":
         form = ProjectForm(request.POST, instance=project_object)
         if form.is_valid():
@@ -112,7 +113,7 @@ def cv_edit_projects(request, pk):
             return redirect('/cv')
     else:
         form = ProjectForm(instance=project_object)
-    return render(request, 'cv/cv_edit_experience.html', {'form': form})
+    return render(request, 'cv/cv_edit_projects.html', {'form': form})
 
 
 def cv_edit_skills(request):

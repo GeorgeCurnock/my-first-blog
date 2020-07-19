@@ -45,6 +45,14 @@
     {% endfor %}
     <br>
     <a href="{% url 'cv_new_project' %}">Add new Project</a>
+    {% for project in projectEntries %}
+        <h4>Title:</h4>
+        <p>{{ project.title }}</p>
+        <h4>Description</h4>
+        <p>{{ project.description }}</p>
+        <h4>Technologies</h4>
+        <p>{{ project.technologies }}</p>
+    {% endfor %}
     <br>
     <a href="{% url 'cv_edit_skills' %}">Add new Skill</a>
     <br>

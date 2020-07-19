@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from cv.models import Basic, Education, Experience
+from cv.models import Basic, Education, Experience, Project
 
 
 class CVHomeTest(TestCase):
@@ -460,30 +460,108 @@ class CVEditExperienceEntryTest(TestCase):
         self.assertIn('Elon Musk, 07759123456', response.content.decode())
 
 
-class CVNewProjectsPageTest(TestCase):
+class CVNewProjectsEntryTest(TestCase):
 
-    def test_cv_new_experience_uses_cv_template(self):
-        response = self.client.get(reverse('cv_new_experience'))
-        self.assertTemplateUsed(response, 'cv/cv_edit_experience.html')
+    def test_cv_new_project_uses_cv_template(self):
+        response = self.client.get(reverse('cv_new_project'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_projects.html')
 
-    def test_can_save_experience_request(self):
-        self.client.post(reverse('cv_new_experience'), data=
-        {'title': 'CEO', 'period': '2019 - Present',
-         'institution': 'Google',
+    def test_can_save_project_request(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-         'referee': 'Sundar Pichai, 07759123457'})
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
 
-        self.assertEqual(Experience.objects.count(), 1)
-        experience_info = Experience.objects.first()
-        self.assertEqual(experience_info.title, 'CEO')
-        self.assertEqual(experience_info.period, '2019 - Present')
-        self.assertEqual(experience_info.institution, 'Google')
-        self.assertEqual(experience_info.referee, 'Sundar Pichai, 07759123457')
-        self.assertEqual(experience_info.description,
+        self.assertEqual(Project.objects.count(), 1)
+        project_info = Project.objects.first()
+        self.assertEqual(project_info.title, 'my-first-blog')
+        self.assertEqual(project_info.description,
+                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                         )
+        self.assertEqual(project_info.technologies, 'HTML, CSS, JS, Python, DJango')
+
+    def test_post_request_project_redirects_to_cv_page(self):
+        response = self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+        pass
+
+    def test_displays_all_project_information_content(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('my-first-blog', response.content.decode())
+        self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                      'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                      'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                      'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                      'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                      , response.content.decode())
+        self.assertIn('HTML, CSS, JS, Python, DJango', response.content.decode())
+
+
+class CVEditProjectEntryTest(TestCase):
+
+    def test_cv_edit_project_uses_cv_template(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        response = self.client.get(reverse('cv_edit_project', args=[1]))
+        self.assertTemplateUsed(response, 'cv/cv_edit_projects.html')
+
+    def test_can_save_edited_project_request(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        self.client.post(reverse('cv_edit_project', args=[1]), data=
+        {'title': 'Orderly',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, Golang'})
+
+        self.assertEqual(Project.objects.count(), 1)
+        project_info = Project.objects.first()
+        self.assertEqual(project_info.title, 'Orderly')
+        self.assertEqual(project_info.technologies, 'HTML, CSS, JS, Python, Golang')
+        self.assertEqual(project_info.description,
                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                          'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
                          'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
@@ -491,37 +569,54 @@ class CVNewProjectsPageTest(TestCase):
                          'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
                          )
 
-    def test_post_request_experience_redirects_to_cv_page(self):
-        response = self.client.post(reverse('cv_new_experience'), data=
-        {'title': 'CEO', 'period': '2019 - Present',
-         'institution': 'Google',
+    def test_post_request_edit_project_redirects_to_cv_page(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-         'referee': 'Sundar Pichai, 07759123457'})
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        response = self.client.post(reverse('cv_edit_project', args=[1]), data=
+        {'title': 'Orderly',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, Golang'})
+
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/cv')
-        pass
 
-    def test_displays_all_experience_information_content(self):
-        self.client.post(reverse('cv_new_experience'), data=
-        {'title': 'CEO', 'period': '2019 - Present',
-         'institution': 'Google',
+    def test_displays_changed_project_information_content(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-         'referee': 'Sundar Pichai, 07759123457'})
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        self.client.post(reverse('cv_edit_project', args=[1]), data=
+        {'title': 'Orderly',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, Golang'})
 
         response = self.client.get(reverse('cv_home'))
 
-        self.assertIn('CEO', response.content.decode())
-        self.assertIn('2019 - Present', response.content.decode())
-        self.assertIn('Google', response.content.decode())
-        self.assertIn('Sundar Pichai, 07759123457', response.content.decode())
+        self.assertNotIn('my-first-blog', response.content.decode())
+        self.assertNotIn('HTML, CSS, JS, Python, DJango', response.content.decode())
+
+        self.assertIn('Orderly', response.content.decode())
+        self.assertIn('HTML, CSS, JS, Python, Golang', response.content.decode())
         self.assertIn('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                       'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
                       'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
