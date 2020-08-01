@@ -79,6 +79,23 @@ class CVBasicPageTest(TestCase):
         self.assertEqual(basic_info.github, 'GCurnock')
         self.assertEqual(basic_info.linkedin, 'GeorgeCurnock')
 
+    def test_can_update_basic_request(self):
+        self.client.post(reverse('cv_edit_basic'), data=
+        {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
+         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
+
+        self.client.post(reverse('cv_edit_basic'), data=
+        {'name': 'George Curnockey', 'email': 'george.curnock@sky.com',
+         'phone': '077591234567', 'github': 'GCurnockey', 'linkedin': 'GeorgeCurnockey'})
+
+        self.assertEqual(Basic.objects.count(), 1)
+        basic_info = Basic.objects.first()
+        self.assertEqual(basic_info.name, 'George Curnockey')
+        self.assertEqual(basic_info.email, 'george.curnock@sky.com')
+        self.assertEqual(basic_info.phone, '077591234567')
+        self.assertEqual(basic_info.github, 'GCurnockey')
+        self.assertEqual(basic_info.linkedin, 'GeorgeCurnockey')
+
     def test_post_request_basic_redirects_to_cv_page(self):
         response = self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
