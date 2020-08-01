@@ -28,6 +28,7 @@
         <p>{{ education.grade }}</p>
         <h4>Description:</h4>
         <p>{{ education.description }}</p>
+        <a href="{% url 'cv_edit_education' pk=education.pk %}">Edit</a>
     {% endfor %}
     <br>
     <a href="{% url 'cv_new_experience' %}">Add new Experience entry</a>
@@ -42,9 +43,10 @@
         <p>{{ experience.description }}</p>
         <h4>Referee:</h4>
         <p>{{ experience.referee }}</p>
+        <a href="{% url 'cv_edit_experience' pk=experience.pk%}">Edit</a>
     {% endfor %}
     <br>
-    <a href="{% url 'cv_new_project' %}">Add new Project</a>
+    <a href="{% url 'cv_new_project' %}">Add new Project entry</a>
     {% for project in projectEntries %}
         <h4>Title:</h4>
         <p>{{ project.title }}</p>
@@ -52,12 +54,14 @@
         <p>{{ project.description }}</p>
         <h4>Technologies</h4>
         <p>{{ project.technologies }}</p>
+        <a href="{% url 'cv_edit_project' pk=project.pk%}">Edit</a>
     {% endfor %}
     <br>
-    <a href="{% url 'cv_new_skill' %}">Add new Skill</a>
+    <a href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
     {% for skill in skillEntries %}
         <h4>Name:</h4>
         <p>{{ skill.name }}</p>
+        <a href="{% url 'cv_edit_skill' pk=skill.pk%}">Edit</a>
      {% endfor %}
     <br>
 

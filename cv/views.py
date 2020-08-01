@@ -96,7 +96,7 @@ def cv_edit_experience(request, pk):
     return render(request, 'cv/cv_edit_experience.html', {'form': form})
 
 
-def cv_new_projects(request):
+def cv_new_project(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
@@ -105,10 +105,10 @@ def cv_new_projects(request):
             return redirect('/cv')
     else:
         form = ProjectForm()
-    return render(request, 'cv/cv_edit_projects.html', {'form': form})
+    return render(request, 'cv/cv_edit_project.html', {'form': form})
 
 
-def cv_edit_projects(request, pk):
+def cv_edit_project(request, pk):
     project_object = get_object_or_404(Project, pk=pk)
     if request.method == "POST":
         form = ProjectForm(request.POST, instance=project_object)
@@ -118,7 +118,7 @@ def cv_edit_projects(request, pk):
             return redirect('/cv')
     else:
         form = ProjectForm(instance=project_object)
-    return render(request, 'cv/cv_edit_projects.html', {'form': form})
+    return render(request, 'cv/cv_edit_project.html', {'form': form})
 
 
 def cv_new_skill(request):
@@ -130,7 +130,7 @@ def cv_new_skill(request):
             return redirect('/cv')
     else:
         form = SkillForm()
-    return render(request, 'cv/cv_edit_skills.html', {'form': form})
+    return render(request, 'cv/cv_edit_skill.html', {'form': form})
 
 
 def cv_edit_skill(request, pk):
@@ -143,4 +143,4 @@ def cv_edit_skill(request, pk):
             return redirect('/cv')
     else:
         form = SkillForm(instance=skill_object)
-    return render(request, 'cv/cv_edit_skills.html', {'form': form})
+    return render(request, 'cv/cv_edit_skill.html', {'form': form})

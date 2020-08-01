@@ -11,53 +11,125 @@ class CVHomeTest(TestCase):
         response = self.client.get(reverse('cv_home'))
         self.assertTemplateUsed(response, 'cv/cv_home.html')
 
+    def test_edit_basic_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/basic')
+        self.assertEqual(resolver.view_name, 'cv_edit_basic')
+
     def test_edit_basic_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
                             '<a href="%s">Edit Basic Information</a>' % reverse("cv_edit_basic"),
                             html=True)
 
-    def test_edit_basic_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/basic')
-        self.assertEqual(resolver.view_name, 'cv_edit_basic')
+    def test_add_education_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/new/education')
+        self.assertEqual(resolver.view_name, 'cv_new_education')
 
-    def test_edit_education_link_leads_to_correct_URL(self):
+    def test_add_education_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a href="%s">Add new Education entry</a>' % reverse("cv_edit_education"),
+                            '<a href="%s">Add new Education entry</a>' % reverse("cv_new_education"),
                             html=True)
 
     def test_edit_education_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/education')
+        resolver = resolve('/cv/edit/education/1')
         self.assertEqual(resolver.view_name, 'cv_edit_education')
 
-    def test_edit_experience_link_leads_to_correct_URL(self):
+    def test_edit_education_link_leads_to_correct_URL(self):
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a href="%s">Add new Experience entry</a>' % reverse("cv_edit_experience"),
+                            '<a href="%s">Edit</a>' % reverse("cv_edit_education", args=[1]),
+                            html=True)
+
+    def test_add_experience_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/new/experience')
+        self.assertEqual(resolver.view_name, 'cv_new_experience')
+
+    def test_add_experience_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response,
+                            '<a href="%s">Add new Experience entry</a>' % reverse("cv_new_experience"),
                             html=True)
 
     def test_edit_experience_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/experience')
+        resolver = resolve('/cv/edit/experience/1')
         self.assertEqual(resolver.view_name, 'cv_edit_experience')
 
-    def test_edit_projects_link_leads_to_correct_URL(self):
+    def test_edit_experience_link_leads_to_correct_URL(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Add new Project</a>' % reverse("cv_edit_projects"),
+        self.assertContains(response,
+                            '<a href="%s">Edit</a>' % reverse("cv_edit_experience", args=[1]),
                             html=True)
 
-    def test_edit_projects_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/projects')
-        self.assertEqual(resolver.view_name, 'cv_edit_projects')
+    def test_add_project_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/new/project')
+        self.assertEqual(resolver.view_name, 'cv_new_project')
 
-    def test_edit_skills_link_leads_to_correct_URL(self):
+    def test_add_project_link_leads_to_correct_URL(self):
         response = self.client.get(reverse("cv_home"))
-        self.assertContains(response, '<a href="%s">Add new Skill</a>' % reverse("cv_edit_skill"),
+        self.assertContains(response,
+                            '<a href="%s">Add new Project entry</a>' % reverse("cv_new_project"),
                             html=True)
 
-    def test_edit_skills_URL_uses_correct_view_function(self):
-        resolver = resolve('/cv/edit/skills')
-        self.assertEqual(resolver.view_name, 'cv_edit_skills')
+    def test_edit_project_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/skill/1')
+        self.assertEqual(resolver.view_name, 'cv_edit_skill')
+
+    def test_edit_project_link_leads_to_correct_URL(self):
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response,
+                            '<a href="%s">Edit</a>' % reverse("cv_edit_project", args=[1]),
+                            html=True)
+
+    def test_add_skill_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/new/skill')
+        self.assertEqual(resolver.view_name, 'cv_new_skill')
+
+    def test_add_skill_link_leads_to_correct_URL(self):
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response,
+                            '<a href="%s">Add new Skill entry</a>' % reverse("cv_new_skill"),
+                            html=True)
+
+    def test_edit_skill_URL_uses_correct_view_function(self):
+        resolver = resolve('/cv/edit/skill/1')
+        self.assertEqual(resolver.view_name, 'cv_edit_skill')
+
+    def test_edit_skill_link_leads_to_correct_URL(self):
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+        response = self.client.get(reverse("cv_home"))
+        self.assertContains(response,
+                            '<a href="%s">Edit</a>' % reverse("cv_edit_skill", args=[1]),
+                            html=True)
 
 
 class CVBasicPageTest(TestCase):
@@ -295,19 +367,20 @@ class CVEditEducationEntryTest(TestCase):
 
 class CVNewExperienceEntryTest(TestCase):
 
-    def test_cv_new_project_uses_cv_template(self):
-        response = self.client.get(reverse('cv_new_project'))
-        self.assertTemplateUsed(response, 'cv/cv_edit_project.html')
+    def test_cv_new_experience_uses_cv_template(self):
+        response = self.client.get(reverse('cv_new_experience'))
+        self.assertTemplateUsed(response, 'cv/cv_edit_experience.html')
 
-    def test_can_save_project_request(self):
-        self.client.post(reverse('cv_new_project'), data=
-        {'title': 'Orderly',
+    def test_can_save_experience_request(self):
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
                         'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-         'technologies': ''})
+         'referee': 'Sundar Pichai, 07759123457'})
 
         self.assertEqual(Experience.objects.count(), 1)
         experience_info = Experience.objects.first()
@@ -481,7 +554,7 @@ class CVNewProjectsEntryTest(TestCase):
 
     def test_cv_new_project_uses_cv_template(self):
         response = self.client.get(reverse('cv_new_project'))
-        self.assertTemplateUsed(response, 'cv/cv_edit_projects.html')
+        self.assertTemplateUsed(response, 'cv/cv_edit_project.html')
 
     def test_can_save_project_request(self):
         self.client.post(reverse('cv_new_project'), data=
@@ -552,7 +625,7 @@ class CVEditProjectEntryTest(TestCase):
          'technologies': 'HTML, CSS, JS, Python, DJango'})
 
         response = self.client.get(reverse('cv_edit_project', args=[1]))
-        self.assertTemplateUsed(response, 'cv/cv_edit_projects.html')
+        self.assertTemplateUsed(response, 'cv/cv_edit_project.html')
 
     def test_can_save_edited_project_request(self):
         self.client.post(reverse('cv_new_project'), data=
@@ -645,7 +718,7 @@ class CVNewSkillPageTest(TestCase):
 
     def test_cv_edit_skill_uses_cv_template(self):
         response = self.client.get(reverse('cv_new_skill'))
-        self.assertTemplateUsed(response, 'cv/cv_edit_skills.html')
+        self.assertTemplateUsed(response, 'cv/cv_edit_skill.html')
 
     def test_can_save_project_request(self):
         self.client.post(reverse('cv_new_skill'), data=
@@ -677,7 +750,7 @@ class CVEditSkillPageTest(TestCase):
         {'name': 'HTML'})
 
         response = self.client.get(reverse('cv_edit_skill', args=[1]))
-        self.assertTemplateUsed(response, 'cv/cv_edit_skills.html')
+        self.assertTemplateUsed(response, 'cv/cv_edit_skill.html')
 
     def test_can_save_edited_project_request(self):
         self.client.post(reverse('cv_new_skill'), data=
