@@ -1,6 +1,6 @@
-from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.urls import reverse, resolve
+from django.utils import timezone
 
 from cv.models import Basic, Education, Experience, Project, Skill
 
@@ -69,7 +69,7 @@ class CVBasicPageTest(TestCase):
     def test_can_save_basic_request(self):
         self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
-         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
+         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock', 'last_updated': timezone.now()})
 
         self.assertEqual(Basic.objects.count(), 1)
         basic_info = Basic.objects.first()

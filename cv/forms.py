@@ -6,7 +6,7 @@ from .models import Basic, Education, Experience, Project, Skill
 class BasicForm(forms.ModelForm):
     class Meta:
         model = Basic
-        fields = ('name', 'email', 'phone', 'github', 'linkedin', 'last_updated')
+        fields = ('name', 'email', 'phone', 'github', 'linkedin')
 
 
 class EducationForm(forms.ModelForm):

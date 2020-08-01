@@ -30,13 +30,16 @@ def cv_edit_basic(request):
     # Else we create a blank entry
     else:
         basic_object = Basic()
+
     if request.method == "POST":
         form = BasicForm(request.POST, instance=basic_object)
+        print(form.data)
         if form.is_valid():
             basic = form.save(commit=False)
-            basic.last_updated = timezone.now()
             basic.save()
             return redirect('/cv')
+        else:
+            print(form.errors)
     else:
         form = BasicForm(instance=basic_object)
     return render(request, 'cv/cv_edit_basic.html', {'form': form})
