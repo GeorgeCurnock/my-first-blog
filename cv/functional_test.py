@@ -43,7 +43,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # James presses the 'Edit Basic Information' button
         edit_basic_button = self.browser.find_element_by_id('edit_basic_information').text
-        self.assertIn('Add new Education entry', edit_basic_button)
+        self.assertIn('Edit Basic Information', edit_basic_button)
 
         self.browser.get('http://localhost:8000/cv/edit/basic')
 
@@ -63,11 +63,11 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled Full name
         edit_basic_name = self.browser.find_element_by_id('edit_basic_name').text
-        self.assertIn('Full Name', edit_basic_name)
+        self.assertIn('Name', edit_basic_name)
 
         # James enters his name into the text field
         edit_basic_name_field = self.browser.find_element_by_id('edit_basic_name_field')
-        edit_basic_name_field.send_keys('James Semaj')
+        edit_basic_name_field.send_keys('James Chambers')
 
         # He reads a sub header titled Email
         edit_basic_email = self.browser.find_element_by_id('edit_basic_email').text
@@ -75,11 +75,11 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his email into the text field
         edit_basic_email_field = self.browser.find_element_by_id('edit_basic_email_field')
-        edit_basic_email_field.send_keys('james.semaj@gmail.com')
+        edit_basic_email_field.send_keys('jamesChambers@gmail.com')
 
-        # He reads a sub header titled Phone number
+        # He reads a sub header titled Phone
         edit_basic_phone = self.browser.find_element_by_id('edit_basic_phone').text
-        self.assertIn('Phone Number', edit_basic_phone)
+        self.assertIn('Phone', edit_basic_phone)
 
         # James enters his phone number into the text field
         edit_basic_phone_field = self.browser.find_element_by_id('edit_basic_phone_field')
@@ -87,7 +87,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled Github Username
         edit_basic_github = self.browser.find_element_by_id('edit_basic_github').text
-        self.assertIn('Github Username', edit_basic_github)
+        self.assertIn('Github', edit_basic_github)
 
         # James enters his username into the text field
         edit_basic_github_field = self.browser.find_element_by_id('edit_basic_github_field')
@@ -95,11 +95,11 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled LinkedIn Username
         edit_basic_linkedin = self.browser.find_element_by_id('edit_basic_linkedin').text
-        self.assertIn('LinkedIn Username', edit_basic_linkedin)
+        self.assertIn('LinkedIn', edit_basic_linkedin)
 
         # James enters his username into the text field
         edit_basic_linkedin_field = self.browser.find_element_by_id('edit_basic_linkedin_field')
-        edit_basic_linkedin_field.send_keys('James_Samaj')
+        edit_basic_linkedin_field.send_keys('JamesChambers')
 
         # He presses a button at the bottom of the page that says 'Save'
         edit_basic_save = self.browser.find_element_by_id('edit_basic_save').text
