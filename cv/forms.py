@@ -21,11 +21,11 @@ class EducationForm(forms.ModelForm):
         model = Education
         fields = ('qualification', 'period', 'institution', 'grade', 'description')
         labels = {
-            'qualification':    'Qualification/Certificate',
+            'qualification':    'Qualification/Certification',
             'period':           'Period of Study',
             'institution':      'Institution/School',
-            'grade':            'Grade',
-            'description':      'Description of course'
+            'grade':            'Classification/Grade',
+            'description':      'Description of study'
         }
 
 
@@ -37,7 +37,7 @@ class ExperienceForm(forms.ModelForm):
             'title':            'Job Title',
             'period':           'Period of Employment',
             'institution':      'Institution/Company',
-            'description':      'Description of work carried out',
+            'description':      'Description of work',
             'referee':          'Referee'
         }
 
@@ -49,11 +49,14 @@ class ProjectForm(forms.ModelForm):
         labels = {
             'title':            'Project Name',
             'description':      'Project Description',
-            'technologies':     'Technologies'
+            'technologies':     'List of technologies used'
         }
 
 
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
-        fields = ('name',)
+        fields = 'name'
+        labels = {
+            'name': 'Skill Name'
+        }

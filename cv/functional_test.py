@@ -15,9 +15,9 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_can_edit_view_print_and_download_the_cv(self):
+    def test_can_edit_and_view_the_cv(self):
         # James has been given access to the bridging coursework website as an admin in order to write blogs and have
-        # a copy of his CV. He wants to check the website out to see what you can do
+        # a copy of his CV. He wants to check the website's CV section out to see what you can do
 
         # He goes to the web address of the homepage of the website
         self.browser.get('http://localhost:8000')
@@ -47,39 +47,31 @@ class NewVisitorTest(unittest.TestCase):
 
         self.browser.get('http://localhost:8000/cv/edit/basic')
 
-        # James is presented with a large header at the top of the page saying 'Basic Information' as well as
-        # a number of subheaders each above a text field.
-        '''
-                 Different Sections for the basic information portion of the CV
-                 Full name
-                 Email address
-                 Phone number
-                 Github Link
-                 LinkedIn Link
-        '''
+        # James is presented with a large header at the top of the page saying 'Edit Basic Information' as well as
+        # a fields each requiring data to be entered
 
         edit_basic_header = self.browser.find_element_by_id('edit_basic_header').text
         self.assertIn('Edit Basic Information', edit_basic_header)
 
         # He reads a sub header titled Full name
         edit_basic_name = self.browser.find_element_by_id('edit_basic_name').text
-        self.assertIn('Name', edit_basic_name)
+        self.assertIn('Full Name', edit_basic_name)
 
         # James enters his name into the text field
         edit_basic_name_field = self.browser.find_element_by_id('edit_basic_name_field')
         edit_basic_name_field.send_keys('James Chambers')
 
-        # He reads a sub header titled Email
+        # He reads a sub header titled Email address
         edit_basic_email = self.browser.find_element_by_id('edit_basic_email').text
-        self.assertIn('Email', edit_basic_email)
+        self.assertIn('Email Address', edit_basic_email)
 
         # James enters his email into the text field
         edit_basic_email_field = self.browser.find_element_by_id('edit_basic_email_field')
         edit_basic_email_field.send_keys('jamesChambers@gmail.com')
 
-        # He reads a sub header titled Phone
+        # He reads a sub header titled Phone Number
         edit_basic_phone = self.browser.find_element_by_id('edit_basic_phone').text
-        self.assertIn('Phone', edit_basic_phone)
+        self.assertIn('Phone Number', edit_basic_phone)
 
         # James enters his phone number into the text field
         edit_basic_phone_field = self.browser.find_element_by_id('edit_basic_phone_field')
@@ -87,7 +79,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled Github Username
         edit_basic_github = self.browser.find_element_by_id('edit_basic_github').text
-        self.assertIn('Github', edit_basic_github)
+        self.assertIn('Github Username', edit_basic_github)
 
         # James enters his username into the text field
         edit_basic_github_field = self.browser.find_element_by_id('edit_basic_github_field')
@@ -95,23 +87,27 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled LinkedIn Username
         edit_basic_linkedin = self.browser.find_element_by_id('edit_basic_linkedin').text
-        self.assertIn('LinkedIn', edit_basic_linkedin)
+        self.assertIn('LinkedIn USername', edit_basic_linkedin)
 
         # James enters his username into the text field
         edit_basic_linkedin_field = self.browser.find_element_by_id('edit_basic_linkedin_field')
         edit_basic_linkedin_field.send_keys('JamesChambers')
 
-        # He presses a button at the bottom of the page that says 'Save'
+        # He has entered all the required information so presses a button at the bottom of the page that says 'Save'
         edit_basic_save = self.browser.find_element_by_id('edit_basic_save').text
         self.assertIn('Save', edit_basic_save)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        self.browser.get('http://localhost:8000/cv/')
-        # TODO write test to check that the information previously entered is being displayed
+        response = self.browser.get('http://localhost:8000/cv/')
+        self.assertIn('James Chambers', response.content.decode())
+        self.assertIn('jamesChambers@gmail.com', response.content.decode())
+        self.assertIn('07759123456', response.content.decode())
+        self.assertIn('CoderJames', response.content.decode())
+        self.assertIn('JamesChambers', response.content.decode())
 
-        # He sees a header "Education" with an option to 'add a new education entry'
+        # TODO Check that tests up to this point pass
 
-        # He sees the heading of a section is 'Education'
+        # He sees the heading of the next section is 'Education'
         education_header = self.browser.find_element_by_id('education_header').text
         self.assertIn('Education', education_header)
 
@@ -119,29 +115,19 @@ class NewVisitorTest(unittest.TestCase):
         edit_education_button = self.browser.find_element_by_id('edit_education_button').text
         self.assertIn('Add new Education entry', edit_education_button)
 
-        # He clicks the option
-        self.browser.get('http://localhost:8000/cv/edit/education')
+        # This sends him to a page to enter a new education entry
+        self.browser.get('http://localhost:8000/cv/new/education')
 
-        # He is presented with a header titled 'Education Information'
+        # He is presented with a header titled 'Add Education Entry' as well as fields each requiring data to be entered
         edit_education_header = self.browser.find_element_by_id('edit_education_header').text
         self.assertIn('Add Education Entry', edit_education_header)
 
-        # He is presented with a number of sub headers and textfields
-        '''
-                Lists the different forms of education currently saved
-                Option to add a new education entry
+        # James is presented with a large header at the top of the page saying 'Edit Basic Information' as well as
+        # a fields each requiring data to be entered
 
-                # Education entry consists of
-                    Qualification
-                    Period of study
-                    Institution
-                    Classification/Grade
-                    Description of work completed
-                '''
-
-        # He reads a sub header titled Qualification
+        # He reads a sub header titled Qualification/Certification
         edit_education_qualification = self.browser.find_element_by_id('edit_education_qualification').text
-        self.assertIn('Qualification', edit_education_qualification)
+        self.assertIn('Qualification/Certification', edit_education_qualification)
 
         # James enters his qualification into the text field
         edit_education_qualification_field = self.browser.find_element_by_id('edit_education_qualification_field')
@@ -151,7 +137,7 @@ class NewVisitorTest(unittest.TestCase):
         edit_education_period = self.browser.find_element_by_id('edit_education_period').text
         self.assertIn('Period of Study', edit_education_period)
 
-        # James enters the period of study into the text field
+        # James enters the period of study of which the qualification was completed into the text field
         edit_education_qualification_field = self.browser.find_element_by_id('edit_education_period_field')
         edit_education_qualification_field.send_keys('2017 - Present')
 
@@ -171,11 +157,11 @@ class NewVisitorTest(unittest.TestCase):
         edit_education_grade_field = self.browser.find_element_by_id('edit_education_grade_field')
         edit_education_grade_field.send_keys('First Class')
 
-        # He reads a sub header titled Brief Description of study
+        # He reads a sub header titled Description of study
         edit_education_description = self.browser.find_element_by_id('edit_education_description').text
         self.assertIn('Description of study', edit_education_description)
 
-        # James enters the period of study into the text field
+        # James enters a description of the work he carried out whilst completing the qualification
         edit_education_description_field = self.browser.find_element_by_id('edit_education_description_field')
         edit_education_description_field.send_keys("Lorem Ipsum is simply dummy text of the printing and typesetting "
                                                    "industry. Lorem Ipsum has been the industry's standard dummy text "
@@ -188,25 +174,41 @@ class NewVisitorTest(unittest.TestCase):
                                                    "publishing software like Aldus PageMaker including versions of "
                                                    "Lorem Ipsum.")
 
-        # He presses a button at the bottom of the page that says 'Save'
+        # He haas entered data into all the fields on the page so presses the save button at the bottom of the page
         edit_education_save = self.browser.find_element_by_id('edit_education_save').text
         self.assertIn('Save', edit_education_save)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        self.browser.get('http://localhost:8000/cv/')
-        # TODO write test to check that the information previously entered is being displayed
+        response = self.browser.get('http://localhost:8000/cv/')
+        self.assertIn('MSci Computer Science', response.content.decode())
+        self.assertIn('2017 - Present', response.content.decode())
+        self.assertIn('University of Birmingham', response.content.decode())
+        self.assertIn('First Class', response.content.decode())
+        self.assertIn("Lorem Ipsum is simply dummy text of the printing and typesetting "
+                      "industry. Lorem Ipsum has been the industry's standard dummy text "
+                      "ever since the 1500s, when an unknown printer took a galley of "
+                      "type and scrambled it to make a type specimen book. It has "
+                      "survived not only five centuries, but also the leap into "
+                      "electronic typesetting, remaining essentially unchanged. It was "
+                      "popularised in the 1960s with the release of Letraset sheets "
+                      "containing Lorem Ipsum passages, and more recently with desktop "
+                      "publishing software like Aldus PageMaker including versions of "
+                      "Lorem Ipsum.", response.content.decode())
+
+        # TODO Check that tests up to this point pass
 
         # He is presented with a header titled 'Experience Information'
         header_experience = self.browser.find_element_by_id('header_experience').text
-        self.assertIn('Experience Information', header_experience)
+        self.assertIn('Experience', header_experience)
 
         # James presses the 'Add new experience entry' button
         edit_experience_button = self.browser.find_element_by_id('edit_experience_button').text
         self.assertIn('Add new Experience entry', edit_experience_button)
 
-        self.browser.get('http://localhost:8000/cv/edit/experience')
+        self.browser.get('http://localhost:8000/cv/new/experience')
 
-        # He is presented with a number of sub headers and text fields
+        # James is presented with a large header at the top of the page saying 'Edit Basic Information' as well as
+        # a fields each requiring data to be entered
         '''
         Lists the different experiences currently saved
         Option to add a new experience entry
@@ -225,15 +227,15 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his job title into the text field
         edit_experience_title_field = self.browser.find_element_by_id('edit_experience_title_field')
-        edit_experience_title_field.send_keys('CEO')
+        edit_experience_title_field.send_keys('Software Developer Intern')
 
         # He reads a sub header titled Period of Employment
         edit_experience_period = self.browser.find_element_by_id('edit_experience_period').text
-        self.assertIn('Period of employment', edit_experience_period)
+        self.assertIn('Period of Employment', edit_experience_period)
 
         # James enters his period of employment into the text field
         edit_experience_period_field = self.browser.find_element_by_id('edit_experience_period_field')
-        edit_experience_period_field.send_keys('2015 - Present')
+        edit_experience_period_field.send_keys('Summer 2018')
 
         # He reads a sub header titled Institution/Company
         edit_experience_company = self.browser.find_element_by_id('edit_experience_company').text
@@ -243,11 +245,11 @@ class NewVisitorTest(unittest.TestCase):
         edit_experience_company_field = self.browser.find_element_by_id('edit_experience_company_field')
         edit_experience_company_field.send_keys('Google')
 
-        # He reads a sub header titled Description of Work
+        # He reads a sub header titled Description of work
         edit_experience_description = self.browser.find_element_by_id('edit_experience_description').text
-        self.assertIn('Description of Work', edit_experience_description)
+        self.assertIn('Description of work', edit_experience_description)
 
-        # James enters his Institution/Company into the text field
+        # James enters a description of the work he carried tou  into the text field
         edit_experience_description_field = self.browser.find_element_by_id('edit_experience_description_field')
         edit_experience_description_field.send_keys("Lorem Ipsum is simply dummy text of the printing and typesetting "
                                                     "industry. Lorem Ipsum has been the industry's standard dummy text "
@@ -260,30 +262,51 @@ class NewVisitorTest(unittest.TestCase):
                                                     "publishing software like Aldus PageMaker including versions of "
                                                     "Lorem Ipsum.")
 
+        # He reads a sub header titled Referee
+        edit_experience_referee = self.browser.find_element_by_id('edit_experience_referee').text
+        self.assertIn('Referee', edit_experience_referee)
+
+        # James enters a description of the work he carried tou  into the text field
+        edit_experience_referee_field = self.browser.find_element_by_id('edit_experience_referee_field')
+        edit_experience_referee_field.send_keys("Mark Oggle, 07759112233")
+
         # He presses a button at the bottom of the page that says 'Save'
         edit_experience_save = self.browser.find_element_by_id('edit_experience_save').text
         self.assertIn('Save', edit_experience_save)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        self.browser.get('http://localhost:8000/cv/')
-        # TODO write test to check that the information previously entered is being displayed
+        response = self.browser.get('http://localhost:8000/cv/')
+        self.assertIn('Software Developer Intern', response.content.decode())
+        self.assertIn('Summer 2018', response.content.decode())
+        self.assertIn('Google', response.content.decode())
+        self.assertIn('Mark Oggle, 07759112233', response.content.decode())
+        self.assertIn("Lorem Ipsum is simply dummy text of the printing and typesetting "
+                      "industry. Lorem Ipsum has been the industry's standard dummy text "
+                      "ever since the 1500s, when an unknown printer took a galley of "
+                      "type and scrambled it to make a type specimen book. It has "
+                      "survived not only five centuries, but also the leap into "
+                      "electronic typesetting, remaining essentially unchanged. It was "
+                      "popularised in the 1960s with the release of Letraset sheets "
+                      "containing Lorem Ipsum passages, and more recently with desktop "
+                      "publishing software like Aldus PageMaker including versions of "
+                      "Lorem Ipsum.", response.content.decode())
 
         # He sees a header "Projects" with an option to 'add a new project'
-
         # He is presented with a header titled 'Projects'
         header_project = self.browser.find_element_by_id('header_project').text
-        self.assertIn('Project', header_project)
+        self.assertIn('Projects', header_project)
 
         # James presses the 'Add new experience entry' button
         edit_project_button = self.browser.find_element_by_id('edit_project_button').text
-        self.assertIn('Add new Project', edit_project_button)
+        self.assertIn('Add new Project entry', edit_project_button)
 
         # He clicks the option
-        self.browser.get('http://localhost:8000/cv/edit/project')
+        self.browser.get('http://localhost:8000/cv/new/project')
 
-        # He is presented with a header titled 'Projects' with a number of subheaders and textfields
+        # James is presented with a large header at the top of the page saying 'Add a new project' as well as
+        # a number of fields each requiring data to be entered
         edit_project_header = self.browser.find_element_by_id('edit_project_header').text
-        self.assertIn('Projects', edit_project_header)
+        self.assertIn('Add a Project', edit_project_header)
 
         # He reads a sub header titled Project name
         edit_project_name = self.browser.find_element_by_id('edit_project_name').text
@@ -293,60 +316,65 @@ class NewVisitorTest(unittest.TestCase):
         edit_project_name_field = self.browser.find_element_by_id('edit_project_name_field')
         edit_project_name_field.send_keys('Orderly')
 
-        # He reads a sub header titled Project technologies
-        edit_project_technologies = self.browser.find_element_by_id('edit_project_technologies').text
-        self.assertIn('Technologies', edit_project_technologies)
-
-        # James types in a technology used for the project
-        edit_project_technologies_field = self.browser.find_element_by_id('edit_project_technologies_field')
-        edit_project_technologies_field.send_keys('HTML')
-
-        # James presses enter to confirm the technology
-        edit_project_technologies_field.send_keys(Keys.ENTER)
-
-        # James can now see that the technology has been added to a list on the screen
-        # TODO write check that list contains elements HTML and CSS
-
-        # James types in another technology used for the project
-        edit_project_technologies_field.send_keys('CSS')
-
-        # James presses enter again to confirm the technology
-        edit_project_technologies_field.send_keys(Keys.ENTER)
-
-        # James can see that again the technology has been added to the list
-        # TODO write check that list contains elements HTML and CSS
-
-        # He reads a sub header titled Project description
+        # He reads a sub header titled Project Description
         edit_project_description = self.browser.find_element_by_id('edit_project_description').text
-        self.assertIn('Description', edit_project_description)
+        self.assertIn('Project Description', edit_project_description)
 
-        # James types in a technology used for the project
-        edit_project_description_field = self.browser.find_element_by_id('edit_project_description_field')
-        edit_project_description_field.send_keys('HTML')
+        # James enters a description of what the project is about
+        edit_project_description_field = self.browser.find_element_by_id('edit_project_technologies_field')
+        edit_project_description_field.send_keys("Lorem Ipsum is simply dummy text of the printing and typesetting "
+                                                 "industry. Lorem Ipsum has been the industry's standard dummy text "
+                                                 "ever since the 1500s, when an unknown printer took a galley of "
+                                                 "type and scrambled it to make a type specimen book. It has "
+                                                 "survived not only five centuries, but also the leap into "
+                                                 "electronic typesetting, remaining essentially unchanged. It was "
+                                                 "popularised in the 1960s with the release of Letraset sheets "
+                                                 "containing Lorem Ipsum passages, and more recently with desktop "
+                                                 "publishing software like Aldus PageMaker including versions of "
+                                                 "Lorem Ipsum.")
+
+        # He reads a sub header titled list of technologies used
+        edit_project_technologies = self.browser.find_element_by_id('edit_project_description').text
+        self.assertIn('List of technologies used', edit_project_description)
+
+        # James enters a list of the different technologies involved in the project
+        edit_project_technologies_field = self.browser.find_element_by_id('edit_project_technologies_field')
+        edit_project_technologies_field.send_keys("HTML, CSS, DJANGO, Python, Javascript")
 
         # He presses a button at the bottom of the page that says 'Save'
         edit_project_save = self.browser.find_element_by_id('edit_project_save').text
         self.assertIn('Save', edit_project_save)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        self.browser.get('http://localhost:8000/cv/')
-        # TODO write test to check that the information previously entered is being displayed
+        response = self.browser.get('http://localhost:8000/cv/')
+        self.assertIn('Orderly', response.content.decode())
+        self.assertIn("Lorem Ipsum is simply dummy text of the printing and typesetting "
+                      "industry. Lorem Ipsum has been the industry's standard dummy text "
+                      "ever since the 1500s, when an unknown printer took a galley of "
+                      "type and scrambled it to make a type specimen book. It has "
+                      "survived not only five centuries, but also the leap into "
+                      "electronic typesetting, remaining essentially unchanged. It was "
+                      "popularised in the 1960s with the release of Letraset sheets "
+                      "containing Lorem Ipsum passages, and more recently with desktop "
+                      "publishing software like Aldus PageMaker including versions of "
+                      "Lorem Ipsum.", response.content.decode())
+        self.assertIn('HTML, CSS, DJANGO, Python, Javascript', response.content.decode())
 
-        # He is presented with a header titled 'Skills and Technologies' with an option to add a new skill/technology
-        header_skill = self.browser.find_element_by_id('header_skills').text
-        self.assertIn('Skills and Technologies', header_skill)
+        # He sees a header "Skills" with an option to 'add a new skill entry'
+        header_skills = self.browser.find_element_by_id('header_skills').text
+        self.assertIn('Skills', header_skills)
 
         edit_skill_button = self.browser.find_element_by_id('edit_skills_button').text
-        self.assertIn('Add new Skill/Technology', edit_skill_button)
+        self.assertIn('Add new Skill entry', edit_skill_button)
 
         # He clicks the option
-        self.browser.get('http://localhost:8000/cv/edit/skills')
+        self.browser.get('http://localhost:8000/cv/new/skills')
 
         # He reads a sub header titled Skill name
         edit_skill = self.browser.find_element_by_id('edit_skill').text
-        self.assertIn('Skill/Technology', edit_skill)
+        self.assertIn('Skill Name', edit_skill)
 
-        # James enters a project name into the text field
+        # James enters the name of a skill he posses into the field
         edit_skill_field = self.browser.find_element_by_id('edit_skill_field')
         edit_skill_field.send_keys('HTML')
 
@@ -354,8 +382,9 @@ class NewVisitorTest(unittest.TestCase):
         edit_skill_save = self.browser.find_element_by_id('edit_skill_save').text
         self.assertIn('Save', edit_skill_save)
 
-        # TODO TESTS HAVE BEEN UNIT TESTED AND RAN UP TO THIS POINT
-        self.fail("Tests have been completed up to this point")
+        # He is returned to the cv page which has been updated to show the information he previously typed in
+        response = self.browser.get('http://localhost:8000/cv/')
+        self.assertIn('HTML', response.content.decode())
 
 
 if __name__ == '__main__':
