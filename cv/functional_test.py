@@ -1,10 +1,5 @@
-from django.urls import reverse, resolve
 from selenium import webdriver
-import time
-
 import unittest
-
-from selenium.webdriver.common.keys import Keys
 
 
 class NewVisitorTest(unittest.TestCase):
@@ -335,7 +330,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled list of technologies used
         edit_project_technologies = self.browser.find_element_by_id('edit_project_description').text
-        self.assertIn('List of technologies used', edit_project_description)
+        self.assertIn('List of technologies used', edit_project_technologies)
 
         # James enters a list of the different technologies involved in the project
         edit_project_technologies_field = self.browser.find_element_by_id('edit_project_technologies_field')
@@ -385,6 +380,24 @@ class NewVisitorTest(unittest.TestCase):
         # He is returned to the cv page which has been updated to show the information he previously typed in
         response = self.browser.get('http://localhost:8000/cv/')
         self.assertIn('HTML', response.content.decode())
+
+        # James decides that his description of work for the experience entry he entered doesnt describe what he did
+        # as accurately as it could and decides he wants to edit it
+
+        # James clicks the edit entry button next to the experience entry
+        edit_experience_entry = self.browser.find_element_by_id("edit-experience-entry-1")
+        edit_experience_entry.click()
+
+        # James is returned the page where he first entered the experience information but this time each field already
+        # contains the information he previously entered
+        # TODO Check that each form already has the entered information in it
+
+        # TODO Add to the description form field
+
+        # TODO Save the edited experience entry
+
+        # TODO Check that the information has been updated on the cv page
+        response = self.browser.get('http://localhost:8000/cv/')
 
 
 if __name__ == '__main__':

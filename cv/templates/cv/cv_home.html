@@ -46,7 +46,7 @@
         <p>{{ experience.description }}</p>
         <h4>Referee:</h4>
         <p>{{ experience.referee }}</p>
-        <a href="{% url 'cv_edit_experience' pk=experience.pk%}">Edit</a>
+        <a href="{% url 'cv_edit_experience' pk=experience.pk%}" id="edit-experience-entry-{{ experience.pk }}">Edit</a>
     {% endfor %}
     <br>
     <h2>Projects</h2>
