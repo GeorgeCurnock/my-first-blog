@@ -390,14 +390,67 @@ class NewVisitorTest(unittest.TestCase):
 
         # James is returned the page where he first entered the experience information but this time each field already
         # contains the information he previously entered
-        # TODO Check that each form already has the entered information in it
+        self.browser.get('http://localhost:8000/cv/edit/experience/1')
 
-        # TODO Add to the description form field
+        edit_experience_title_field_text = self.browser.find_element_by_id('edit_experience_title_field').text
+        self.assertEqual("Software Developer Intern", edit_experience_title_field_text)
 
-        # TODO Save the edited experience entry
+        edit_experience_period_field_text = self.browser.find_element_by_id('edit_experience_period_field').text
+        self.assertEqual("Summer 2018", edit_experience_period_field_text)
 
-        # TODO Check that the information has been updated on the cv page
+        edit_experience_company_field_text = self.browser.find_element_by_id('edit_experience_company_field').text
+        self.assertEqual("Google", edit_experience_company_field_text)
+
+        edit_experience_description_field_text = self.browser.find_element_by_id(
+            'edit_experience_description_field').text
+        self.assertEqual("Lorem Ipsum is simply dummy text of the printing and typesetting "
+                         "industry. Lorem Ipsum has been the industry's standard dummy text "
+                         "ever since the 1500s, when an unknown printer took a galley of "
+                         "type and scrambled it to make a type specimen book. It has "
+                         "survived not only five centuries, but also the leap into "
+                         "electronic typesetting, remaining essentially unchanged. It was "
+                         "popularised in the 1960s with the release of Letraset sheets "
+                         "containing Lorem Ipsum passages, and more recently with desktop "
+                         "publishing software like Aldus PageMaker including versions of "
+                         "Lorem Ipsum.", edit_experience_description_field_text)
+
+        edit_experience_referee_field_text = self.browser.find_element_by_id('edit_experience_referee_field').text
+        self.assertEqual("Mark Oggle, 07759112233", edit_experience_referee_field_text)
+
+        # James alters the description to make it more in line with the actual work he performed.
+        edit_experience_description_field = self.browser.find_element_by_id('edit_experience_description_field')
+        edit_experience_description_field.clear()
+        edit_experience_description_field.send_keys("But I must explain to you how all this mistaken idea of "
+                                                    "denouncing pleasure and praising pain was born and I will give "
+                                                    "you a complete account of the system, and expound the actual "
+                                                    "teachings of the great explorer of the truth, the master-builder "
+                                                    "of human happiness. No one rejects, dislikes, or avoids pleasure "
+                                                    "itself, because it is pleasure, but because those who do not "
+                                                    "know how to pursue pleasure rationally encounter consequences "
+                                                    "that are extremely painful. Nor again is there anyone who loves "
+                                                    "or pursues or desires to obtain pain of itself, because it is "
+                                                    "pain, but because occasionally circumstances occur in which toil "
+                                                    "and pain can procure him some great pleasure. ")
+
+        # He presses the save button to save the changes made
         response = self.browser.get('http://localhost:8000/cv/')
+        # He is returned to the CV page where he sees that the description has in fact changed whilst all other data
+        # remains the same
+        self.assertIn('Software Developer Intern', response.content.decode())
+        self.assertIn('Summer 2018', response.content.decode())
+        self.assertIn('Google', response.content.decode())
+        self.assertIn('Mark Oggle, 07759112233', response.content.decode())
+        self.assertIn("But I must explain to you how all this mistaken idea of "
+                      "denouncing pleasure and praising pain was born and I will give "
+                      "you a complete account of the system, and expound the actual "
+                      "teachings of the great explorer of the truth, the master-builder "
+                      "of human happiness. No one rejects, dislikes, or avoids pleasure "
+                      "itself, because it is pleasure, but because those who do not "
+                      "know how to pursue pleasure rationally encounter consequences "
+                      "that are extremely painful. Nor again is there anyone who loves "
+                      "or pursues or desires to obtain pain of itself, because it is "
+                      "pain, but because occasionally circumstances occur in which toil "
+                      "and pain can procure him some great pleasure. ", response.content.decode())
 
 
 if __name__ == '__main__':
