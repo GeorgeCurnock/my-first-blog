@@ -17,10 +17,10 @@ class BasicForm(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={'id': 'edit_basic_name_field'}),
-            'email': forms.TextInput(attrs={'id': 'edit_email_name_field'}),
-            'phone': forms.TextInput(attrs={'id': 'edit_phone_name_field'}),
-            'github': forms.TextInput(attrs={'id': 'edit_github_name_field'}),
-            'linkedin': forms.TextInput(attrs={'id': 'edit_linkedin_name_field'}),
+            'email': forms.TextInput(attrs={'id': 'edit_email_field'}),
+            'phone': forms.TextInput(attrs={'id': 'edit_phone_field'}),
+            'github': forms.TextInput(attrs={'id': 'edit_github_field'}),
+            'linkedin': forms.TextInput(attrs={'id': 'edit_linkedin_field'}),
         }
 
 
@@ -34,6 +34,14 @@ class EducationForm(forms.ModelForm):
             'institution':      'Institution/School',
             'grade':            'Classification/Grade',
             'description':      'Description of study'
+        }
+
+        widgets = {
+            'qualification': forms.TextInput(attrs={'id': 'edit_education_qualification_field'}),
+            'period': forms.TextInput(attrs={'id': 'edit_education_period_field'}),
+            'institution': forms.TextInput(attrs={'id': 'edit_education_institution_field'}),
+            'grade': forms.TextInput(attrs={'id': 'edit_education_grade_field'}),
+            'description': forms.TextInput(attrs={'id': 'edit_education_description_field'}),
         }
 
 
