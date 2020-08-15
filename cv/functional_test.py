@@ -329,7 +329,7 @@ class NewVisitorTest(unittest.TestCase):
                                                  "Lorem Ipsum.")
 
         # He reads a sub header titled list of technologies used
-        edit_project_technologies = self.browser.find_element_by_id('edit_project_description').text
+        edit_project_technologies = self.browser.find_element_by_id('edit_project_technologies').text
         self.assertIn('List of technologies used', edit_project_technologies)
 
         # James enters a list of the different technologies involved in the project

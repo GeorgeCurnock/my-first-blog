@@ -3,7 +3,13 @@
 {% block content %}
     <h1 id="edit_project_header">Add A Project</h1>
     <form method="post">{% csrf_token %}
-        {{ form.as_p }}
+        <h2 id="edit_project_title">{{ form.title.label }}</h2>
+        {{ form.title }}
+        <h2 id="edit_project_description">{{ form.description.label }}</h2>
+        {{ form.description }}
+        <h2 id="edit_project_technologies">{{ form.technologies.label }}</h2>
+        {{ form.technologies }}
+        <br>
         <button id="edit_project_save" type="submit">Save</button>
     </form>
 {% endblock %}

@@ -76,6 +76,12 @@ class ProjectForm(forms.ModelForm):
             'technologies':     'List of technologies used'
         }
 
+        widgets = {
+            'title': forms.TextInput(attrs={'id': 'edit_project_title_field'}),
+            'description': forms.TextInput(attrs={'id': 'edit_project_description_field'}),
+            'technologies': forms.TextInput(attrs={'id': 'edit_project_technologies_field'}),
+        }
+
 
 class SkillForm(forms.ModelForm):
     class Meta:
