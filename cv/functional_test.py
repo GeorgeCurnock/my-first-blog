@@ -233,11 +233,11 @@ class NewVisitorTest(unittest.TestCase):
         edit_experience_period_field.send_keys('Summer 2018')
 
         # He reads a sub header titled Institution/Company
-        edit_experience_company = self.browser.find_element_by_id('edit_experience_company').text
+        edit_experience_company = self.browser.find_element_by_id('edit_experience_institution').text
         self.assertIn('Institution/Company', edit_experience_company)
 
         # James enters his Institution/Company into the text field
-        edit_experience_company_field = self.browser.find_element_by_id('edit_experience_company_field')
+        edit_experience_company_field = self.browser.find_element_by_id('edit_experience_institution_field')
         edit_experience_company_field.send_keys('Google')
 
         # He reads a sub header titled Description of work

@@ -57,6 +57,14 @@ class ExperienceForm(forms.ModelForm):
             'referee':          'Referee'
         }
 
+        widgets = {
+            'title': forms.TextInput(attrs={'id': 'edit_experience_title_field'}),
+            'period': forms.TextInput(attrs={'id': 'edit_experience_period_field'}),
+            'institution': forms.TextInput(attrs={'id': 'edit_experience_institution_field'}),
+            'description': forms.TextInput(attrs={'id': 'edit_experience_description_field'}),
+            'referee': forms.TextInput(attrs={'id': 'edit_experience_referee_field'}),
+        }
+
 
 class ProjectForm(forms.ModelForm):
     class Meta:

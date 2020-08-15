@@ -3,7 +3,17 @@
 {% block content %}
     <h1 id="edit_experience_header">Add Experience Entry</h1>
     <form method="post">{% csrf_token %}
-        {{ form.as_p }}
+        <h2 id="edit_experience_title">{{ form.title.label }}</h2>
+        {{ form.title }}
+        <h2 id="edit_experience_period">{{ form.period.label }}</h2>
+        {{ form.period }}
+        <h2 id="edit_experience_institution">{{ form.institution.label }}</h2>
+        {{ form.institution}}
+        <h2 id="edit_experience_description">{{ form.description.label }}</h2>
+        {{ form.description }}
+        <h2 id="edit_experience_referee">{{ form.referee.label }}</h2>
+        {{ form.referee }}
+        <br>
         <button id="edit_experience_save" type="submit">Save</button>
     </form>
 {% endblock %}
