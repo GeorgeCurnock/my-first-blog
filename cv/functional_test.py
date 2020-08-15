@@ -82,7 +82,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # He reads a sub header titled LinkedIn Username
         edit_basic_linkedin = self.browser.find_element_by_id('edit_basic_linkedin').text
-        self.assertIn('LinkedIn USername', edit_basic_linkedin)
+        self.assertIn('LinkedIn Username', edit_basic_linkedin)
 
         # James enters his username into the text field
         edit_basic_linkedin_field = self.browser.find_element_by_id('edit_basic_linkedin_field')

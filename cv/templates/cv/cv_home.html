@@ -2,8 +2,8 @@
 
 {% block content %}
 
-    <h2>Basic Information</h2>
-    <a href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
+    <h2 id="header_basic_information">Basic Information</h2>
+    <a id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
     <div id="basic_text">
         <h4>Full Name:</h4>
         <p>{{ basic.name }}</p>
