@@ -90,3 +90,7 @@ class SkillForm(forms.ModelForm):
         labels = {
             'name': 'Skill Name'
         }
+
+        widgets = {
+            'name': forms.TextInput(attrs={'id': 'edit_skill_name_field'}),
+        }
