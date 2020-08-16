@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h1 id="edit_project_header">Add A Project</h1>
+    <h1 id="edit_project_header">Add a Project</h1>
     <form method="post">{% csrf_token %}
         <h2 id="edit_project_title">{{ form.title.label }}</h2>
         {{ form.title }}

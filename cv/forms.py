@@ -17,10 +17,10 @@ class BasicForm(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={'id': 'edit_basic_name_field'}),
-            'email': forms.TextInput(attrs={'id': 'edit_email_field'}),
-            'phone': forms.TextInput(attrs={'id': 'edit_phone_field'}),
-            'github': forms.TextInput(attrs={'id': 'edit_github_field'}),
-            'linkedin': forms.TextInput(attrs={'id': 'edit_linkedin_field'}),
+            'email': forms.TextInput(attrs={'id': 'edit_basic_email_field'}),
+            'phone': forms.TextInput(attrs={'id': 'edit_basic_phone_field'}),
+            'github': forms.TextInput(attrs={'id': 'edit_basic_github_field'}),
+            'linkedin': forms.TextInput(attrs={'id': 'edit_basic_linkedin_field'}),
         }
 
 
@@ -41,7 +41,7 @@ class EducationForm(forms.ModelForm):
             'period': forms.TextInput(attrs={'id': 'edit_education_period_field'}),
             'institution': forms.TextInput(attrs={'id': 'edit_education_institution_field'}),
             'grade': forms.TextInput(attrs={'id': 'edit_education_grade_field'}),
-            'description': forms.TextInput(attrs={'id': 'edit_education_description_field'}),
+            'description': forms.Textarea(attrs={'id': 'edit_education_description_field'}),
         }
 
 
@@ -61,7 +61,7 @@ class ExperienceForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'id': 'edit_experience_title_field'}),
             'period': forms.TextInput(attrs={'id': 'edit_experience_period_field'}),
             'institution': forms.TextInput(attrs={'id': 'edit_experience_institution_field'}),
-            'description': forms.TextInput(attrs={'id': 'edit_experience_description_field'}),
+            'description': forms.Textarea(attrs={'id': 'edit_experience_description_field'}),
             'referee': forms.TextInput(attrs={'id': 'edit_experience_referee_field'}),
         }
 
@@ -71,14 +71,14 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = ('title', 'description', 'technologies')
         labels = {
-            'title':            'Project Name',
+            'title':            'Project Title',
             'description':      'Project Description',
             'technologies':     'List of technologies used'
         }
 
         widgets = {
             'title': forms.TextInput(attrs={'id': 'edit_project_title_field'}),
-            'description': forms.TextInput(attrs={'id': 'edit_project_description_field'}),
+            'description': forms.Textarea(attrs={'id': 'edit_project_description_field'}),
             'technologies': forms.TextInput(attrs={'id': 'edit_project_technologies_field'}),
         }
 

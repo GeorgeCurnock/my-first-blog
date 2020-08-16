@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 import unittest
 
@@ -54,6 +56,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his name into the text field
         edit_basic_name_field = self.browser.find_element_by_id('edit_basic_name_field')
+        edit_basic_name_field.clear()
         edit_basic_name_field.send_keys('James Chambers')
 
         # He reads a sub header titled Email address
@@ -62,6 +65,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his email into the text field
         edit_basic_email_field = self.browser.find_element_by_id('edit_basic_email_field')
+        edit_basic_email_field.clear()
         edit_basic_email_field.send_keys('jamesChambers@gmail.com')
 
         # He reads a sub header titled Phone Number
@@ -70,6 +74,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his phone number into the text field
         edit_basic_phone_field = self.browser.find_element_by_id('edit_basic_phone_field')
+        edit_basic_phone_field.clear()
         edit_basic_phone_field.send_keys('07759123456')
 
         # He reads a sub header titled Github Username
@@ -78,6 +83,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his username into the text field
         edit_basic_github_field = self.browser.find_element_by_id('edit_basic_github_field')
+        edit_basic_github_field.clear()
         edit_basic_github_field.send_keys('CoderJames')
 
         # He reads a sub header titled LinkedIn Username
@@ -86,29 +92,32 @@ class NewVisitorTest(unittest.TestCase):
 
         # James enters his username into the text field
         edit_basic_linkedin_field = self.browser.find_element_by_id('edit_basic_linkedin_field')
+        edit_basic_linkedin_field.clear()
         edit_basic_linkedin_field.send_keys('JamesChambers')
 
         # He has entered all the required information so presses a button at the bottom of the page that says 'Save'
-        edit_basic_save = self.browser.find_element_by_id('edit_basic_save').text
-        self.assertIn('Save', edit_basic_save)
+        edit_basic_save = self.browser.find_element_by_id('edit_basic_save')
+        edit_basic_save.click()
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        response = self.browser.get('http://localhost:8000/cv/')
-        self.assertIn('James Chambers', response.content.decode())
-        self.assertIn('jamesChambers@gmail.com', response.content.decode())
-        self.assertIn('07759123456', response.content.decode())
-        self.assertIn('CoderJames', response.content.decode())
-        self.assertIn('JamesChambers', response.content.decode())
-
-        # TODO Check that tests up to this point pass
+        cv_basic_name = self.browser.find_element_by_id("cv_basic_name").text
+        self.assertIn('James Chambers', cv_basic_name)
+        cv_basic_email = self.browser.find_element_by_id("cv_basic_email").text
+        self.assertIn('jamesChambers@gmail.com', cv_basic_email)
+        cv_basic_phone = self.browser.find_element_by_id("cv_basic_phone").text
+        self.assertIn('07759123456', cv_basic_phone)
+        cv_basic_github = self.browser.find_element_by_id("cv_basic_github").text
+        self.assertIn('CoderJames', cv_basic_github)
+        cv_basic_linkedin = self.browser.find_element_by_id("cv_basic_linkedin").text
+        self.assertIn('JamesChambers', cv_basic_linkedin)
 
         # He sees the heading of the next section is 'Education'
         education_header = self.browser.find_element_by_id('education_header').text
         self.assertIn('Education', education_header)
 
         # James presses the 'Add a new education entry' button
-        edit_education_button = self.browser.find_element_by_id('edit_education_button').text
-        self.assertIn('Add new Education entry', edit_education_button)
+        new_education_button = self.browser.find_element_by_id('new_education_button').text
+        self.assertIn('Add new Education entry', new_education_button)
 
         # This sends him to a page to enter a new education entry
         self.browser.get('http://localhost:8000/cv/new/education')
@@ -141,7 +150,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Institution', edit_education_institution)
 
         # James enters the institution for the qualification into the text field
-        edit_education_institution_field = self.browser.find_element_by_id('edit_institution_period_field')
+        edit_education_institution_field = self.browser.find_element_by_id('edit_education_institution_field')
         edit_education_institution_field.send_keys('University of Birmingham')
 
         # He reads a sub header Classification/Grade
@@ -170,15 +179,19 @@ class NewVisitorTest(unittest.TestCase):
                                                    "Lorem Ipsum.")
 
         # He haas entered data into all the fields on the page so presses the save button at the bottom of the page
-        edit_education_save = self.browser.find_element_by_id('edit_education_save').text
-        self.assertIn('Save', edit_education_save)
+        edit_education_save = self.browser.find_element_by_id('edit_education_save')
+        edit_education_save.click()
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        response = self.browser.get('http://localhost:8000/cv/')
-        self.assertIn('MSci Computer Science', response.content.decode())
-        self.assertIn('2017 - Present', response.content.decode())
-        self.assertIn('University of Birmingham', response.content.decode())
-        self.assertIn('First Class', response.content.decode())
+        cv_education_qualification = self.browser.find_element_by_class_name("cv_education_qualification").text
+        self.assertIn('MSci Computer Science', cv_education_qualification)
+        cv_education_institution = self.browser.find_element_by_class_name("cv_education_institution").text
+        self.assertIn('University of Birmingham', cv_education_institution)
+        cv_education_period = self.browser.find_element_by_class_name("cv_education_period").text
+        self.assertIn('2017 - Present', cv_education_period)
+        cv_education_grade = self.browser.find_element_by_class_name("cv_education_grade").text
+        self.assertIn('First Class', cv_education_grade)
+        cv_education_description = self.browser.find_element_by_class_name("cv_education_description").text
         self.assertIn("Lorem Ipsum is simply dummy text of the printing and typesetting "
                       "industry. Lorem Ipsum has been the industry's standard dummy text "
                       "ever since the 1500s, when an unknown printer took a galley of "
@@ -188,17 +201,15 @@ class NewVisitorTest(unittest.TestCase):
                       "popularised in the 1960s with the release of Letraset sheets "
                       "containing Lorem Ipsum passages, and more recently with desktop "
                       "publishing software like Aldus PageMaker including versions of "
-                      "Lorem Ipsum.", response.content.decode())
-
-        # TODO Check that tests up to this point pass
+                      "Lorem Ipsum.", cv_education_description)
 
         # He is presented with a header titled 'Experience Information'
-        header_experience = self.browser.find_element_by_id('header_experience').text
-        self.assertIn('Experience', header_experience)
+        experience_header = self.browser.find_element_by_id('experience_header').text
+        self.assertIn('Experience', experience_header)
 
         # James presses the 'Add new experience entry' button
-        edit_experience_button = self.browser.find_element_by_id('edit_experience_button').text
-        self.assertIn('Add new Experience entry', edit_experience_button)
+        new_experience_button = self.browser.find_element_by_id('new_experience_button').text
+        self.assertIn('Add new Experience entry', new_experience_button)
 
         self.browser.get('http://localhost:8000/cv/new/experience')
 
@@ -233,12 +244,12 @@ class NewVisitorTest(unittest.TestCase):
         edit_experience_period_field.send_keys('Summer 2018')
 
         # He reads a sub header titled Institution/Company
-        edit_experience_company = self.browser.find_element_by_id('edit_experience_institution').text
-        self.assertIn('Institution/Company', edit_experience_company)
+        edit_experience_institution = self.browser.find_element_by_id('edit_experience_institution').text
+        self.assertIn('Institution/Company', edit_experience_institution)
 
         # James enters his Institution/Company into the text field
-        edit_experience_company_field = self.browser.find_element_by_id('edit_experience_institution_field')
-        edit_experience_company_field.send_keys('Google')
+        edit_experience_institution_field = self.browser.find_element_by_id('edit_experience_institution_field')
+        edit_experience_institution_field.send_keys('Google')
 
         # He reads a sub header titled Description of work
         edit_experience_description = self.browser.find_element_by_id('edit_experience_description').text
@@ -265,16 +276,22 @@ class NewVisitorTest(unittest.TestCase):
         edit_experience_referee_field = self.browser.find_element_by_id('edit_experience_referee_field')
         edit_experience_referee_field.send_keys("Mark Oggle, 07759112233")
 
+        time.sleep(10)
+
         # He presses a button at the bottom of the page that says 'Save'
-        edit_experience_save = self.browser.find_element_by_id('edit_experience_save').text
-        self.assertIn('Save', edit_experience_save)
+        edit_experience_save = self.browser.find_element_by_id('edit_experience_save')
+        edit_experience_save.click()
+
+        time.sleep(10)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        response = self.browser.get('http://localhost:8000/cv/')
-        self.assertIn('Software Developer Intern', response.content.decode())
-        self.assertIn('Summer 2018', response.content.decode())
-        self.assertIn('Google', response.content.decode())
-        self.assertIn('Mark Oggle, 07759112233', response.content.decode())
+        cv_experience_title = self.browser.find_element_by_class_name("cv_experience_title").text
+        self.assertIn('Software Developer Intern', cv_experience_title)
+        cv_experience_period = self.browser.find_element_by_class_name("cv_experience_period").text
+        self.assertIn('Summer 2018', cv_experience_period)
+        cv_experience_institution = self.browser.find_element_by_class_name("cv_experience_institution").text
+        self.assertIn('Google', cv_experience_institution)
+        cv_experience_description = self.browser.find_element_by_class_name("cv_experience_description").text
         self.assertIn("Lorem Ipsum is simply dummy text of the printing and typesetting "
                       "industry. Lorem Ipsum has been the industry's standard dummy text "
                       "ever since the 1500s, when an unknown printer took a galley of "
@@ -284,16 +301,18 @@ class NewVisitorTest(unittest.TestCase):
                       "popularised in the 1960s with the release of Letraset sheets "
                       "containing Lorem Ipsum passages, and more recently with desktop "
                       "publishing software like Aldus PageMaker including versions of "
-                      "Lorem Ipsum.", response.content.decode())
+                      "Lorem Ipsum.", cv_experience_description)
+        cv_experience_referee = self.browser.find_element_by_class_name("cv_experience_referee").text
+        self.assertIn('Mark Oggle, 07759112233', cv_experience_referee)
 
         # He sees a header "Projects" with an option to 'add a new project'
         # He is presented with a header titled 'Projects'
-        header_project = self.browser.find_element_by_id('header_project').text
-        self.assertIn('Projects', header_project)
+        project_header = self.browser.find_element_by_id('project_header').text
+        self.assertIn('Projects', project_header)
 
         # James presses the 'Add new experience entry' button
-        edit_project_button = self.browser.find_element_by_id('edit_project_button').text
-        self.assertIn('Add new Project entry', edit_project_button)
+        new_project_button = self.browser.find_element_by_id('new_project_button').text
+        self.assertIn('Add new Project entry', new_project_button)
 
         # He clicks the option
         self.browser.get('http://localhost:8000/cv/new/project')
@@ -304,19 +323,19 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Add a Project', edit_project_header)
 
         # He reads a sub header titled Project name
-        edit_project_name = self.browser.find_element_by_id('edit_project_name').text
-        self.assertIn('Project Name', edit_project_name)
+        edit_project_title = self.browser.find_element_by_id('edit_project_title').text
+        self.assertIn('Project Title', edit_project_title)
 
         # James enters a project name into the text field
-        edit_project_name_field = self.browser.find_element_by_id('edit_project_name_field')
-        edit_project_name_field.send_keys('Orderly')
+        edit_project_title_field = self.browser.find_element_by_id('edit_project_title_field')
+        edit_project_title_field.send_keys('Orderly')
 
         # He reads a sub header titled Project Description
         edit_project_description = self.browser.find_element_by_id('edit_project_description').text
         self.assertIn('Project Description', edit_project_description)
 
         # James enters a description of what the project is about
-        edit_project_description_field = self.browser.find_element_by_id('edit_project_technologies_field')
+        edit_project_description_field = self.browser.find_element_by_id('edit_project_description_field')
         edit_project_description_field.send_keys("Lorem Ipsum is simply dummy text of the printing and typesetting "
                                                  "industry. Lorem Ipsum has been the industry's standard dummy text "
                                                  "ever since the 1500s, when an unknown printer took a galley of "
@@ -337,12 +356,13 @@ class NewVisitorTest(unittest.TestCase):
         edit_project_technologies_field.send_keys("HTML, CSS, DJANGO, Python, Javascript")
 
         # He presses a button at the bottom of the page that says 'Save'
-        edit_project_save = self.browser.find_element_by_id('edit_project_save').text
-        self.assertIn('Save', edit_project_save)
+        edit_project_save = self.browser.find_element_by_id('edit_project_save')
+        edit_project_save.click()
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        response = self.browser.get('http://localhost:8000/cv/')
-        self.assertIn('Orderly', response.content.decode())
+        cv_project_title = self.browser.find_element_by_class_name("cv_project_title").text
+        self.assertIn('Orderly', cv_project_title)
+        cv_project_description = self.browser.find_element_by_class_name("cv_project_description").text
         self.assertIn("Lorem Ipsum is simply dummy text of the printing and typesetting "
                       "industry. Lorem Ipsum has been the industry's standard dummy text "
                       "ever since the 1500s, when an unknown printer took a galley of "
@@ -352,57 +372,62 @@ class NewVisitorTest(unittest.TestCase):
                       "popularised in the 1960s with the release of Letraset sheets "
                       "containing Lorem Ipsum passages, and more recently with desktop "
                       "publishing software like Aldus PageMaker including versions of "
-                      "Lorem Ipsum.", response.content.decode())
-        self.assertIn('HTML, CSS, DJANGO, Python, Javascript', response.content.decode())
+                      "Lorem Ipsum.", cv_project_description)
+        cv_project_technologies = self.browser.find_element_by_class_name("cv_project_technologies").text
+        self.assertIn('HTML, CSS, DJANGO, Python, Javascript', cv_project_technologies)
 
         # He sees a header "Skills" with an option to 'add a new skill entry'
-        header_skills = self.browser.find_element_by_id('header_skills').text
-        self.assertIn('Skills', header_skills)
+        skill_header = self.browser.find_element_by_id('skill_header').text
+        self.assertIn('Skills', skill_header)
 
-        edit_skill_button = self.browser.find_element_by_id('edit_skills_button').text
-        self.assertIn('Add new Skill entry', edit_skill_button)
+        new_skill_button = self.browser.find_element_by_id('new_skill_button').text
+        self.assertIn('Add new Skill entry', new_skill_button)
 
         # He clicks the option
-        self.browser.get('http://localhost:8000/cv/new/skills')
+        self.browser.get('http://localhost:8000/cv/new/skill')
 
         # He reads a sub header titled Skill name
-        edit_skill = self.browser.find_element_by_id('edit_skill').text
-        self.assertIn('Skill Name', edit_skill)
+        edit_skill_name = self.browser.find_element_by_id('edit_skill_name').text
+        self.assertIn('Skill Name', edit_skill_name)
 
         # James enters the name of a skill he posses into the field
-        edit_skill_field = self.browser.find_element_by_id('edit_skill_field')
-        edit_skill_field.send_keys('HTML')
+        edit_skill_name_field = self.browser.find_element_by_id('edit_skill_name_field')
+        edit_skill_name_field.send_keys('HTML')
 
         # He presses a button at the bottom of the page that says 'Save'
-        edit_skill_save = self.browser.find_element_by_id('edit_skill_save').text
-        self.assertIn('Save', edit_skill_save)
+        edit_skill_save = self.browser.find_element_by_id('edit_skill_save')
+        edit_skill_save.click()
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
-        response = self.browser.get('http://localhost:8000/cv/')
-        self.assertIn('HTML', response.content.decode())
+        cv_skill_name = self.browser.find_element_by_class_name("cv_skill_name").text
+        self.assertIn('HTML', cv_skill_name)
 
         # James decides that his description of work for the experience entry he entered doesnt describe what he did
         # as accurately as it could and decides he wants to edit it
 
         # James clicks the edit entry button next to the experience entry
-        edit_experience_entry = self.browser.find_element_by_id("edit-experience-entry-1")
+        edit_experience_entry = self.browser.find_element_by_class_name("edit_experience")
         edit_experience_entry.click()
 
         # James is returned the page where he first entered the experience information but this time each field already
         # contains the information he previously entered
-        self.browser.get('http://localhost:8000/cv/edit/experience/1')
 
-        edit_experience_title_field_text = self.browser.find_element_by_id('edit_experience_title_field').text
-        self.assertEqual("Software Developer Intern", edit_experience_title_field_text)
+        time.sleep(10)
 
-        edit_experience_period_field_text = self.browser.find_element_by_id('edit_experience_period_field').text
-        self.assertEqual("Summer 2018", edit_experience_period_field_text)
+        edit_experience_title_field_value = self.browser.find_element_by_id(
+            'edit_experience_title_field').get_attribute("value")
+        self.assertEqual("Software Developer Intern", edit_experience_title_field_value)
 
-        edit_experience_company_field_text = self.browser.find_element_by_id('edit_experience_company_field').text
-        self.assertEqual("Google", edit_experience_company_field_text)
+        edit_experience_period_field_value = self.browser.find_element_by_id(
+            'edit_experience_period_field').get_attribute("value")
+        self.assertEqual("Summer 2018", edit_experience_period_field_value)
 
-        edit_experience_description_field_text = self.browser.find_element_by_id(
-            'edit_experience_description_field').text
+        edit_experience_institution_field_value = self.browser.find_element_by_id(
+            'edit_experience_institution_field').get_attribute("value")
+        self.assertEqual("Google", edit_experience_institution_field_value)
+
+        edit_experience_description_field_value = self.browser.find_element_by_id(
+            'edit_experience_description_field').get_attribute("value")
         self.assertEqual("Lorem Ipsum is simply dummy text of the printing and typesetting "
                          "industry. Lorem Ipsum has been the industry's standard dummy text "
                          "ever since the 1500s, when an unknown printer took a galley of "
@@ -412,10 +437,11 @@ class NewVisitorTest(unittest.TestCase):
                          "popularised in the 1960s with the release of Letraset sheets "
                          "containing Lorem Ipsum passages, and more recently with desktop "
                          "publishing software like Aldus PageMaker including versions of "
-                         "Lorem Ipsum.", edit_experience_description_field_text)
+                         "Lorem Ipsum.", edit_experience_description_field_value)
 
-        edit_experience_referee_field_text = self.browser.find_element_by_id('edit_experience_referee_field').text
-        self.assertEqual("Mark Oggle, 07759112233", edit_experience_referee_field_text)
+        edit_experience_referee_field_value = self.browser.find_element_by_id(
+            'edit_experience_referee_field').get_attribute("value")
+        self.assertEqual("Mark Oggle, 07759112233", edit_experience_referee_field_value)
 
         # James alters the description to make it more in line with the actual work he performed.
         edit_experience_description_field = self.browser.find_element_by_id('edit_experience_description_field')
@@ -430,16 +456,21 @@ class NewVisitorTest(unittest.TestCase):
                                                     "that are extremely painful. Nor again is there anyone who loves "
                                                     "or pursues or desires to obtain pain of itself, because it is "
                                                     "pain, but because occasionally circumstances occur in which toil "
-                                                    "and pain can procure him some great pleasure. ")
+                                                    "and pain can procure him some great pleasure.")
+
+        time.sleep(10)
+
+        edit_experience_save = self.browser.find_element_by_id("edit_experience_save")
+        edit_experience_save.click()
 
         # He presses the save button to save the changes made
-        response = self.browser.get('http://localhost:8000/cv/')
-        # He is returned to the CV page where he sees that the description has in fact changed whilst all other data
-        # remains the same
-        self.assertIn('Software Developer Intern', response.content.decode())
-        self.assertIn('Summer 2018', response.content.decode())
-        self.assertIn('Google', response.content.decode())
-        self.assertIn('Mark Oggle, 07759112233', response.content.decode())
+        cv_experience_title = self.browser.find_element_by_class_name("cv_experience_title").text
+        self.assertIn('Software Developer Intern', cv_experience_title)
+        cv_experience_period = self.browser.find_element_by_class_name("cv_experience_period").text
+        self.assertIn('Summer 2018', cv_experience_period)
+        cv_experience_institution = self.browser.find_element_by_class_name("cv_experience_institution").text
+        self.assertIn('Google', cv_experience_institution)
+        cv_experience_description = self.browser.find_element_by_class_name("cv_experience_description").text
         self.assertIn("But I must explain to you how all this mistaken idea of "
                       "denouncing pleasure and praising pain was born and I will give "
                       "you a complete account of the system, and expound the actual "
@@ -450,7 +481,9 @@ class NewVisitorTest(unittest.TestCase):
                       "that are extremely painful. Nor again is there anyone who loves "
                       "or pursues or desires to obtain pain of itself, because it is "
                       "pain, but because occasionally circumstances occur in which toil "
-                      "and pain can procure him some great pleasure. ", response.content.decode())
+                      "and pain can procure him some great pleasure.", cv_experience_description)
+        cv_experience_referee = self.browser.find_element_by_class_name("cv_experience_referee").text
+        self.assertIn('Mark Oggle, 07759112233', cv_experience_referee)
 
 
 if __name__ == '__main__':
