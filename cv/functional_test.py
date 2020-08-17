@@ -35,7 +35,7 @@ class NewVisitorTest(unittest.TestCase):
         # sections of a standard CV
 
         # He sees the heading of the first section is 'Basic Information'
-        header_basic = self.browser.find_element_by_id('header_basic_information').text
+        header_basic = self.browser.find_element_by_id('header_basic_title').text
         self.assertIn('Basic Information', header_basic)
 
         # James presses the 'Edit Basic Information' button
@@ -112,7 +112,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('JamesChambers', cv_basic_linkedin)
 
         # He sees the heading of the next section is 'Education'
-        education_header = self.browser.find_element_by_id('education_header').text
+        education_header = self.browser.find_element_by_id('education_header_title').text
         self.assertIn('Education', education_header)
 
         # James presses the 'Add a new education entry' button
@@ -204,7 +204,7 @@ class NewVisitorTest(unittest.TestCase):
                       "Lorem Ipsum.", cv_education_description)
 
         # He is presented with a header titled 'Experience Information'
-        experience_header = self.browser.find_element_by_id('experience_header').text
+        experience_header = self.browser.find_element_by_id('experience_header_title').text
         self.assertIn('Experience', experience_header)
 
         # James presses the 'Add new experience entry' button
@@ -307,7 +307,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # He sees a header "Projects" with an option to 'add a new project'
         # He is presented with a header titled 'Projects'
-        project_header = self.browser.find_element_by_id('project_header').text
+        project_header = self.browser.find_element_by_id('project_header_title').text
         self.assertIn('Projects', project_header)
 
         # James presses the 'Add new experience entry' button
@@ -377,7 +377,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('HTML, CSS, DJANGO, Python, Javascript', cv_project_technologies)
 
         # He sees a header "Skills" with an option to 'add a new skill entry'
-        skill_header = self.browser.find_element_by_id('skill_header').text
+        skill_header = self.browser.find_element_by_id('skill_header_title').text
         self.assertIn('Skills', skill_header)
 
         new_skill_button = self.browser.find_element_by_id('new_skill_button').text

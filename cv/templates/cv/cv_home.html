@@ -1,74 +1,110 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <div class="container">
+        <div class="basic">
+            <div class="basic_header d-flex flex-row">
+                <h2 id="basic_header_title">Basic Information</h2>
+                <a id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
+            </div>
+            <div class="basic_body">
+                <div class="row">
+                    <p id="cv_basic_name">{{ basic.name }}</p>
+                    <p id="cv_basic_email">{{ basic.email }}</p>
+                    <p id="cv_basic_phone">{{ basic.phone }}</p>
+                </div>
+                <div class="row">
+                    <p id="cv_basic_github">{{ basic.github }}</p>
+                    <p id="cv_basic_linkedin">{{ basic.linkedin }}</p>
+                </div>
+            </div>
+        </div>
 
-    <h2 id="header_basic_information">Basic Information</h2>
-    <a id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
-    <div id="basic_text">
-        <h4>Full Name:</h4>
-        <p id="cv_basic_name">{{ basic.name }}</p>
-        <h4>Email:</h4>
-        <p id="cv_basic_email">{{ basic.email }}</p>
-        <h4>Phone Number:</h4>
-        <p id="cv_basic_phone">{{ basic.phone }}</p>
-        <h4>Github Username:</h4>
-        <p id="cv_basic_github">{{ basic.github }}</p>
-        <h4>LinkedIn Username:</h4>
-        <p id="cv_basic_linkedin">{{ basic.linkedin }}</p>
-        <p>Last Updated: {{ basic.last_updated }}</p>
+        <div class="education">
+            <div class="education_header d-flex flex-row">
+                <h2 id="education_header_title">Education</h2>
+                <a id="new_education_button" href="{% url 'cv_new_education' %}">Add new Education entry</a>
+            </div>
+            <div class="education_body">
+                {% for education in educationEntries %}
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h2 class="cv_education_qualification">{{ education.qualification }}</h2>
+                            <p class="cv_education_period">{{ education.period }}</p>
+                            <p class="cv_education_institution"> {{ education.institution }}</p>
+                            <a href="{% url 'cv_edit_education' pk=education.pk %}" class="edit_education">Edit</a>
+                        </div>
+                        <div class="card-body">
+                            <p class="cv_education_grade">{{ education.grade }}</p>
+                            <p class="cv_education_description">{{ education.description }}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="experience">
+            <div class="experience_header d-flex flex-row">
+                <h2 id="experience_header_title">Experience</h2>
+                <a id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience entry</a>
+            </div>
+            <div class="education_body">
+                {% for experience in experienceEntries %}
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h2 class="cv_experience_title">{{ experience.title }}</h2>
+                            <p class="cv_experience_period">{{ experience.period }}</p>
+                            <p class="cv_experience_institution">{{ experience.institution }}</p>
+                            <a href="{% url 'cv_edit_experience' pk=experience.pk %}" class="edit_experience">Edit</a>
+                        </div>
+                        <div class="card-body">
+                            <p class="cv_experience_description">{{ experience.description }}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <p class="cv_experience_referee">{{ experience.referee }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <h2 id="education_header">Education</h2>
-    <a id="new_education_button" href="{% url 'cv_new_education' %}">Add new Education entry</a>
-    {% for education in educationEntries %}
-        <h4>Qualification:</h4>
-        <p class="cv_education_qualification">{{ education.qualification }}</p>
-        <h4>Period of Study:</h4>
-        <p class="cv_education_period">{{ education.period }}</p>
-        <h4>Institution:</h4>
-        <p class="cv_education_institution"> {{ education.institution }}</p>
-        <h4>Classification/Grade:</h4>
-        <p class="cv_education_grade">{{ education.grade }}</p>
-        <h4>Description:</h4>
-        <p class="cv_education_description">{{ education.description }}</p>
-        <a href="{% url 'cv_edit_education' pk=education.pk %}" class="edit_education">Edit</a>
-    {% endfor %}
-    <br>
-    <h2 id="experience_header">Experience</h2>
-    <a id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience entry</a>
-    {% for experience in experienceEntries %}
-        <h4>Job Title:</h4>
-        <p class="cv_experience_title">{{ experience.title }}</p>
-        <h4>Period of Employment:</h4>
-        <p class="cv_experience_period">{{ experience.period }}</p>
-        <h4>Institution/Company:</h4>
-        <p class="cv_experience_institution">{{ experience.institution }}</p>
-        <h4>Description:</h4>
-        <p class="cv_experience_description">{{ experience.description }}</p>
-        <h4>Referee:</h4>
-        <p class="cv_experience_referee">{{ experience.referee }}</p>
-        <a href="{% url 'cv_edit_experience' pk=experience.pk %}"
-           id="edit-experience-entry-{{ experience.pk }}" class="edit_experience">Edit</a>
-    {% endfor %}
-    <br>
-    <h2 id="project_header">Projects</h2>
-    <a id="new_project_button" href="{% url 'cv_new_project' %}">Add new Project entry</a>
-    {% for project in projectEntries %}
-        <h4>Title:</h4>
-        <p class="cv_project_title"> {{ project.title }}</p>
-        <h4>Description</h4>
-        <p class="cv_project_description">{{ project.description }}</p>
-        <h4>Technologies</h4>
-        <p class="cv_project_technologies">{{ project.technologies }}</p>
-        <a href="{% url 'cv_edit_project' pk=project.pk %}" class="edit_project">Edit</a>
-    {% endfor %}
-    <br>
-    <h2 id="skill_header">Skills</h2>
-    <a id="new_skill_button" href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
-    {% for skill in skillEntries %}
-        <h4>Name:</h4>
-        <p class="cv_skill_name">{{ skill.name }}</p>
-        <a href="{% url 'cv_edit_skill' pk=skill.pk %}" class="edit_skill">Edit</a>
-    {% endfor %}
-    <br>
+
+    <div class="project">
+        <div class="project_header d-flex flex-row">
+            <h2 id="project_header_title">Projects</h2>
+            <a id="new_project_button" href="{% url 'cv_new_project' %}">Add new Project entry</a>
+        </div>
+        <div class="project_body">
+            <div class="card-group">
+                {% for project in projectEntries %}
+                    <div class="card">
+                        <img class="card-img-top" src="#" alt="Card image cap">
+                        <div class="card-body">
+                            <h2 class="cv_project_title"> {{ project.title }}</h2>
+                            <p class="cv_project_description">{{ project.description }}</p>
+                            <p class="cv_project_technologies">{{ project.technologies }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'cv_edit_project' pk=project.pk %}" class="edit_project">Edit</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="skill">
+        <div class="skill_header d-flex flex-row">
+            <h2 id="skill_header_title">Skills</h2>
+            <a id="new_skill_button" href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
+        </div>
+        <div class="skill_body">
+            {% for skill in skillEntries %}
+                <p class="cv_skill_name">{{ skill.name }}</p>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}
