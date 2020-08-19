@@ -35,7 +35,7 @@ class NewVisitorTest(unittest.TestCase):
         # sections of a standard CV
 
         # He sees the heading of the first section is 'Basic Information'
-        header_basic = self.browser.find_element_by_id('header_basic_title').text
+        header_basic = self.browser.find_element_by_id('basic_header_title').text
         self.assertIn('Basic Information', header_basic)
 
         # James presses the 'Edit Basic Information' button
@@ -276,13 +276,9 @@ class NewVisitorTest(unittest.TestCase):
         edit_experience_referee_field = self.browser.find_element_by_id('edit_experience_referee_field')
         edit_experience_referee_field.send_keys("Mark Oggle, 07759112233")
 
-        time.sleep(10)
-
         # He presses a button at the bottom of the page that says 'Save'
         edit_experience_save = self.browser.find_element_by_id('edit_experience_save')
         edit_experience_save.click()
-
-        time.sleep(10)
 
         # He is returned to the cv page which has been updated to show the information he previously typed in
         cv_experience_title = self.browser.find_element_by_class_name("cv_experience_title").text
@@ -412,8 +408,6 @@ class NewVisitorTest(unittest.TestCase):
         # James is returned the page where he first entered the experience information but this time each field already
         # contains the information he previously entered
 
-        time.sleep(10)
-
         edit_experience_title_field_value = self.browser.find_element_by_id(
             'edit_experience_title_field').get_attribute("value")
         self.assertEqual("Software Developer Intern", edit_experience_title_field_value)
@@ -458,7 +452,6 @@ class NewVisitorTest(unittest.TestCase):
                                                     "pain, but because occasionally circumstances occur in which toil "
                                                     "and pain can procure him some great pleasure.")
 
-        time.sleep(10)
 
         edit_experience_save = self.browser.find_element_by_id("edit_experience_save")
         edit_experience_save.click()
