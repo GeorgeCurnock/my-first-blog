@@ -103,6 +103,7 @@
         <div class="skill_body">
             {% for skill in skillEntries %}
                 <p class="cv_skill_name">{{ skill.name }}</p>
+                <a href="{% url 'cv_edit_skill' pk=skill.pk %}" class="edit_skill">Edit</a>
             {% endfor %}
         </div>
     </div>
