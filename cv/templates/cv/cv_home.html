@@ -3,32 +3,37 @@
 {% block content %}
     <div class="container">
         <div class="basic">
-            <div class="basic_header d-flex flex-row">
-                <h2 id="basic_header_title">Basic Information</h2>
-                <a id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
+            <div class="basic_header d-flex flex-row justify-content-between">
+                <h1 id="basic_header_title">Basic Information</h1>
+                <a class="align-self-center" id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
             </div>
             <div class="basic_body">
-                <div class="d-flex flex-row justify-content-center">
-                    <h1 class="display-3" id="cv_basic_name">{{ basic.name }}</h1>
-                </div>
-                <div class="d-flex flex-row justify-content-center">
-                    <h3 id="cv_basic_email">{{ basic.email }}</h3>
-                </div>
-                <div class="d-flex flex-row justify-content-center">
-                    <h3 id="cv_basic_phone">{{ basic.phone }}</h3>
-                </div>
-                <div class="row justify-content-around">
-
-                    <p id="cv_basic_github">linkedin.com/in/{{ basic.github }}</p>
-                    <p id="cv_basic_linkedin">github.com/{{ basic.linkedin }}</p>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex flex-row justify-content-center">
+                            <h1 class="display-3" id="cv_basic_name">{{ basic.name }}</h1>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-center">
+                            <h3 id="cv_basic_email">{{ basic.email }}</h3>
+                        </div>
+                        <div class="d-flex flex-row justify-content-center">
+                            <h3 id="cv_basic_phone">{{ basic.phone }}</h3>
+                        </div>
+                        <div class="row justify-content-around">
+                            <p id="cv_basic_github">linkedin.com/in/{{ basic.github }}</p>
+                            <p id="cv_basic_linkedin">github.com/{{ basic.linkedin }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="education">
-            <div class="education_header d-flex flex-row">
-                <h2 id="education_header_title">Education</h2>
-                <a id="new_education_button" href="{% url 'cv_new_education' %}">Add new Education entry</a>
+            <div class="education_header d-flex flex-row justify-content-between mt-2">
+                <h1 id="education_header_title">Education</h1>
+                <a class="align-self-center" id="new_education_button" href="{% url 'cv_new_education' %}">Add new Education entry</a>
             </div>
             <div class="education_body">
                 {% for education in educationEntries %}
@@ -52,9 +57,9 @@
         </div>
 
         <div class="experience">
-            <div class="experience_header d-flex flex-row">
-                <h2 id="experience_header_title">Experience</h2>
-                <a id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience
+            <div class="experience_header d-flex flex-row justify-content-between mt-2">
+                <h1 id="experience_header_title">Experience</h1>
+                <a class="align-self-center" id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience
                     entry</a>
             </div>
             <div class="education_body">
@@ -80,9 +85,9 @@
     </div>
 
     <div class="project">
-        <div class="project_header d-flex flex-row">
-            <h2 id="project_header_title">Projects</h2>
-            <a id="new_project_button" href="{% url 'cv_new_project' %}">Add new Project entry</a>
+        <div class="project_header d-flex flex-row justify-content-between mt-2">
+            <h1 id="project_header_title">Projects</h1>
+            <a class="align-self-center" id="new_project_button" href="{% url 'cv_new_project' %}">Add new Project entry</a>
         </div>
         <div class="project_body">
             <div class="card-group">
@@ -103,21 +108,23 @@
     </div>
 
     <div class="skill">
-        <div class="skill_header d-flex flex-row">
-            <h2 id="skill_header_title">Skills</h2>
-            <a id="new_skill_button" href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
+        <div class="skill_header d-flex flex-row justify-content-between mt-2">
+            <h1 id="skill_header_title">Skills</h1>
+            <a class="align-self-center" id="new_skill_button" href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
         </div>
         <div class="skill_body">
-{#        TODO Figure out how to list these in an attractive way#}
-            {% for skill in skillEntries %}
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="cv_skill_name">{{ skill.name }}</h4>
-                        <a href="{% url 'cv_edit_skill' pk=skill.pk %}" class="edit_skill">Edit</a>
-                    </div>
-                </div>
-
-            {% endfor %}
+            {#        TODO Figure out how to list these in an attractive way#}
+            <ul class="list-group">
+                {% for skill in skillEntries %}
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h4 class="cv_skill_name align-self-center text-center m-0">{{ skill.name }}</h4>
+                            <a href="{% url 'cv_edit_skill' pk=skill.pk %}"
+                               class="edit_skill align-self-center">Edit</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
