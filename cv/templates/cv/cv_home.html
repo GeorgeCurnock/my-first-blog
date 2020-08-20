@@ -5,7 +5,9 @@
         <div class="basic">
             <div class="basic_header d-flex flex-row justify-content-between">
                 <h1 id="basic_header_title">Basic Information</h1>
+                {% if user.is_authenticated %}
                 <a class="align-self-center" id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
+                {% endif %}
             </div>
             <div class="basic_body">
                 <div class="card">
@@ -33,7 +35,9 @@
         <div class="education">
             <div class="education_header d-flex flex-row justify-content-between mt-2">
                 <h1 id="education_header_title">Education</h1>
+                {% if user.is_authenticated %}
                 <a class="align-self-center" id="new_education_button" href="{% url 'cv_new_education' %}">Add new Education entry</a>
+                {% endif %}
             </div>
             <div class="education_body">
                 {% for education in educationEntries %}
@@ -49,7 +53,9 @@
                             <p class="cv_education_description">{{ education.description }}</p>
                         </div>
                         <div class="card-footer text-muted">
+                            {% if user.is_authenticated %}
                             <a href="{% url 'cv_edit_education' pk=education.pk %}" class="edit_education">Edit</a>
+                            {%  endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -59,8 +65,10 @@
         <div class="experience">
             <div class="experience_header d-flex flex-row justify-content-between mt-2">
                 <h1 id="experience_header_title">Experience</h1>
+                {% if user.is_authenticated %}
                 <a class="align-self-center" id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience
                     entry</a>
+                {% endif %}
             </div>
             <div class="education_body">
                 {% for experience in experienceEntries %}
@@ -69,14 +77,15 @@
                             <h5 class="cv_experience_period">{{ experience.period }}</h5>
                             <h2 class="cv_experience_title">{{ experience.title }}</h2>
                             <h4 class="cv_experience_institution">{{ experience.institution }}</h4>
-
                         </div>
                         <div class="card-body">
                             <p class="cv_experience_description">{{ experience.description }}</p>
                             <p class="cv_experience_referee">Referee: {{ experience.referee }}</p>
                         </div>
                         <div class="card-footer text-muted">
+                            {% if user.is_authenticated %}
                             <a href="{% url 'cv_edit_experience' pk=experience.pk %}" class="edit_experience">Edit</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -87,7 +96,9 @@
     <div class="project">
         <div class="project_header d-flex flex-row justify-content-between mt-2">
             <h1 id="project_header_title">Projects</h1>
+            {% if user.is_authenticated %}
             <a class="align-self-center" id="new_project_button" href="{% url 'cv_new_project' %}">Add new Project entry</a>
+            {% endif %}
         </div>
         <div class="project_body">
             <div class="card-group">
@@ -99,7 +110,9 @@
                             <p class="cv_project_technologies">{{ project.technologies }}</p>
                         </div>
                         <div class="card-footer">
+                            {% if user.is_authenticated %}
                             <a href="{% url 'cv_edit_project' pk=project.pk %}" class="edit_project">Edit</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -110,22 +123,24 @@
     <div class="skill">
         <div class="skill_header d-flex flex-row justify-content-between mt-2">
             <h1 id="skill_header_title">Skills</h1>
+            {% if user.is_authenticated %}
             <a class="align-self-center" id="new_skill_button" href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
+            {% endif %}
         </div>
-        <div class="skill_body">
-            {#        TODO Figure out how to list these in an attractive way#}
+        <div class="skill_body mb-5">
             <ul class="list-group">
                 {% for skill in skillEntries %}
                     <li class="list-group-item">
                         <div class="d-flex flex-row justify-content-between">
                             <h4 class="cv_skill_name align-self-center text-center m-0">{{ skill.name }}</h4>
+                            {% if user.is_authenticated %}
                             <a href="{% url 'cv_edit_skill' pk=skill.pk %}"
                                class="edit_skill align-self-center">Edit</a>
+                            {% endif %}
                         </div>
                     </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-
 {% endblock %}

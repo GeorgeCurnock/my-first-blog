@@ -28,6 +28,10 @@ def cv_home(request):
 
 
 def cv_edit_basic(request):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     # If the user has already entered an entry then get that entry
     if Basic.objects.count() == 1:
         basic_object = get_object_or_404(Basic, pk=Basic.objects.first().pk)
@@ -50,6 +54,10 @@ def cv_edit_basic(request):
 
 
 def cv_new_education(request):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     if request.method == "POST":
         form = EducationForm(request.POST)
         if form.is_valid():
@@ -62,6 +70,10 @@ def cv_new_education(request):
 
 
 def cv_edit_education(request, pk):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     education_object = get_object_or_404(Education, pk=pk)
     if request.method == "POST":
         form = EducationForm(request.POST, instance=education_object)
@@ -76,6 +88,10 @@ def cv_edit_education(request, pk):
 
 
 def cv_new_experience(request):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     if request.method == "POST":
         form = ExperienceForm(request.POST)
         if form.is_valid():
@@ -88,6 +104,10 @@ def cv_new_experience(request):
 
 
 def cv_edit_experience(request, pk):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     experience_object = get_object_or_404(Experience, pk=pk)
     if request.method == "POST":
         form = ExperienceForm(request.POST, instance=experience_object)
@@ -101,6 +121,10 @@ def cv_edit_experience(request, pk):
 
 
 def cv_new_project(request):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
@@ -113,6 +137,10 @@ def cv_new_project(request):
 
 
 def cv_edit_project(request, pk):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     project_object = get_object_or_404(Project, pk=pk)
     if request.method == "POST":
         form = ProjectForm(request.POST, instance=project_object)
@@ -126,6 +154,10 @@ def cv_edit_project(request, pk):
 
 
 def cv_new_skill(request):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     if request.method == "POST":
         form = SkillForm(request.POST)
         if form.is_valid():
@@ -138,6 +170,10 @@ def cv_new_skill(request):
 
 
 def cv_edit_skill(request, pk):
+    # Check User has access to edit information
+    if not request.user.is_authenticated:
+        return redirect('/cv')
+
     skill_object = get_object_or_404(Skill, pk=pk)
     if request.method == "POST":
         form = SkillForm(request.POST, instance=skill_object)
