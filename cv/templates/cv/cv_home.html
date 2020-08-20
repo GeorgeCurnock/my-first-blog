@@ -8,14 +8,19 @@
                 <a id="edit_basic_information" href="{% url 'cv_edit_basic' %}">Edit Basic Information</a>
             </div>
             <div class="basic_body">
-                <div class="row">
-                    <p id="cv_basic_name">{{ basic.name }}</p>
-                    <p id="cv_basic_email">{{ basic.email }}</p>
-                    <p id="cv_basic_phone">{{ basic.phone }}</p>
+                <div class="d-flex flex-row justify-content-center">
+                    <h1 class="display-3" id="cv_basic_name">{{ basic.name }}</h1>
                 </div>
-                <div class="row">
-                    <p id="cv_basic_github">{{ basic.github }}</p>
-                    <p id="cv_basic_linkedin">{{ basic.linkedin }}</p>
+                <div class="d-flex flex-row justify-content-center">
+                    <h3 id="cv_basic_email">{{ basic.email }}</h3>
+                </div>
+                <div class="d-flex flex-row justify-content-center">
+                    <h3 id="cv_basic_phone">{{ basic.phone }}</h3>
+                </div>
+                <div class="row justify-content-around">
+
+                    <p id="cv_basic_github">linkedin.com/in/{{ basic.github }}</p>
+                    <p id="cv_basic_linkedin">github.com/{{ basic.linkedin }}</p>
                 </div>
             </div>
         </div>
@@ -27,18 +32,19 @@
             </div>
             <div class="education_body">
                 {% for education in educationEntries %}
-                    <div class="card text-center">
+                    <div class="card my-2">
                         <div class="card-header">
+                            <h5 class="cv_education_period">{{ education.period }}</h5>
                             <h2 class="cv_education_qualification">{{ education.qualification }}</h2>
-                            <p class="cv_education_period">{{ education.period }}</p>
-                            <p class="cv_education_institution"> {{ education.institution }}</p>
-                            <a href="{% url 'cv_edit_education' pk=education.pk %}" class="edit_education">Edit</a>
+                            <h4 class="cv_education_institution"> {{ education.institution }}</h4>
+
                         </div>
                         <div class="card-body">
-                            <p class="cv_education_grade">{{ education.grade }}</p>
+                            <h5 class="cv_education_grade">Grade/Classification: {{ education.grade }}</h5>
                             <p class="cv_education_description">{{ education.description }}</p>
                         </div>
                         <div class="card-footer text-muted">
+                            <a href="{% url 'cv_edit_education' pk=education.pk %}" class="edit_education">Edit</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -48,22 +54,24 @@
         <div class="experience">
             <div class="experience_header d-flex flex-row">
                 <h2 id="experience_header_title">Experience</h2>
-                <a id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience entry</a>
+                <a id="new_experience_button" href="{% url 'cv_new_experience' %}">Add new Experience
+                    entry</a>
             </div>
             <div class="education_body">
                 {% for experience in experienceEntries %}
-                    <div class="card text-center">
+                    <div class="card my-2">
                         <div class="card-header">
+                            <h5 class="cv_experience_period">{{ experience.period }}</h5>
                             <h2 class="cv_experience_title">{{ experience.title }}</h2>
-                            <p class="cv_experience_period">{{ experience.period }}</p>
-                            <p class="cv_experience_institution">{{ experience.institution }}</p>
-                            <a href="{% url 'cv_edit_experience' pk=experience.pk %}" class="edit_experience">Edit</a>
+                            <h4 class="cv_experience_institution">{{ experience.institution }}</h4>
+
                         </div>
                         <div class="card-body">
                             <p class="cv_experience_description">{{ experience.description }}</p>
+                            <p class="cv_experience_referee">Referee: {{ experience.referee }}</p>
                         </div>
                         <div class="card-footer text-muted">
-                            <p class="cv_experience_referee">{{ experience.referee }}</p>
+                            <a href="{% url 'cv_edit_experience' pk=experience.pk %}" class="edit_experience">Edit</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -79,8 +87,7 @@
         <div class="project_body">
             <div class="card-group">
                 {% for project in projectEntries %}
-                    <div class="card">
-                        <img class="card-img-top" src="#" alt="Card image cap">
+                    <div class="card my-2">
                         <div class="card-body">
                             <h2 class="cv_project_title"> {{ project.title }}</h2>
                             <p class="cv_project_description">{{ project.description }}</p>
@@ -101,9 +108,15 @@
             <a id="new_skill_button" href="{% url 'cv_new_skill' %}">Add new Skill entry</a>
         </div>
         <div class="skill_body">
+{#        TODO Figure out how to list these in an attractive way#}
             {% for skill in skillEntries %}
-                <p class="cv_skill_name">{{ skill.name }}</p>
-                <a href="{% url 'cv_edit_skill' pk=skill.pk %}" class="edit_skill">Edit</a>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="cv_skill_name">{{ skill.name }}</h4>
+                        <a href="{% url 'cv_edit_skill' pk=skill.pk %}" class="edit_skill">Edit</a>
+                    </div>
+                </div>
+
             {% endfor %}
         </div>
     </div>
