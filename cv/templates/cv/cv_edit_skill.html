@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1 id="edit_skills_header">Add A Skill</h1>
-    <form method="post">{% csrf_token %}
+    <form method="post" class="mb-5">{% csrf_token %}
         <h2 id="edit_skill_name">{{ form.name.label }}</h2>
         {{ form.name }}
         <br>

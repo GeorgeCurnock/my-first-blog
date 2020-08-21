@@ -9,13 +9,10 @@ def cv_home(request):
     basic = Basic()
     # If the user has already entered an entry then get that entry
     if Basic.objects.count() == 1:
-        print("Basic Object exists so loading")
         basic = get_object_or_404(Basic, pk=Basic.objects.first().pk)
     # Else we create a blank entry to be
     elif Basic.objects.count() > 1:
-        print("Basic objects greater than one, error occurred")
-    else:
-        print("Basic Object does not exist so not loading")
+        basic = Basic()
 
     education_entries = Education.objects.all()
     experience_entries = Experience.objects.all()
@@ -41,7 +38,6 @@ def cv_edit_basic(request):
 
     if request.method == "POST":
         form = BasicForm(request.POST, instance=basic_object)
-        print("Received request to post")
         if form.is_valid():
             basic = form.save(commit=False)
             basic.save()

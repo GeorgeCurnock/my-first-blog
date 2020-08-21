@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1 id="edit_basic_header">Edit Basic Information</h1>
-    <form method="post">{% csrf_token %}
+    <form method="post" class="mb-5">{% csrf_token %}
         <h2 id="edit_basic_name">{{form.name.label}}</h2>
         {{ form.name }}
         <h2 id="edit_basic_email">{{form.email.label}}</h2>

@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1 id="edit_experience_header">Add Experience Entry</h1>
-    <form method="post">{% csrf_token %}
+    <form method="post" class="mb-5">{% csrf_token %}
         <h2 id="edit_experience_title">{{ form.title.label }}</h2>
         {{ form.title }}
         <h2 id="edit_experience_period">{{ form.period.label }}</h2>

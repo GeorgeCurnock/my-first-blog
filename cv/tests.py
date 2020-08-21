@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 from cv.models import Basic, Education, Experience, Project, Skill
 
@@ -16,19 +17,34 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_basic')
 
     def test_edit_basic_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a id="edit_basic_information" href="%s">Edit Basic Information</a>' % reverse("cv_edit_basic"),
-                            html=True)
+                            '<a class="align-self-center" id="edit_basic_information" href="%s">Edit Basic '
+                            'Information</a>' % reverse("cv_edit_basic"), html=True)
 
     def test_add_education_URL_uses_correct_view_function(self):
         resolver = resolve('/cv/new/education')
         self.assertEqual(resolver.view_name, 'cv_new_education')
 
     def test_add_education_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a id="new_education_button" href="%s">Add new Education entry</a>' % reverse("cv_new_education"),
+                            '<a class="align-self-center" id="new_education_button" href="%s">Add new Education</a>' % reverse(
+                                "cv_new_education"),
                             html=True)
 
     def test_edit_education_URL_uses_correct_view_function(self):
@@ -36,6 +52,13 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_education')
 
     def test_edit_education_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -55,9 +78,17 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_new_experience')
 
     def test_add_experience_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a id="new_experience_button" href="%s">Add new Experience entry</a>' % reverse("cv_new_experience"),
+                            '<a class="align-self-center" id="new_experience_button" href="%s">Add new Experience</a>' % reverse(
+                                "cv_new_experience"),
                             html=True)
 
     def test_edit_experience_URL_uses_correct_view_function(self):
@@ -65,6 +96,13 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_experience')
 
     def test_edit_experience_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -85,9 +123,17 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_new_project')
 
     def test_add_project_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a id="new_project_button" href="%s">Add new Project entry</a>' % reverse("cv_new_project"),
+                            '<a class="align-self-center" id="new_project_button" href="%s">Add new Project</a>' % reverse(
+                                "cv_new_project"),
                             html=True)
 
     def test_edit_project_URL_uses_correct_view_function(self):
@@ -95,6 +141,13 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_skill')
 
     def test_edit_project_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -114,9 +167,17 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_new_skill')
 
     def test_add_skill_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a id="new_skill_button" href="%s">Add new Skill entry</a>' % reverse("cv_new_skill"),
+                            '<a class="align-self-center" id="new_skill_button" href="%s">Add new Skill</a>' % reverse(
+                                "cv_new_skill"),
                             html=True)
 
     def test_edit_skill_URL_uses_correct_view_function(self):
@@ -124,24 +185,46 @@ class CVHomeTest(TestCase):
         self.assertEqual(resolver.view_name, 'cv_edit_skill')
 
     def test_edit_skill_link_leads_to_correct_URL(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
         response = self.client.get(reverse("cv_home"))
         self.assertContains(response,
-                            '<a href="%s" class="edit_skill">Edit</a>' % reverse("cv_edit_skill", args=[1]),
-                            html=True)
+                            '<a href="%s" class="edit_skill align-self-center">Edit</a>' % reverse("cv_edit_skill",
+                                                                                                   args=[1]), html=True)
 
 
 class CVBasicPageTest(TestCase):
 
     def test_cv_basic_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse('cv_edit_basic'))
         self.assertTemplateUsed(response, 'cv/cv_edit_basic.html')
 
     def test_can_save_basic_request(self):
-        self.client.post(reverse('cv_edit_basic'), data=
-        {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
-         'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock', 'last_updated': timezone.now()})
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        response = self.client.post(reverse('cv_edit_basic'),
+                                    data={'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
+                                          'phone': '07759123456', 'github': 'GCurnock',
+                                          'linkedin': 'GeorgeCurnock', 'last_updated': timezone.now()})
 
         self.assertEqual(Basic.objects.count(), 1)
         basic_info = Basic.objects.first()
@@ -152,6 +235,13 @@ class CVBasicPageTest(TestCase):
         self.assertEqual(basic_info.linkedin, 'GeorgeCurnock')
 
     def test_can_update_basic_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
          'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
@@ -169,6 +259,13 @@ class CVBasicPageTest(TestCase):
         self.assertEqual(basic_info.linkedin, 'GeorgeCurnockey')
 
     def test_post_request_basic_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
          'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
@@ -177,6 +274,13 @@ class CVBasicPageTest(TestCase):
         pass
 
     def test_displays_all_basic_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_edit_basic'), data=
         {'name': 'George Curnock', 'email': 'george.curnock@gmail.com',
          'phone': '07759123456', 'github': 'GCurnock', 'linkedin': 'GeorgeCurnock'})
@@ -193,10 +297,24 @@ class CVBasicPageTest(TestCase):
 class CVNewEducationEntryTest(TestCase):
 
     def test_cv_new_education_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse('cv_new_education'))
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
     def test_can_save_experience_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -221,6 +339,13 @@ class CVNewEducationEntryTest(TestCase):
                          )
 
     def test_post_request_education_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -234,6 +359,13 @@ class CVNewEducationEntryTest(TestCase):
         pass
 
     def test_displays_all_education_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -260,6 +392,13 @@ class CVNewEducationEntryTest(TestCase):
 class CVEditEducationEntryTest(TestCase):
 
     def test_cv_edit_education_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -273,6 +412,13 @@ class CVEditEducationEntryTest(TestCase):
         self.assertTemplateUsed(response, 'cv/cv_edit_education.html')
 
     def test_can_save_edited_education_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -306,6 +452,13 @@ class CVEditEducationEntryTest(TestCase):
                          )
 
     def test_post_request_edit_education_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -328,6 +481,13 @@ class CVEditEducationEntryTest(TestCase):
         self.assertEqual(response['location'], '/cv')
 
     def test_displays_changed_education_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_education'), data=
         {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
          'institution': 'University of Birmingham', 'grade': 'First Class',
@@ -368,10 +528,24 @@ class CVEditEducationEntryTest(TestCase):
 class CVNewExperienceEntryTest(TestCase):
 
     def test_cv_new_experience_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse('cv_new_experience'))
         self.assertTemplateUsed(response, 'cv/cv_edit_experience.html')
 
     def test_can_save_experience_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -397,6 +571,13 @@ class CVNewExperienceEntryTest(TestCase):
                          )
 
     def test_post_request_experience_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -411,6 +592,13 @@ class CVNewExperienceEntryTest(TestCase):
         pass
 
     def test_displays_all_experience_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -438,6 +626,13 @@ class CVNewExperienceEntryTest(TestCase):
 class CVEditExperienceEntryTest(TestCase):
 
     def test_cv_edit_experience_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -452,6 +647,13 @@ class CVEditExperienceEntryTest(TestCase):
         self.assertTemplateUsed(response, 'cv/cv_edit_experience.html')
 
     def test_can_save_edited_experience_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -487,6 +689,13 @@ class CVEditExperienceEntryTest(TestCase):
                          )
 
     def test_post_request_edit_experience_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -511,6 +720,13 @@ class CVEditExperienceEntryTest(TestCase):
         self.assertEqual(response['location'], '/cv')
 
     def test_displays_changed_experience_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_experience'), data=
         {'title': 'CEO', 'period': '2019 - Present',
          'institution': 'Google',
@@ -553,10 +769,24 @@ class CVEditExperienceEntryTest(TestCase):
 class CVNewProjectsEntryTest(TestCase):
 
     def test_cv_new_project_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse('cv_new_project'))
         self.assertTemplateUsed(response, 'cv/cv_edit_project.html')
 
     def test_can_save_project_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -579,6 +809,13 @@ class CVNewProjectsEntryTest(TestCase):
         self.assertEqual(project_info.technologies, 'HTML, CSS, JS, Python, DJango')
 
     def test_post_request_project_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -591,6 +828,13 @@ class CVNewProjectsEntryTest(TestCase):
         self.assertEqual(response['location'], '/cv')
 
     def test_displays_all_project_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -615,6 +859,13 @@ class CVNewProjectsEntryTest(TestCase):
 class CVEditProjectEntryTest(TestCase):
 
     def test_cv_edit_project_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -628,6 +879,13 @@ class CVEditProjectEntryTest(TestCase):
         self.assertTemplateUsed(response, 'cv/cv_edit_project.html')
 
     def test_can_save_edited_project_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -659,6 +917,13 @@ class CVEditProjectEntryTest(TestCase):
                          )
 
     def test_post_request_edit_project_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -681,6 +946,13 @@ class CVEditProjectEntryTest(TestCase):
         self.assertEqual(response['location'], '/cv')
 
     def test_displays_changed_project_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_project'), data=
         {'title': 'my-first-blog',
          'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
@@ -717,10 +989,24 @@ class CVEditProjectEntryTest(TestCase):
 class CVNewSkillPageTest(TestCase):
 
     def test_cv_edit_skill_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.get(reverse('cv_new_skill'))
         self.assertTemplateUsed(response, 'cv/cv_edit_skill.html')
 
     def test_can_save_project_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
         self.assertEqual(Skill.objects.count(), 1)
@@ -728,6 +1014,13 @@ class CVNewSkillPageTest(TestCase):
         self.assertEqual(skill_info.name, 'HTML')
 
     def test_post_request_project_redirects_to_cv_page(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         response = self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
 
@@ -735,17 +1028,30 @@ class CVNewSkillPageTest(TestCase):
         self.assertEqual(response['location'], '/cv')
 
     def test_displays_all_project_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
 
         response = self.client.get(reverse('cv_home'))
-
         self.assertIn('HTML', response.content.decode())
 
 
 class CVEditSkillPageTest(TestCase):
 
     def test_cv_edit_project_uses_cv_template(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
 
@@ -753,6 +1059,13 @@ class CVEditSkillPageTest(TestCase):
         self.assertTemplateUsed(response, 'cv/cv_edit_skill.html')
 
     def test_can_save_edited_project_request(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
 
@@ -774,6 +1087,13 @@ class CVEditSkillPageTest(TestCase):
         self.assertEqual(response['location'], '/cv')
 
     def test_displays_changed_project_information_content(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
         self.client.post(reverse('cv_new_skill'), data=
         {'name': 'HTML'})
 
@@ -784,3 +1104,249 @@ class CVEditSkillPageTest(TestCase):
 
         self.assertNotIn('HTML', response.content.decode())
         self.assertIn('CSS', response.content.decode())
+
+
+class CVAdminAccessTest(TestCase):
+
+    def test_add_new_education_is_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn(
+            '<a class="align-self-center" id="new_education_button" href="%s">Add new Education</a>' % reverse(
+                "cv_new_education"), response.content.decode())
+
+    def test_add_new_education_is_not_visible_to_user(self):
+        response = self.client.get(reverse('cv_home'))
+        self.assertNotIn('<a class="align-self-center" id="new_education_button" '
+                         'href="%s">Add new Education</a>' % reverse("cv_new_education"),
+                         response.content.decode())
+
+    def test_add_new_experience_is_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn(
+            '<a class="align-self-center" id="new_experience_button" href="%s">Add new Experience</a>' % reverse(
+                "cv_new_experience"), response.content.decode())
+
+    def test_add_new_experience_is_not_visible_to_user(self):
+        response = self.client.get(reverse('cv_home'))
+        self.assertNotIn('<a class="align-self-center" id="new_experience_button" '
+                         'href="%s">Add new Experience</a>' % reverse("cv_new_experience"),
+                         response.content.decode())
+
+    def test_add_new_project_is_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn(
+            '<a class="align-self-center" id="new_project_button" href="%s">Add new Project</a>' % reverse(
+                "cv_new_project"), response.content.decode())
+
+    def test_add_new_project_is_not_visible_to_user(self):
+        response = self.client.get(reverse('cv_home'))
+        self.assertNotIn('<a class="align-self-center" id="new_project_button" '
+                         'href="%s">Add new Project</a>' % reverse("cv_new_project"),
+                         response.content.decode())
+
+    def test_add_new_skill_is_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn(
+            '<a class="align-self-center" id="new_skill_button" href="%s">Add new Skill</a>' % reverse(
+                "cv_new_skill"), response.content.decode())
+
+    def test_add_new_skill_is_not_visible_to_user(self):
+        response = self.client.get(reverse('cv_home'))
+        self.assertNotIn('<a class="align-self-center" id="new_skill_button" '
+                         'href="%s">Add new Skill</a>' % reverse("cv_new_skill"),
+                         response.content.decode())
+
+    def test_edit_basic_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('<a class="align-self-center" id="edit_basic_information" href="%s">Edit Basic '
+                      'Information</a>'
+                      % reverse('cv_edit_basic'), response.content.decode())
+
+    def test_edit_basic_not_visible_to_user(self):
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('<a class="align-self-center" id="edit_basic_information" href="%s">Edit Basic '
+                         'Information</a> '
+                         % reverse('cv_edit_basic'), response.content.decode())
+
+    def test_edit_education_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('<a href="%s" class="edit_education">Edit</a>'
+                      % reverse('cv_edit_education', args=[1]), response.content.decode())
+
+    def test_edit_education_not_visible_to_user(self):
+
+        self.client.post(reverse('cv_new_education'), data=
+        {'qualification': 'MSci Computer Science', 'period': '2017 - Present',
+         'institution': 'University of Birmingham', 'grade': 'First Class',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('<a href="%s" class="edit_education">Edit</a>'
+                         % reverse('cv_edit_education', args=[1]), response.content.decode())
+
+
+    def test_edit_experience_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('<a href="%s" class="edit_experience">Edit</a>'
+                      % reverse('cv_edit_experience', args=[1]), response.content.decode())
+
+    def test_edit_experience_not_visible_to_user(self):
+
+        self.client.post(reverse('cv_new_experience'), data=
+        {'title': 'CEO', 'period': '2019 - Present',
+         'institution': 'Google',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'referee': 'Sundar Pichai, 07759123457'})
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('<a href="%s" class="edit_experience">Edit</a>'
+                         % reverse('cv_edit_experience', args=[1]), response.content.decode())
+
+    def test_edit_project_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('<a href="%s" class="edit_project">Edit</a>'
+                      % reverse('cv_edit_project', args=[1]), response.content.decode())
+
+    def test_edit_project_not_visible_to_user(self):
+
+
+        self.client.post(reverse('cv_new_project'), data=
+        {'title': 'my-first-blog',
+         'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut '
+                        'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+                        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat '
+                        'cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+         'technologies': 'HTML, CSS, JS, Python, DJango'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('<a href="%s" class="edit_project">Edit</a>'
+                         % reverse('cv_edit_project', args=[1]), response.content.decode())
+
+    def test_edit_skill_visible_to_admin(self):
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertIn('<a href="%s" class="edit_skill align-self-center">Edit</a>'
+                      % reverse('cv_edit_skill', args=[1]), response.content.decode())
+
+    def test_edit_skill_not_visible_to_user(self):
+
+        self.client.post(reverse('cv_new_skill'), data=
+        {'name': 'HTML'})
+
+        response = self.client.get(reverse('cv_home'))
+
+        self.assertNotIn('<a href="%s" class="edit_skill">Edit</a>'
+                         % reverse('cv_edit_skill', args=[1]), response.content.decode())
