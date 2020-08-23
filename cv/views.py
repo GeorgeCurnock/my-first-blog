@@ -78,7 +78,6 @@ def cv_edit_education(request, pk):
             education.save()
             return redirect('/cv')
     else:
-        print("GET method found so creating form with object", pk)
         form = EducationForm(instance=education_object)
     return render(request, 'cv/cv_edit_education.html', {'form': form})
 

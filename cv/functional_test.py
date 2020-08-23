@@ -1,5 +1,5 @@
-import time
-
+from django.contrib.auth.models import User
+from django.test import Client
 from selenium import webdriver
 import unittest
 
@@ -13,6 +13,8 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
 
     def test_can_edit_and_view_the_cv(self):
+
+        # TODO Find a way to login as an admin before running the test
         # James has been given access to the bridging coursework website as an admin in order to write blogs and have
         # a copy of his CV. He wants to check the website's CV section out to see what you can do
 
@@ -451,7 +453,6 @@ class NewVisitorTest(unittest.TestCase):
                                                     "or pursues or desires to obtain pain of itself, because it is "
                                                     "pain, but because occasionally circumstances occur in which toil "
                                                     "and pain can procure him some great pleasure.")
-
 
         edit_experience_save = self.browser.find_element_by_id("edit_experience_save")
         edit_experience_save.click()
