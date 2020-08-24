@@ -1,25 +1,52 @@
+from time import sleep
+
 from django.contrib.auth.models import User
-from django.test import Client
+from django.test import LiveServerTestCase
 from selenium import webdriver
-import unittest
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
+        self.client.login(username="admin", password='admin')  # Native django test client
+        cookie = self.client.cookies['sessionid']
+        self.browser.get(
+            self.live_server_url + '/admin/')  # selenium will set cookie domain based on current page domain
+        self.browser.add_cookie({'name': 'sessionid', 'value': cookie.value, 'secure': False, 'path': '/'})
+        self.browser.refresh()  # need to update page for logged in user
+        self.browser.get(self.live_server_url + '/admin/')
 
     def tearDown(self):
         self.browser.quit()
 
     def test_can_edit_and_view_the_cv(self):
-
-        # TODO Find a way to login as an admin before running the test
         # James has been given access to the bridging coursework website as an admin in order to write blogs and have
         # a copy of his CV. He wants to check the website's CV section out to see what you can do
 
-        # He goes to the web address of the homepage of the website
-        self.browser.get('http://localhost:8000')
+        # Create a superuser for the test case so when he tries to login the user actually exists
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
+        session = self.client.session
+        session['documents_to_share_ids'] = [1]
+        session.save()
+
+
+
+        # First he logs in as an admin to ensure he can make changes
+        self.browser.get(self.live_server_url + "/admin/")
+        username_field = self.browser.find_element_by_css_selector('form input[name="username"]')
+        password_field = self.browser.find_element_by_css_selector('form input[name="password"]')
+        username_field.send_keys("admin")
+        password_field.send_keys("admin")
+
+        submit = self.browser.find_element_by_css_selector('form input[type="submit"]')
+        submit.click()
+
+        # TODO Check login was successfull
+
+        self.browser.get(self.live_server_url)
         # He notices the page title is referring to Bridging coursework
         self.assertIn('Bridging Coursework', self.browser.title)
 
@@ -28,9 +55,9 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Blog', navbar_blog)
         navbar_cv = self.browser.find_element_by_id('nav-cv').text
         self.assertIn('CV', navbar_cv)
-
         # He clicks on the 'cv' header to take him to the cv portion of the web app
         self.browser.get('http://localhost:8000/cv/')
+        
         # He notices the page title is referring to Bridging coursework
 
         # He is presented with a page containing a number of different headers and buttons referring to different
@@ -478,7 +505,3 @@ class NewVisitorTest(unittest.TestCase):
                       "and pain can procure him some great pleasure.", cv_experience_description)
         cv_experience_referee = self.browser.find_element_by_class_name("cv_experience_referee").text
         self.assertIn('Mark Oggle, 07759112233', cv_experience_referee)
-
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
