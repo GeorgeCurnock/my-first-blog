@@ -9,7 +9,11 @@ class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.client.login(username="admin", password='admin')  # Native django test client
+
+        # Login as an admin user so the test user has access to editing and adding information
+        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
+        # # self.client.login sets up self.client.session to be usable
+        self.client.login(username='admin', password='admin')
         cookie = self.client.cookies['sessionid']
         self.browser.get(
             self.live_server_url + '/admin/')  # selenium will set cookie domain based on current page domain
@@ -24,40 +28,16 @@ class NewVisitorTest(LiveServerTestCase):
         # James has been given access to the bridging coursework website as an admin in order to write blogs and have
         # a copy of his CV. He wants to check the website's CV section out to see what you can do
 
-        # Create a superuser for the test case so when he tries to login the user actually exists
-        User.objects.create_superuser('admin', 'foo@foo.com', 'admin')
-        # self.client.login sets up self.client.session to be usable
-        self.client.login(username='admin', password='admin')
-        session = self.client.session
-        session['documents_to_share_ids'] = [1]
-        session.save()
-
-
-
-        # First he logs in as an admin to ensure he can make changes
-        self.browser.get(self.live_server_url + "/admin/")
-        username_field = self.browser.find_element_by_css_selector('form input[name="username"]')
-        password_field = self.browser.find_element_by_css_selector('form input[name="password"]')
-        username_field.send_keys("admin")
-        password_field.send_keys("admin")
-
-        submit = self.browser.find_element_by_css_selector('form input[type="submit"]')
-        submit.click()
-
-        # TODO Check login was successfull
-
         self.browser.get(self.live_server_url)
-        # He notices the page title is referring to Bridging coursework
-        self.assertIn('Bridging Coursework', self.browser.title)
 
         # He notices that on the right portion of the screen there are 2 headers 'blog' and 'cv'
-        navbar_blog = self.browser.find_element_by_id('nav-blog').text
-        self.assertIn('Blog', navbar_blog)
-        navbar_cv = self.browser.find_element_by_id('nav-cv').text
-        self.assertIn('CV', navbar_cv)
+        navbar_blog = self.browser.find_element_by_id('nav-blog')
+        self.assertIn('Blog', navbar_blog.text)
+        navbar_cv = self.browser.find_element_by_id('nav-cv')
+        self.assertIn('CV', navbar_cv.text)
         # He clicks on the 'cv' header to take him to the cv portion of the web app
-        self.browser.get('http://localhost:8000/cv/')
-        
+        navbar_cv.click()
+
         # He notices the page title is referring to Bridging coursework
 
         # He is presented with a page containing a number of different headers and buttons referring to different
@@ -68,10 +48,10 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Basic Information', header_basic)
 
         # James presses the 'Edit Basic Information' button
-        edit_basic_button = self.browser.find_element_by_id('edit_basic_information').text
-        self.assertIn('Edit Basic Information', edit_basic_button)
+        edit_basic_button = self.browser.find_element_by_id('edit_basic_information')
+        self.assertIn('Edit Basic Information', edit_basic_button.text)
 
-        self.browser.get('http://localhost:8000/cv/edit/basic')
+        edit_basic_button.click()
 
         # James is presented with a large header at the top of the page saying 'Edit Basic Information' as well as
         # a fields each requiring data to be entered
@@ -145,11 +125,11 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Education', education_header)
 
         # James presses the 'Add a new education entry' button
-        new_education_button = self.browser.find_element_by_id('new_education_button').text
-        self.assertIn('Add new Education entry', new_education_button)
+        new_education_button = self.browser.find_element_by_id('new_education_button')
+        self.assertIn('Add new Education', new_education_button.text)
 
         # This sends him to a page to enter a new education entry
-        self.browser.get('http://localhost:8000/cv/new/education')
+        new_education_button.click()
 
         # He is presented with a header titled 'Add Education Entry' as well as fields each requiring data to be entered
         edit_education_header = self.browser.find_element_by_id('edit_education_header').text
@@ -237,10 +217,10 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Experience', experience_header)
 
         # James presses the 'Add new experience entry' button
-        new_experience_button = self.browser.find_element_by_id('new_experience_button').text
-        self.assertIn('Add new Experience entry', new_experience_button)
+        new_experience_button = self.browser.find_element_by_id('new_experience_button')
+        self.assertIn('Add new Experience', new_experience_button.text)
 
-        self.browser.get('http://localhost:8000/cv/new/experience')
+        new_experience_button.click()
 
         # James is presented with a large header at the top of the page saying 'Edit Basic Information' as well as
         # a fields each requiring data to be entered
@@ -336,11 +316,11 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Projects', project_header)
 
         # James presses the 'Add new experience entry' button
-        new_project_button = self.browser.find_element_by_id('new_project_button').text
-        self.assertIn('Add new Project entry', new_project_button)
+        new_project_button = self.browser.find_element_by_id('new_project_button')
+        self.assertIn('Add new Project', new_project_button.text)
 
         # He clicks the option
-        self.browser.get('http://localhost:8000/cv/new/project')
+        new_project_button.click()
 
         # James is presented with a large header at the top of the page saying 'Add a new project' as well as
         # a number of fields each requiring data to be entered
@@ -405,11 +385,11 @@ class NewVisitorTest(LiveServerTestCase):
         skill_header = self.browser.find_element_by_id('skill_header_title').text
         self.assertIn('Skills', skill_header)
 
-        new_skill_button = self.browser.find_element_by_id('new_skill_button').text
-        self.assertIn('Add new Skill entry', new_skill_button)
+        new_skill_button = self.browser.find_element_by_id('new_skill_button')
+        self.assertIn('Add new Skill', new_skill_button.text)
 
         # He clicks the option
-        self.browser.get('http://localhost:8000/cv/new/skill')
+        new_skill_button.click()
 
         # He reads a sub header titled Skill name
         edit_skill_name = self.browser.find_element_by_id('edit_skill_name').text
