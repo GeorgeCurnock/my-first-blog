@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1 id="edit_education_header">Add Education Entry</h1>
+    <form method="post" class="mb-5">{% csrf_token %}
+        <h2 id="edit_education_qualification">{{ form.qualification.label }}</h2>
+        {{ form.qualification }}
+        <h2 id="edit_education_period">{{ form.period.label }}</h2>
+        {{ form.period }}
+        <h2 id="edit_education_institution">{{ form.institution.label }}</h2>
+        {{ form.institution }}
+        <h2 id="edit_education_grade">{{ form.grade.label }}</h2>
+        {{ form.grade }}
+        <h2 id="edit_education_description">{{ form.description.label }}</h2>
+        {{ form.description }}
+        <br>
+        <button id="edit_education_save" type="submit">Save</button>
+    </form>
+{% endblock %}

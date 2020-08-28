@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1 id="edit_project_header">Add a Project</h1>
+    <form method="post" class="mb-5">{% csrf_token %}
+        <h2 id="edit_project_title">{{ form.title.label }}</h2>
+        {{ form.title }}
+        <h2 id="edit_project_description">{{ form.description.label }}</h2>
+        {{ form.description }}
+        <h2 id="edit_project_technologies">{{ form.technologies.label }}</h2>
+        {{ form.technologies }}
+        <br>
+        <button id="edit_project_save" type="submit">Save</button>
+    </form>
+{% endblock %}
